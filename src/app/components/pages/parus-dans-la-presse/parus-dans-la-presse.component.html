@@ -1,0 +1,18 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Parus Dans La Presse</h2>
+</div>
+<div class="row">
+  <div class="col-12 my-2" *ngFor="let event of societeData.Presse">
+    <h3 class="title-secondary">
+      {{ event.titre }}
+    </h3>
+    <p class="">
+      {{ event.resume }}
+    </p>
+    <p class="truncate truncate-1-line">
+      <a class="text-info" href="{{ event.link }}">
+        {{ event.link }}
+      </a>
+    </p>
+  </div>
+</div>

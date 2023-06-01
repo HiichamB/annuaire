@@ -1,0 +1,448 @@
+<!-- Date  input -->
+
+<div class="mb-3">
+  <div class="mb-3">
+    <h2 class="title-primary title-page">Rendez-vous</h2>
+  </div>
+
+  <div class="my-3">
+    <div class="d-flex flex-row justify-content-between align-items-end">
+      <div class="mb-2 width-select">
+        <h6>Agent Disponible:</h6>
+        <select class="form-select" name="" id="">
+          <option *ngFor="let i of data">{{ i.agent.name }}</option>
+        </select>
+      </div>
+      <div class="mb-2 width-select">
+        <select
+          #viewDayOptionSelect
+          class="form-select"
+          [ngModel]="viewDays"
+          (change)="viewDaysOptionChanged(viewDayOptionSelect.value)"
+        >
+          <option [value]="1">{{ 'calendar.1-j' | translate }}</option>
+          <option [value]="3">{{ 'calendar.3-j' | translate }}</option>
+          <option [value]="7">{{ 'calendar.7-j' | translate }}</option>
+        </select>
+      </div>
+      <div class="mb-2">
+        <div class="btn-group m-1" role="group">
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-top-calendar"
+            mwlCalendarPreviousView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            [daysInWeek]="viewDays"
+            [excludeDays]="excludeDays"
+            [disabled]="prevBtnDisabled"
+            (viewDateChange)="dateOrViewChanged()"
+          >
+            <span class="valign-center">
+              <i title="Precedente" class="material-icons md-18">
+                keyboard_arrow_left
+              </i>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-light btn-top-calendar"
+            mwlCalendarToday
+            [(viewDate)]="viewDate"
+            (viewDateChange)="dateOrViewChanged()"
+          >
+            <span class="valign-center">
+              <i title="Oggi" class="material-icons md-18">today</i>
+            </span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-dark btn-top-calendar"
+            mwlCalendarNextView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            [daysInWeek]="viewDays"
+            [excludeDays]="excludeDays"
+            [disabled]="nextBtnDisabled"
+            (viewDateChange)="dateOrViewChanged()"
+          >
+            <span class="valign-center">
+              <i title="Successivo" class="material-icons md-18">
+                keyboard_arrow_right
+              </i>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <calendar-scheduler-view
+      [viewDays]="viewDays"
+      [viewDate]="viewDate"
+      [events]="events"
+      [locale]="locale"
+      [responsive]="true"
+      [weekStartsOn]="weekStartsOn"
+      [excludeDays]="excludeDays"
+      [startsWithToday]="startsWithToday"
+      [hourSegments]="hourSegments"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [dayStartMinute]="dayStartMinute"
+      [dayEndMinute]="dayEndMinute"
+      [dayModifier]="dayModifier"
+      [hourModifier]="hourModifier"
+      [segmentModifier]="segmentModifier"
+      [eventModifier]="eventModifier"
+      [showEventActions]="true"
+      [showSegmentHour]="false"
+      [zoomEventOnHover]="false"
+      (viewDaysChanged)="viewDaysChanged($event)"
+      (dayHeaderClicked)="dayHeaderClicked($event.day)"
+      (hourClicked)="hourClicked($event.hour)"
+      (segmentClicked)="segmentClicked('Clicked', $event.segment)"
+      (eventClicked)="eventClicked('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      [refresh]="refresh"
+    ></calendar-scheduler-view>
+  </div>
+</div>
+
+<ng-template #modalDeleteConfirm let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmer RDV</h4>
+
+    <button
+      type="button"
+      class="btn"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Fermer
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Supprimer ce Rendez-vous ?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="deleteRDV()">
+      Oui
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Non
+    </button>
+  </div>
+</ng-template>
+<ng-template #modalAppointment let-modal>
+  <form id="contactForm" (ngSubmit)="sendRDV()" [formGroup]="RDVForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Enregistrer RDV</h4>
+      <button
+        type="button"
+        class="btn"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Fermer
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Info P NomPrenom input -->
+      <div class="row">
+        <div class="col mb-3">
+          <label class="form-label" for="name">
+            {{ 'form.nom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            placeholder="{{ 'form.exp_nom' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('name')?.touched && RDVForm.get('name')?.invalid
+            }"
+            formControlName="name"
+            name="name"
+          />
+          <div
+            *ngIf="RDVForm.get('name')?.touched && RDVForm.get('name')?.invalid"
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="RDVForm.get('name')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('name')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('name')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('name')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-3">
+          <label class="form-label" for="prenom">
+            {{ 'form.prenom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="prenom"
+            type="text"
+            placeholder="{{ 'form.exp_pre' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('prenom')?.touched && RDVForm.get('prenom')?.invalid
+            }"
+            formControlName="prenom"
+            name="prenom"
+          />
+          <div
+            *ngIf="
+              RDVForm.get('prenom')?.touched && RDVForm.get('prenom')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="RDVForm.get('prenom')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('prenom')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('prenom')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('prenom')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Email address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="emailAddress">
+            {{ 'form.email' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="emailAddress"
+            type="email"
+            placeholder="{{ 'form.exp_email' | translate }}"
+            formControlName="email"
+            name="email"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('email')?.touched && RDVForm.get('email')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              RDVForm.get('email')?.touched && RDVForm.get('email')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="RDVForm.get('email')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('email')?.errors?.['email']">
+              {{ 'form.mail_valid' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Telephone address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="telephone">
+            {{ 'form.telephone' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="telephone"
+            type="texte"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="telephone"
+            name="telephone"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('telephone')?.touched &&
+                RDVForm.get('telephone')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              RDVForm.get('telephone')?.touched &&
+              RDVForm.get('telephone')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="RDVForm.get('telephone')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('telephone')?.errors?.['pattern']">
+              {{ 'form.tel_valid' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('telephone')?.errors?.['minlength']">
+              {{ 'form.champ_10' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Heure  input -->
+      <div class="row">
+        <div class="col mb-3">
+          <p>L'Heure Choisit</p>
+          <div>
+            <label for="" class="form-control mb-2">
+              {{ clickedHeureStart | date: 'HH:mm' }}
+            </label>
+          </div>
+        </div>
+        <div class="col mb-3">
+          <p class="m-0 mb-2 text-bold bold">Durée Du RDV</p>
+          <div class="d-flex flex-row">
+            <label for="rd1" class="label-radio">
+              <input
+                id="rd1"
+                (click)="getValueOfPath(15)"
+                class="radio-input"
+                type="radio"
+                value="15"
+                name="time"
+                checked
+              />
+              <span>15 Min</span>
+            </label>
+
+            <label for="rd2" class="label-radio">
+              <input
+                id="rd2"
+                (click)="getValueOfPath(30)"
+                class="radio-input"
+                type="radio"
+                value="30"
+                name="time"
+              />
+              <span>30 Min</span>
+            </label>
+            <label for="rd3" class="label-radio">
+              <input
+                id="rd3"
+                (click)="getValueOfPath(45)"
+                class="radio-input"
+                type="radio"
+                value="45"
+                name="time"
+              />
+              <span>45 Min</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Titre  input -->
+
+        <div>
+          <label for="titre">
+            Titre
+          </label>
+
+          <input
+            (keyup)="onClickInput($event)"
+            type="text"
+            name="titre"
+            class="form-control"
+            formControlName="titre"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('titre')?.touched && RDVForm.get('titre')?.invalid
+            }"
+          />
+
+          <div
+            *ngIf="
+              RDVForm.get('titre')?.touched && RDVForm.get('titre')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="RDVForm.get('titre')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('titre')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('titre')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('titre')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Message  input -->
+        <div class="mb3">
+          <label for="content">
+            Message
+          </label>
+
+          <textarea
+            (keyup)="onClickMessage($event)"
+            type="text"
+            name="content"
+            class="form-control"
+            formControlName="content"
+            [ngClass]="{
+              'is-invalid':
+                RDVForm.get('content')?.touched &&
+                RDVForm.get('content')?.invalid
+            }"
+          ></textarea>
+          <div
+            *ngIf="
+              RDVForm.get('content')?.touched && RDVForm.get('content')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="RDVForm.get('content')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="RDVForm.get('content')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <input
+        type="submit"
+        class="btn btn-outline-dark pull-right"
+        [disabled]="!checkValidity"
+        value="Enregistrer"
+        style="
+          border-radius: 0.25rem;
+          display: inline-block;
+          height: auto;
+          width: max-content;
+        "
+      />
+
+      <button
+        type="button"
+        class="btn btn-outline-dark pull-right"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </form>
+</ng-template>

@@ -1,0 +1,70 @@
+<!-- <div class="strip grid">
+  <figure class="my-0 figure-img-card">
+    <a href="#0" class="wish_bt"></a>
+    <a [routerLink]="link" class="position-relative">
+      <img src="{{ image }}" class="img-fluid img-card w-100" alt="" />
+      <div class="read_more"><span>Read more</span></div>
+    </a>
+  </figure>
+  <div class="wrapper">
+    <h3 class="title-md">
+      <a [routerLink]="link">{{ title }}</a>
+    </h3>
+    <small class="text-resume-md">{{ location }}</small>
+    <p class="text-resume-lg mt-2">
+      {{ description }}
+    </p>
+    <a
+      class="address"
+      href="https://www.google.com/maps/dir//Assistance+%E2%80%93+H%C3%B4pitaux+De+Paris,+3+Avenue+Victoria,+75004+Paris,+Francia/@48.8606548,2.3348734,14z/data=!4m15!1m6!3m5!1s0x47e66e1de36f4147:0xb6615b4092e0351f!2sAssistance+Publique+-+H%C3%B4pitaux+de+Paris+(AP-HP)+-+Si%C3%A8ge!8m2!3d48.8568376!4d2.3504305!4m7!1m0!1m5!1m1!1s0x47e67031f8c20147:0xa6a9af76b1e2d899!2m2!1d2.3504327!2d48.8568361"
+    >
+      Get directions
+    </a>
+  </div>
+  <ul class="d-flex align-items-center justify-content-between border-card-top">
+    <li><span class="loc_open">Now Open</span></li>
+    <li>
+      <div class="score">
+        <strong>{{ score }}</strong>
+      </div>
+    </li>
+  </ul>
+</div> -->
+<div class="strip grid">
+  <figure class="my-0 figure-img-card">
+    <a href="#0" class="wish_bt"></a>
+    <a (click)="goToDetails()" class="position-relative">
+      <img src="{{ image }}" class="img-fluid img-card w-100" alt="" />
+      <div class="read_more"><span>Consulter</span></div>
+    </a>
+  </figure>
+  <div class="wrapper">
+    <h3 class="title-md">
+      <a (click)="goToDetails()">{{ title }}</a>
+    </h3>
+    <div class="custom-color">
+      <i class="fa-solid fa-map"></i>
+      <small class="text-resume-md">{{ location }}</small>
+    </div>
+    <div class="custom-color">
+      <i class="fa-solid fa-phone"></i>
+      <small class="text-resume-md">{{ telephone }}</small>
+    </div>
+    <div class="custom-color">
+      <i class="fa-solid fa-at"></i>
+      <small class="text-resume-md">{{ email }}</small>
+    </div>
+    <p class="text-resume-lg mt-2">
+      {{ description }}
+    </p>
+  </div>
+  <ul class="d-flex align-items-center justify-content-between border-card-top">
+    <li><span class="loc_open">Now Open</span></li>
+    <li>
+      <div class="score">
+        <strong>{{ score }}</strong>
+        <i class="far fa-star"></i>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,451 @@
+<h5 class="titile-secondary my-3">Devis Generateur</h5>
+<div class="py-4 row bg-white">
+  <!-- <div class="col-md-5">
+    <h4 class="mb-3">
+      Vos Produits
+    </h4>
+
+    <div
+      class="card card-product-devis"
+      *ngFor="let prd of selecetedProductDevis"
+    >
+      <div class="row align-items-center">
+        <div
+          class="col-md-5 text-center d-flex align-items-center justify-content-center"
+        >
+          <img class="img-fluid img-product-devis" [src]="prd.image" alt="" />
+        </div>
+        <div class="col-md-6">
+          <div class="mb-2">
+            <h5>{{ prd.titre }}</h5>
+          </div>
+          <div class="mb-2">
+            <label class="fw-bold">Prix Total :</label>
+            <span>{{ prd.totalPrix }}</span>
+          </div>
+          <div class="mb-2">
+            <label class="fw-bold">Quantité :</label>
+            <span>{{ prd.quantiteSelected }}</span>
+          </div>
+          <div *ngIf="prd.selectedOptions" class="mb-2">
+            <label class="fw-bold">Option total :</label>
+            <span>{{ prd.totalSelectedOptions }}</span>
+          </div>
+          <div class="mb-2" *ngIf="prd.selectedOptions">
+            <label class="fw-bold">Options :</label>
+            <span>
+              <ul>
+                <li *ngFor="let options of prd.selectedOptions">
+                  <h6>{{ options.titre }}</h6>
+                </li>
+              </ul>
+            </span>
+          </div>
+          <div class="">
+            <button class="btn btn-danger" (click)="deleteDevisItem(prd.id)">
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>  -->
+  <div class="col-md-7 devis-generator-table">
+    <p-table
+      #dt
+      [expandedRowKeys]="expandedRowKeys"
+      dataKey="id"
+      [value]="selecetedProductDevis"
+      responsiveLayout="scroll"
+      [autoLayout]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 60px;"></th>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Quantité</th>
+          <th>Prix Total</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product let-expanded="expanded">
+        <tr class="bg-table-primary">
+          <td style="width: 60px;">
+            <button
+              *ngIf="product.selectedOptions"
+              type="button"
+              pButton
+              pRipple
+              [pRowToggler]="product"
+              class="p-button-text p-button-rounded p-button-plain"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            ></button>
+          </td>
+          <td>
+            <img
+              [src]="product.image"
+              alt="img"
+              class="img-fluid img-product-devis"
+            />
+          </td>
+
+          <td>{{ product.titre }}</td>
+          <td>
+            <input
+              #quantite
+              type="number"
+              name="qunantite"
+              min="1"
+              class="input-number-table"
+              [value]="product.quantiteSelected || 1"
+              [max]="product.stock"
+              (change)="onQuantiteChangeProduct(quantite, product, product)"
+            />
+          </td>
+          <td>{{ product.totalPrix }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-product>
+        <tr>
+          <td colspan="5">
+            <div class="center-table">
+              <p-table
+                responsiveLayout="scroll"
+                [autoLayout]="true"
+                [value]="product.selectedOptions"
+                dataKey="idP"
+              >
+                <ng-template
+                  pTemplate="body"
+                  let-option
+                  let-expanded2="expanded"
+                >
+                  <tr class="row-options">
+                    <td style="width: 60px;"></td>
+                    <td>
+                      <img
+                        [src]="option.imageProduct"
+                        alt="img"
+                        class="img-fluid img-rowexpansion"
+                      />
+                    </td>
+
+                    <td>{{ option.titre }}</td>
+                    <td>
+                      <input
+                        #quantiteOption
+                        type="number"
+                        name="qunantite"
+                        min="1"
+                        class="input-number-table"
+                        [value]="option.quantiteSelected || 1"
+                        [max]="option.stock"
+                        (change)="
+                          onQuantiteChangeProduct(
+                            quantiteOption,
+                            option,
+                            product
+                          )
+                        "
+                      />
+                    </td>
+                    <td>{{ option.totalPrix }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <div class="total-container pull-right">
+      <span class="fw-bold span-1">Total H.T :</span>
+      <span class="span-2">&nbsp; {{ totalOfDevis }}</span>
+    </div>
+    <div class="total-container pull-right">
+      <span class="fw-bold span-1">TVA :</span>
+      <span class="span-2">&nbsp; 20%</span>
+    </div>
+    <div class="total-container pull-right">
+      <span class="fw-bold span-1">Total à payer :</span>
+      <span class="span-2">
+        &nbsp; {{ totalOfDevis + (totalOfDevis * tva) / 100 }}
+      </span>
+    </div>
+  </div>
+
+  <form
+    class="col-md-5"
+    id="contactForm"
+    (ngSubmit)="sendDevis()"
+    [formGroup]="DevisForm"
+  >
+    <div class="mb-3">
+      <label for="check">Is Societe ?</label>
+      <input
+        type="checkbox"
+        name="check"
+        id="check"
+        (change)="changeCheckBox($event)"
+      />
+    </div>
+
+    <div class="mb-3" *ngIf="modeSociete">
+      <label class="form-label" for="NumSociete">
+        {{ 'form.numSociete' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="NumSociete"
+        type="text"
+        placeholder="{{ 'form.numSociete' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('NumSociete')?.touched &&
+            DevisForm.get('NumSociete')?.invalid
+        }"
+        formControlName="NumSociete"
+        name="NumSociete"
+      />
+      <div
+        *ngIf="
+          DevisForm.get('NumSociete')?.touched &&
+          DevisForm.get('NumSociete')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="DevisForm.get('NumSociete')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('NumSociete')?.errors?.['minlength']">
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('NumSociete')?.errors?.['maxlength']">
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('NumSociete')?.errors?.['pattern']">
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="prenom">
+        {{ 'form.prenom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="prenom"
+        type="text"
+        placeholder="{{ 'form.exp_pre' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('prenom')?.touched && DevisForm.get('prenom')?.invalid
+        }"
+        formControlName="prenom"
+        name="prenom"
+      />
+      <div
+        *ngIf="
+          DevisForm.get('prenom')?.touched && DevisForm.get('prenom')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="DevisForm.get('prenom')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('prenom')?.errors?.['minlength']">
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('prenom')?.errors?.['maxlength']">
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('prenom')?.errors?.['pattern']">
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Name input -->
+
+    <div class="mb-3">
+      <label class="form-label" for="name">
+        {{ 'form.nom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="name"
+        type="text"
+        placeholder="{{ 'form.exp_nom' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('name')?.touched && DevisForm.get('name')?.invalid
+        }"
+        formControlName="name"
+        name="name"
+      />
+      <div
+        *ngIf="DevisForm.get('name')?.touched && DevisForm.get('name')?.invalid"
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="DevisForm.get('name')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('name')?.errors?.['minlength']">
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('name')?.errors?.['maxlength']">
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('name')?.errors?.['pattern']">
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="adresse">
+        {{ 'form.adresse' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="prenom"
+        type="text"
+        placeholder="{{ 'form.adresse' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('adresse')?.touched &&
+            DevisForm.get('adresse')?.invalid
+        }"
+        formControlName="adresse"
+        name="adresse"
+      />
+      <div
+        *ngIf="
+          DevisForm.get('adresse')?.touched && DevisForm.get('adresse')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="DevisForm.get('adresse')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('adresse')?.errors?.['minlength']">
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('adresse')?.errors?.['maxlength']">
+          {{ 'form.champ_30' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Email address input -->
+
+    <div class="mb-3">
+      <label class="form-label" for="emailAddress">
+        {{ 'form.email' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="emailAddress"
+        type="email"
+        placeholder="{{ 'form.exp_email' | translate }}"
+        formControlName="email"
+        name="email"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('email')?.touched && DevisForm.get('email')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          DevisForm.get('email')?.touched && DevisForm.get('email')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="DevisForm.get('email')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('email')?.errors?.['email']">
+          {{ 'form.mail_valid' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Telephone address input -->
+    <div class="mb-3">
+      <label class="form-label" for="telephone">
+        {{ 'form.telephone' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="telephone"
+        type="texte"
+        placeholder="{{ 'form.exp_tel' | translate }}"
+        formControlName="telephone"
+        name="telephone"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('telephone')?.touched &&
+            DevisForm.get('telephone')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          DevisForm.get('telephone')?.touched &&
+          DevisForm.get('telephone')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="DevisForm.get('telephone')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('telephone')?.errors?.['pattern']">
+          {{ 'form.tel_valid' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Message input -->
+    <div class="mb-3">
+      <label class="form-label" for="message">
+        {{ 'form.message' | translate }}
+      </label>
+      <textarea
+        class="form-control"
+        id="message"
+        type="text"
+        placeholder="{{ 'form.c_msg' | translate }}"
+        style="height: 10rem;"
+        formControlName="message"
+        name="message"
+        [ngClass]="{
+          'is-invalid':
+            DevisForm.get('message')?.touched &&
+            DevisForm.get('message')?.invalid
+        }"
+      ></textarea>
+      <div
+        *ngIf="
+          DevisForm.get('message')?.touched && DevisForm.get('message')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="DevisForm.get('message')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="DevisForm.get('message')?.errors?.['minlength']">
+          {{ 'form.champ_10' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Form submit button -->
+    <!-- Form submit button -->
+
+    <button
+      [disabled]="this.selecetedProductDevis.length == 0"
+      class="btn btn-outline-dark btn-lg"
+      type="submit"
+    >
+      {{ 'form.Envoyer' | translate }}
+    </button>
+  </form>
+</div>

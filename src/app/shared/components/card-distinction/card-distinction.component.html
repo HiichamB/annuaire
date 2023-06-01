@@ -1,0 +1,22 @@
+<div class="position-relative radius-card row">
+  <figure class="figure-img-card text-center col-lg-4">
+    <img
+      [defaultImage]="'assets/images/organisation.jpg'"
+      [lazyLoad]="image"
+      alt=""
+      class="img-card"
+    />
+  </figure>
+  <div class="info col-lg-8">
+    <div class="">
+      <h5>{{ titre }}</h5>
+    </div>
+    <div class="">
+      <p>{{ resume }}</p>
+    </div>
+
+    <div class="">
+      {{ date | date: 'dd-mm-yyyy' }}
+    </div>
+  </div>
+</div>

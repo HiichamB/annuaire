@@ -1,0 +1,264 @@
+<div class="row">
+  <div class="d-flex justify-content-between mb-3">
+    <h2 class="title-primary title-page">Question/Reponse</h2>
+
+    <div class="d-flex flex-row justify-content-end">
+      <button
+        class="btn btn-outline-dark mx-1"
+        (click)="addQuestion(modalAddQuestion)"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Add Question
+      </button>
+      <button class="btn btn-outline-dark mx-1">
+        <i class="fa-solid fa-plus"></i>
+        Whatsapp
+      </button>
+    </div>
+  </div>
+  <p-accordion>
+    <p-accordionTab
+      *ngFor="let qR of societeData.QuestionReponse"
+      header="{{ qR.question }}"
+    >
+      {{ qR.reponse }}
+    </p-accordionTab>
+  </p-accordion>
+</div>
+<!-- <input type="file" accept="audio/*"  capture /> -->
+
+<ng-template let-modal #modalAddQuestion>
+  <form
+    id="contactForm"
+    (ngSubmit)="sendQuestion()"
+    [formGroup]="FaqForm"
+    #form2
+  >
+    <div class="modal-header">
+      <h4 class="modal-title">Poser Votre Question</h4>
+      <button
+        type="button"
+        class="btn"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Fermer
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <!-- Name input -->
+
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="name">
+            {{ 'form.nom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            placeholder="{{ 'form.exp_nom' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                FaqForm.get('name')?.touched && FaqForm.get('name')?.invalid
+            }"
+            formControlName="name"
+            name="name"
+          />
+          <div
+            *ngIf="FaqForm.get('name')?.touched && FaqForm.get('name')?.invalid"
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="FaqForm.get('name')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('name')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('name')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('name')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Prenom input -->
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="prenom">
+            {{ 'form.prenom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="prenom"
+            type="prenom"
+            placeholder="{{ 'form.exp_pre' | translate }}"
+            formControlName="prenom"
+            name="prenom"
+            [ngClass]="{
+              'is-invalid':
+                FaqForm.get('prenom')?.touched && FaqForm.get('prenom')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              FaqForm.get('prenom')?.touched && FaqForm.get('prenom')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="FaqForm.get('prenom')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('prenom')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('prenom')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('prenom')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Telephone + email address input -->
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="telephone">
+            {{ 'form.telephone' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="telephone"
+            type="texte"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="telephone"
+            name="telephone"
+            [ngClass]="{
+              'is-invalid':
+                FaqForm.get('telephone')?.touched &&
+                FaqForm.get('telephone')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              FaqForm.get('telephone')?.touched &&
+              FaqForm.get('telephone')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="FaqForm.get('telephone')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('telephone')?.errors?.['pattern']">
+              {{ 'form.tel_valid' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('telephone')?.errors?.['minlength']">
+              {{ 'form.champ_10' | translate }}
+            </div>
+          </div>
+        </div>
+        <!-- Email  input -->
+        <div class="mb-3 col-md-6">
+          <label class="form-label" for="emailAddress">
+            {{ 'form.email' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="emailAddress"
+            type="email"
+            placeholder="{{ 'form.exp_email' | translate }}"
+            formControlName="email"
+            name="email"
+            [ngClass]="{
+              'is-invalid':
+                FaqForm.get('email')?.touched && FaqForm.get('email')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              FaqForm.get('email')?.touched && FaqForm.get('email')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="FaqForm.get('email')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="FaqForm.get('email')?.errors?.['email']">
+              {{ 'form.mail_valid' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Questions input -->
+
+      <ng-container formArrayName="questions">
+        <div
+          class="mb-2 position-relative d-flex flex-wrap align-items-center"
+          *ngFor="let question of questions.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <label class="form-label w-100" for="question">
+            {{ 'form.question' | translate }} {{ i + 1 }}
+          </label>
+          <div class="flex-grow-1">
+            <input
+              type="text"
+              formControlName="questionValue"
+              class="form-control"
+              [ngClass]="{
+                'is-invalid':
+                  questions.controls[i].get('questionValue')?.touched &&
+                  questions.controls[i].get('questionValue')?.invalid
+              }"
+            />
+            <div
+              *ngIf="
+                questions.controls[i].get('questionValue')?.touched &&
+                questions.controls[i].get('questionValue')?.invalid
+              "
+              class="invalid-feedback mb-2"
+            >
+              <div
+                *ngIf=" questions.controls[i].get('questionValue')?.errors?.['required']"
+              >
+                {{ 'form.champ_oblig' | translate }}
+              </div>
+              <div
+                *ngIf=" questions.controls[i].get('questionValue')?.errors?.['minlength']"
+              >
+                {{ 'form.champ_10' | translate }}
+              </div>
+              <div
+                *ngIf=" questions.controls[i].get('questionValue')?.errors?.['maxlength']"
+              >
+                {{ 'form.champ_30' | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="delete-btn-container mx-1" *ngIf="i != 0">
+            <div class="delete-btn" (click)="deleteQuestion(i)">
+              <i class="fa-solid fa-trash"></i>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          (click)="newQuestion()"
+          class="btn btn-outline-dark"
+        >
+          Ajouter
+        </button>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <!-- Form submit button -->
+      <div class="">
+        <button class="btn btn-outline-dark" type="submit">
+          {{ 'form.Envoyer' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</ng-template>

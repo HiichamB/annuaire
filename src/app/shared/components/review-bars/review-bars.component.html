@@ -1,0 +1,29 @@
+<div class="bars-list mx-2">
+  <h2 class="title-lg bold">Avis ({{ totalReviews }})</h2>
+  <div class="d-flex flex-row align-items-center justify-content-between">
+    <div class="my-2">
+      <h4 class="title-md bold">{{ totalValues }} / 5</h4>
+    </div>
+    <div class="">
+      <p-rating
+        [ngModel]="totalValues"
+        [readonly]="true"
+        [stars]="5"
+        [cancel]="false"
+      ></p-rating>
+    </div>
+  </div>
+  <div
+    class="d-flex flex-row align-items-center"
+    *ngFor="let nb of reviewsArray; index as i"
+  >
+    <div class="side-left">
+      <div>{{ 5 - i }}</div>
+    </div>
+    <div class="side-right">
+      <div class="bar-container">
+        <div [style]="'width:' + nb + '%'" class="bar bar-5"></div>
+      </div>
+    </div>
+  </div>
+</div>

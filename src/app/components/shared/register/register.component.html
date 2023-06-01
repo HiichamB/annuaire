@@ -1,0 +1,167 @@
+<form
+  class="row bg-white container col-md-5 py-5 spacing-form"
+  (ngSubmit)="sendRegister()"
+  [formGroup]="registerForm"
+>
+  <div class="login-wrap">
+    <div class="img-login"></div>
+
+    <h3 class="text-center mb-0">S'enregister</h3>
+    <p class="text-center">Sign in by entering the information below</p>
+    <div class="mb-3">
+      <label for="userEmail" class="mb-2">
+        Nom :
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="nom"
+        [ngClass]="{
+          'is-invalid':
+            registerForm.get('nom')?.touched && registerForm.get('nom')?.touched
+        }"
+      />
+
+      <div
+        *ngIf="
+          registerForm.get('nom')?.touched && registerForm.get('nom')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="registerForm.get('nom')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="prenom" class="mb-2">
+        Prenom :
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="prenom"
+        [ngClass]="{
+          'is-invalid':
+            registerForm.get('prenom')?.touched &&
+            registerForm.get('prenom')?.touched
+        }"
+      />
+
+      <div
+        *ngIf="
+          registerForm.get('prenom')?.touched &&
+          registerForm.get('prenom')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="registerForm.get('prenom')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="userEmail" class="mb-2">
+        Email :
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="userEmail"
+        [ngClass]="{
+          'is-invalid':
+            registerForm.get('userEmail')?.touched &&
+            registerForm.get('userEmail')?.touched
+        }"
+      />
+
+      <div
+        *ngIf="
+          registerForm.get('userEmail')?.touched &&
+          registerForm.get('userEmail')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="registerForm.get('userEmail')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="mb-2">
+        Password :
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="password"
+        [ngClass]="{
+          'is-invalid':
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.touched
+        }"
+      />
+      <div
+        *ngIf="
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="registerForm.get('password')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="mb-2">
+        Password :
+      </label>
+
+      <input
+        type="email"
+        class="form-control"
+        formControlName="password"
+        [ngClass]="{
+          'is-invalid':
+            registerForm.get('password')?.touched &&
+            registerForm.get('password')?.touched
+        }"
+      />
+      <div
+        *ngIf="
+          registerForm.get('password')?.touched &&
+          registerForm.get('password')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="registerForm.get('password')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="text-end">
+      <!-- Simple link -->
+      <a href="#!">Forgot password?</a>
+    </div>
+    <div class="text-center mb-2">
+      <button type="submit" class="btn btn-outline-dark btn-lg px-5">
+        Se Connecter
+      </button>
+    </div>
+    <div class="">
+      <div class="text-center">
+        <p>
+          Not a member?
+          <a href="#!">Register</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</form>

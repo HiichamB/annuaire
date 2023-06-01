@@ -1,0 +1,24 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Equipe</h2>
+</div>
+<div class="d-flex flex-wrap overflow-scroll">
+  <p-organizationChart
+    [value]="data1"
+    selectionMode="single"
+    styleClass="company"
+  >
+    <ng-template let-node pTemplate="person">
+      <div class="node-header">{{ node.label }}</div>
+      <div class="node-content">
+        <img
+          src="assets/showcase/images/demo/organization/{node.data.avatar}"
+          width="32"
+        />
+        <div>{{ node.data.name }}</div>
+      </div>
+    </ng-template>
+    <ng-template let-node pTemplate="department">
+      {{ node.label }}
+    </ng-template>
+  </p-organizationChart>
+</div>

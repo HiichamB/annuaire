@@ -1,0 +1,66 @@
+<div class="container">
+  <div
+    class="p-5 bg-white rounded shadow-sm mb-5"
+    *ngFor="let element of listCompare"
+  >
+    <h4>{{ element.categorie }}</h4>
+
+    <table class="table">
+      <thead>
+        <tr class="th-compare border-0 bg-light">
+          <th>Action</th>
+          <td class="item-row" *ngFor="let item of element.products">
+            <button
+              type="button"
+              (click)="deleteItem(item)"
+              class="btn btn-light"
+            >
+              Remove
+            </button>
+          </td>
+        </tr>
+      </thead>
+      <tbody id="table-compare">
+        <tr>
+          <th class="product-name">Product Name</th>
+          <td *ngFor="let item of element.products" class="grid-link__title">
+            {{ item.name }}
+          </td>
+        </tr>
+        <tr>
+          <th class="product-name">Product Image</th>
+          <td class="item-row" *ngFor="let item of element.products">
+            <img
+              src="{{ item.image }}"
+              alt=""
+              class="img-fluid compare-image"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th class="product-price">Product Price</th>
+
+          <td class="item-row" *ngFor="let item of element.products">
+            <p class="description-compare truncate truncate-3-line">
+              {{ item.price }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <th class="product-name">Product Description</th>
+          <td class="item-row" *ngFor="let item of element.products">
+            <p class="description-compare truncate truncate-3-line">
+              {{ item.description }}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <th class="product-name">Stock</th>
+          <td class="available-stock" *ngFor="let item of element.products">
+            <p>0 {{ item.quatite }}</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

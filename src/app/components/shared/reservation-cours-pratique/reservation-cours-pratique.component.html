@@ -1,0 +1,478 @@
+<p-tabView>
+  <p-tabPanel header="planing">
+    <div class="top-select">
+      <div class="selects-container">
+        <div class="mx-2">
+          <p-dropdown
+            [options]="moniteurs"
+            optionValue="id"
+            optionLabel="name"
+            (onChange)="onSelectPersonne($event.value)"
+            placeholder="Select a Moniteur"
+          >
+            <ng-template let-personne pTemplate="item">
+              <div class="flex-row">
+                <div class="lang-change-option-text center">
+                  {{ personne.name }}
+                </div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
+    <div class="calendar-container" [class.isDisabled]="disabledElement">
+      <div class="d-flex flex-row justify-content-between align-items-end">
+        <div class="mb-2 width-select">
+          <select
+            #viewDayOptionSelect
+            class="form-select"
+            [ngModel]="viewDays"
+            (change)="viewDaysOptionChanged(viewDayOptionSelect.value)"
+          >
+            <option [value]="1">{{ 'calendar.1-j' | translate }}</option>
+            <option [value]="3">{{ 'calendar.3-j' | translate }}</option>
+            <option [value]="7">{{ 'calendar.7-j' | translate }}</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <div class="btn-group m-1" role="group">
+            <button
+              type="button"
+              class="btn btn-outline-dark btn-top-calendar"
+              mwlCalendarPreviousView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              [daysInWeek]="viewDays"
+              [excludeDays]="excludeDays"
+              [disabled]="prevBtnDisabled"
+              (viewDateChange)="dateOrViewChanged()"
+            >
+              <span class="valign-center">
+                <i title="Precedente" class="material-icons md-18">
+                  keyboard_arrow_left
+                </i>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-light btn-top-calendar"
+              mwlCalendarToday
+              [(viewDate)]="viewDate"
+              (viewDateChange)="dateOrViewChanged()"
+            >
+              <span class="valign-center">
+                <i title="Oggi" class="material-icons md-18">today</i>
+              </span>
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-dark btn-top-calendar"
+              mwlCalendarNextView
+              [view]="view"
+              [(viewDate)]="viewDate"
+              [daysInWeek]="viewDays"
+              [excludeDays]="excludeDays"
+              [disabled]="nextBtnDisabled"
+              (viewDateChange)="dateOrViewChanged()"
+            >
+              <span class="valign-center">
+                <i title="Successivo" class="material-icons md-18">
+                  keyboard_arrow_right
+                </i>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <calendar-scheduler-view
+        [viewDays]="viewDays"
+        [viewDate]="viewDate"
+        [events]="events"
+        [locale]="locale"
+        [responsive]="true"
+        [weekStartsOn]="weekStartsOn"
+        [excludeDays]="excludeDays"
+        [startsWithToday]="startsWithToday"
+        [hourSegments]="1"
+        [dayStartHour]="dayStartHour"
+        [dayEndHour]="dayEndHour"
+        [dayStartMinute]="dayStartMinute"
+        [dayEndMinute]="dayEndMinute"
+        [dayModifier]="dayModifier"
+        [hourModifier]="hourModifier"
+        [segmentModifier]="segmentModifier"
+        [eventModifier]="eventModifier"
+        [showEventActions]="true"
+        [showSegmentHour]="false"
+        [zoomEventOnHover]="false"
+        (viewDaysChanged)="viewDaysChanged($event)"
+        (dayHeaderClicked)="dayHeaderClicked($event.day)"
+        (hourClicked)="hourClicked($event.hour)"
+        (segmentClicked)="segmentClicked('Clicked', $event.segment)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+        [refresh]="refresh"
+      ></calendar-scheduler-view>
+    </div>
+  </p-tabPanel>
+  <p-tabPanel header="reservation">
+    <form
+      class="row bg-white"
+      id="contactForm"
+      (ngSubmit)="sendReservation()"
+      [formGroup]="reservationPratiqueForm"
+    >
+      <!-- Heure  input -->
+      <div class="row">
+        <div class="col mb-3">
+          <div>
+            <label for="" class="mb-2">
+              Date de la reservation
+            </label>
+
+            <input
+              min="{{ todayDate | date: 'yyyy-MM-dd' }}"
+              type="date"
+              class="form-control"
+              formControlName="dateDebut"
+              (change)="dateDebutChange($event)"
+              [ngClass]="{
+                'is-invalid':
+                  reservationPratiqueForm.get('dateDebut')?.touched &&
+                  reservationPratiqueForm.get('dateDebut')?.invalid
+              }"
+            />
+            <div
+              *ngIf="
+                reservationPratiqueForm.get('dateDebut')?.touched &&
+                reservationPratiqueForm.get('dateDebut')?.invalid
+              "
+              class="invalid-feedback mb-2"
+            >
+              <div
+                *ngIf="reservationPratiqueForm.get('dateDebut')?.errors?.['required']"
+              >
+                {{ 'form.champ_oblig' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-3">
+          <div>
+            <label for="" class="mb-2">
+              Heure du Cours :
+            </label>
+            <select
+              class="form-select"
+              formControlName="heureDuCour"
+              [ngClass]="{
+                'is-invalid':
+                  reservationPratiqueForm.get('heureDuCour')?.touched &&
+                  reservationPratiqueForm.get('heureDuCour')?.invalid
+              }"
+            >
+              <option value="" disabled selected hidden>
+                Choisir Un cours
+              </option>
+              <option
+                [disabled]="
+                  cours.nbPlaces == cours.nbReservations ||
+                  (cours.dateDebut == dateNow && cours.heureDebut < timeNow)
+                "
+                *ngFor="let cours of dropDownCours"
+              >
+                Du: {{ cours.heureDebut }} à: {{ cours.heureFin }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                reservationPratiqueForm.get('heureDuCour')?.touched &&
+                reservationPratiqueForm.get('heureDuCour')?.invalid
+              "
+              class="invalid-feedback mb-2"
+            >
+              <div
+                *ngIf="reservationPratiqueForm.get('heureDuCour')?.errors?.['required']"
+              >
+                {{ 'form.champ_oblig' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info P NomPrenom input -->
+      <div class="row">
+        <div class="col mb-3">
+          <label class="form-label" for="name">
+            {{ 'form.nom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            placeholder="{{ 'form.exp_nom' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                reservationPratiqueForm.get('name')?.touched &&
+                reservationPratiqueForm.get('name')?.invalid
+            }"
+            formControlName="name"
+            name="name"
+          />
+          <div
+            *ngIf="
+              reservationPratiqueForm.get('name')?.touched &&
+              reservationPratiqueForm.get('name')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div
+              *ngIf="reservationPratiqueForm.get('name')?.errors?.['required']"
+            >
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('name')?.errors?.['minlength']"
+            >
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('name')?.errors?.['maxlength']"
+            >
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('name')?.errors?.['pattern']"
+            >
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-3">
+          <label class="form-label" for="prenom">
+            {{ 'form.prenom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="prenom"
+            type="text"
+            placeholder="{{ 'form.exp_pre' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                reservationPratiqueForm.get('prenom')?.touched &&
+                reservationPratiqueForm.get('prenom')?.invalid
+            }"
+            formControlName="prenom"
+            name="prenom"
+          />
+          <div
+            *ngIf="
+              reservationPratiqueForm.get('prenom')?.touched &&
+              reservationPratiqueForm.get('prenom')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div
+              *ngIf="reservationPratiqueForm.get('prenom')?.errors?.['required']"
+            >
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('prenom')?.errors?.['minlength']"
+            >
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('prenom')?.errors?.['maxlength']"
+            >
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('prenom')?.errors?.['pattern']"
+            >
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Email address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="emailAddress">
+            {{ 'form.email' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="emailAddress"
+            type="email"
+            placeholder="{{ 'form.exp_email' | translate }}"
+            formControlName="email"
+            name="email"
+            [ngClass]="{
+              'is-invalid':
+                reservationPratiqueForm.get('email')?.touched &&
+                reservationPratiqueForm.get('email')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              reservationPratiqueForm.get('email')?.touched &&
+              reservationPratiqueForm.get('email')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div
+              *ngIf="reservationPratiqueForm.get('email')?.errors?.['required']"
+            >
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('email')?.errors?.['email']"
+            >
+              {{ 'form.mail_valid' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Telephone address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="telephone">
+            {{ 'form.telephone' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="telephone"
+            type="texte"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="telephone"
+            name="telephone"
+            [ngClass]="{
+              'is-invalid':
+                reservationPratiqueForm.get('telephone')?.touched &&
+                reservationPratiqueForm.get('telephone')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              reservationPratiqueForm.get('telephone')?.touched &&
+              reservationPratiqueForm.get('telephone')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div
+              *ngIf="reservationPratiqueForm.get('telephone')?.errors?.['required']"
+            >
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('telephone')?.errors?.['pattern']"
+            >
+              {{ 'form.tel_valid' | translate }}
+            </div>
+            <div
+              *ngIf="reservationPratiqueForm.get('telephone')?.errors?.['minlength']"
+            >
+              {{ 'form.champ_10' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Titre Input -->
+      <div>
+        <label for="titre">
+          Titre
+        </label>
+
+        <input
+          type="text"
+          name="titre"
+          class="form-control"
+          formControlName="titre"
+          [ngClass]="{
+            'is-invalid':
+              reservationPratiqueForm.get('titre')?.touched &&
+              reservationPratiqueForm.get('titre')?.invalid
+          }"
+        />
+
+        <div
+          *ngIf="
+            reservationPratiqueForm.get('titre')?.touched &&
+            reservationPratiqueForm.get('titre')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div
+            *ngIf="reservationPratiqueForm.get('titre')?.errors?.['required']"
+          >
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div
+            *ngIf="reservationPratiqueForm.get('titre')?.errors?.['minlength']"
+          >
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div
+            *ngIf="reservationPratiqueForm.get('titre')?.errors?.['maxlength']"
+          >
+            {{ 'form.champ_30' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Message  input -->
+      <div class="mb3">
+        <label for="content">
+          Message
+        </label>
+
+        <textarea
+          type="text"
+          name="content"
+          class="form-control"
+          formControlName="content"
+          [ngClass]="{
+            'is-invalid':
+              reservationPratiqueForm.get('content')?.touched &&
+              reservationPratiqueForm.get('content')?.invalid
+          }"
+        ></textarea>
+        <div
+          *ngIf="
+            reservationPratiqueForm.get('content')?.touched &&
+            reservationPratiqueForm.get('content')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div
+            *ngIf="reservationPratiqueForm.get('content')?.errors?.['required']"
+          >
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div
+            *ngIf="reservationPratiqueForm.get('content')?.errors?.['minlength']"
+          >
+            {{ 'form.champ_3' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <div class="my-2 col align-self-end">
+        <input
+          type="submit"
+          class="btn btn-outline-dark"
+          value="Enregistrer"
+          style="
+            border-radius: 0.25rem;
+            display: inline-block;
+            height: auto;
+            width: max-content;
+          "
+        />
+      </div>
+    </form>
+  </p-tabPanel>
+</p-tabView>

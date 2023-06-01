@@ -1,0 +1,20 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Evenement</h2>
+</div>
+<div class="row">
+  <div
+    class="col-lg-4 col-md-6 col-sm-6 col-12"
+    *ngFor="let event of societeData.evenement"
+  >
+    <app-event-card
+      class="product-grid-item card"
+      [dateDebut]="event?.date_debut"
+      [dateFin]="event?.date_fin"
+      [resume]="event?.description"
+      [title]="event?.titre"
+      [img]="event.image"
+      [link]="['', event?._id]"
+      [localisation]="event?.localisation"
+    ></app-event-card>
+  </div>
+</div>

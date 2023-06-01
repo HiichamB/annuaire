@@ -1,0 +1,250 @@
+<app-header></app-header>
+
+<div class="top-details-search">
+  <div class="slide-hero"></div>
+  <div class="map" [class.openmap]="openMap">
+    <div style="width: 100%;">
+      <iframe
+        width="100%"
+        height="600"
+        frameborder="0"
+        scrolling="no"
+        marginheight="0"
+        marginwidth="0"
+        src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+      >
+        <a href="https://www.gps.ie/wearable-gps/">adventure gps</a>
+      </iframe>
+    </div>
+  </div>
+  <div class="bar py-2">
+    <a
+      class="grid-icon mx-2"
+      ng-class="{ active: direction == 'grid' }"
+      (click)="direction = 'grid'; toggleGrid3()"
+    >
+      <i class="fa-solid fa-border-all"></i>
+    </a>
+    <a
+      class="grid-icon mx-2"
+      ng-class="{ active: direction == 'grid' }"
+      (click)="direction = 'grid'; toggleGrid2()"
+    >
+      <i class="fa-solid fa-table-cells"></i>
+    </a>
+    <a
+      class="list-icon mx-2"
+      ng-class="{ active: direction == 'list' }"
+      (click)="direction = 'list'"
+    >
+      <i class="fa-solid fa-list"></i>
+    </a>
+    <a class="grid-icon map-btn mx-2 p-1" (click)="toggleMap()">
+      View On Map
+      <i class="fa-solid fa-map"></i>
+    </a>
+  </div>
+</div>
+<div class="container relative">
+  <div class="search-block container row">
+    <aside class="col-lg-3 my-2">
+      <div class="treeview js-treeview">
+        <ul
+          *ngFor="let item of searchBarItems"
+          class="first-level-tree"
+          [class.parentActive]="item?._active"
+        >
+          <li [ngClass]="item?._active ? 'selected_active' : ''">
+            <div class="treeview__level" data-level="I">
+              <span class="level-title">
+                {{ item?.title }}
+              </span>
+              <div class="treeview__level-btns">
+                <div
+                  class="btn-default btn-sm level-add"
+                  *ngIf="item?.children?.length && !item?._active"
+                  (click)="toggletNavActive(item)"
+                >
+                  <i class="fa fa-angle-down"></i>
+                </div>
+                <div
+                  class="btn-default btn-sm level-add"
+                  *ngIf="item?.children?.length && item?._active"
+                  (click)="toggletNavActive(item)"
+                >
+                  <i class="fa fa-angle-up"></i>
+                </div>
+              </div>
+            </div>
+            <ul
+              [ngClass]="{
+                _active: item._active,
+                _inactive: !item._active
+              }"
+              *ngIf="item?.children"
+            >
+              <li *ngFor="let sub_item of item?.children" class="level-2">
+                <div class="treeview__level" data-level="II">
+                  <span class="level-title" [routerLink]="[]">
+                    <img
+                      height="25px"
+                      width="25px"
+                      [lazyLoad]="sub_item?.img"
+                      [defaultImage]="'assets/images/user.png'"
+                      alt="img-menu"
+                    />
+                    {{ sub_item?.title }}
+                  </span>
+                  <div class="treeview__level-btns">
+                    <div
+                      class="btn-default btn-sm level-add"
+                      *ngIf="sub_item?.children?.length && !sub_item?._active"
+                      (click)="toggletNavActive(sub_item)"
+                    >
+                      <i class="fa fa-angle-down"></i>
+                    </div>
+                    <div
+                      class="btn-default btn-sm level-add"
+                      *ngIf="sub_item?.children?.length && sub_item?._active"
+                      (click)="toggletNavActive(sub_item)"
+                    >
+                      <i class="fa fa-angle-up"></i>
+                    </div>
+                  </div>
+                </div>
+                <ul
+                  class="_inactive"
+                  [ngClass]="{
+                    _active: sub_item._active,
+                    _inactive: !sub_item._active
+                  }"
+                  *ngFor="let sub_sub_item of sub_item?.children"
+                >
+                  <li>
+                    <div class="treeview__level" data-level="III">
+                      <span
+                        class="level-title"
+                        [routerLink]="[sub_sub_item?.path]"
+                      >
+                        {{ sub_sub_item?.title }}
+                      </span>
+                      <div class="treeview__level-btns">
+                        <div
+                          class="btn-default btn-sm level-add"
+                          *ngIf="
+                            sub_sub_item?.children?.length &&
+                            !sub_sub_item?._active
+                          "
+                          (click)="toggletNavActive(sub_sub_item)"
+                        >
+                          <i class="fa fa-angle-down"></i>
+                        </div>
+                        <div
+                          class="btn-default btn-sm level-add"
+                          *ngIf="
+                            sub_sub_item?.children?.length &&
+                            sub_sub_item?._active
+                          "
+                          (click)="toggletNavActive(sub_sub_item)"
+                        >
+                          <i class="fa fa-angle-up"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <ul
+                      [ngClass]="{
+                        _active: sub_sub_item._active,
+                        _inactive: !sub_sub_item._active
+                      }"
+                      *ngFor="let sub_sub_sub_item of sub_sub_item?.children"
+                    >
+                      <li>
+                        <div class="treeview__level" data-level="IV">
+                          <span
+                            class="level-title"
+                            [routerLink]="[sub_sub_sub_item?.path]"
+                          >
+                            {{ sub_sub_sub_item?.title }}
+                          </span>
+                          <div class="treeview__level-btns">
+                            <div
+                              class="btn-default btn-sm level-add"
+                              *ngIf="
+                                sub_sub_sub_item?.children?.length &&
+                                !sub_sub_sub_item?._active
+                              "
+                              (click)="toggletNavActive(sub_sub_sub_item)"
+                            >
+                              <i class="fa fa-angle-down"></i>
+                            </div>
+                            <div
+                              class="btn-default btn-sm level-add"
+                              *ngIf="
+                                sub_sub_sub_item?.children?.length &&
+                                sub_sub_sub_item?._active
+                              "
+                              (click)="toggletNavActive(sub_sub_sub_item)"
+                            >
+                              <i class="fa fa-angle-up"></i>
+                            </div>
+                          </div>
+                        </div>
+                        <ul></ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </aside>
+    <main class="col-lg-9 my-2">
+      <div class="list-element-menu-grid">
+        <div class="" *ngIf="direction == 'list'">
+          <div
+            class="col-md-12"
+            *ngFor="
+              let item of elementsOfList
+                | paginate: { itemsPerPage: 4, currentPage: nbP }
+            "
+          >
+            <app-card-societe-search-h
+              [title]="item.title"
+              [location]="item.location"
+              [description]="item.description"
+              [image]="item.image"
+              [score]="item.score"
+              [link]="item.link"
+            ></app-card-societe-search-h>
+          </div>
+        </div>
+        <div class="row" *ngIf="direction == 'grid'">
+          <div [class]="listType" *ngFor="let item of elementsOfList">
+            <app-card-societe-search
+              [id]="item.id"
+              [title]="item.title"
+              [location]="item.location"
+              [description]="item.description"
+              [image]="item.image"
+              [score]="item.score"
+              [link]="item.link"
+              [telephone]="item.telephone"
+              [email]="item.email"
+            ></app-card-societe-search>
+          </div>
+        </div>
+        <div class="text-center">
+          <pagination-controls
+            previousLabel="pre"
+            nextLabel="next"
+            class="text-center"
+            [autoHide]="true"
+            (pageChange)="nbP = $event"
+          ></pagination-controls>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

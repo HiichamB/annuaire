@@ -1,0 +1,200 @@
+<app-header class="fix-header"></app-header>
+
+<div class="relative">
+  <div class="slide-hero position-relative">
+    <div class="container search-bar">
+      <div class="search-item first m-all">
+        <input
+          type="text"
+          name="name"
+          id=""
+          placeholder="{{ 'header.inpt1' | translate }}"
+        />
+      </div>
+      <div class="search-item second m-all">
+        <input
+          type="text"
+          name="location"
+          placeholder="{{ 'header.inpt2' | translate }}"
+          id=""
+        />
+      </div>
+      <div class="search-item selectContainer m-all">
+        <select name="contactMethod" id="contactMethod">
+          <option class="select-placeholder" value="">All Categories</option>
+
+          <option>option1</option>
+          <option>option2</option>
+          <option>option3</option>
+          <option>option4</option>
+        </select>
+      </div>
+      <div class="search-item">
+        <a class="search-item-btn" href="#">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
+      </div>
+    </div>
+    <!-- <div class="search-bar container">
+      <div class="left-search m-all">
+        <input
+          type="text"
+          name="name"
+          id=""
+          placeholder="{{ 'header.inpt1' | translate }}"
+        />
+      </div>
+      <div class="center-search m-all">
+        <span class="ps-3">
+          <i class="fa-solid fa-paper-plane"></i>
+        </span>
+        <input
+          type="text"
+          name="location"
+          placeholder="{{ 'header.inpt2' | translate }}"
+          id=""
+        />
+      </div>
+      <div class="right-search m-all">
+        <select
+          name="contactMethod"
+          id="contactMethod"
+          class="form-control input-style"
+        >
+          <option class="select-placeholder" value="">All Categories</option>
+
+          <option>option1</option>
+          <option>option2</option>
+          <option>option3</option>
+          <option>option4</option>
+        </select>
+        <a class="cta-search" href="#">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </a>
+      </div>
+    </div> -->
+  </div>
+  <div class="container position-relative">
+    <nav class="nav cursor-pointer">
+      <div class="side-bar-menu">
+        <div class="" *ngFor="let menuItem of searchBarItems">
+          <a (click)="mergeElementsId(menuItem._id)">
+            <img
+              src="{{ menuItem.img }}"
+              height="50px"
+              width="50px"
+              class="mb-1"
+            />
+          </a>
+        </div>
+        <div class="j-ttle-md" (click)="toggletNav()">
+          More
+          <i class="fa-solid fa-thumbtack rotated45"></i>
+        </div>
+      </div>
+      <aside [class.hide-menu]="openMenu" class="hidden-menu-hover row">
+        <!-- <aside [class.hide-menu]="openMenu" class="my-2 hidden-menu-hover row"> -->
+        <div class="col-lg-3 treeview js-treeview fix-height">
+          <ul *ngFor="let item of searchBarItems">
+            <li [class.selected_active]="item?._active">
+              <div class="treeview__level" data-level="I">
+                <span class="level-title" (click)="mergeElementsId(item._id)">
+                  {{ item?.title }}
+                </span>
+                <div class="treeview__level-btns">
+                  <div
+                    class="btn-default btn-sm level-add"
+                    *ngIf="item?.children?.length && !item?._active"
+                  ></div>
+                  <div
+                    class="btn-default btn-sm level-add"
+                    *ngIf="item?.children?.length && item?._active"
+                  ></div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <main class="col-lg-9 menu-items fix-height">
+          <div class="list-element-menu-grid row py-2">
+            <div
+              class="col-lg-2 col-md-3 col-sm-6 col-6"
+              *ngFor="let item of this.elementsOfList"
+            >
+              <div
+                class="category-item position-relative cursor-pointer"
+                [routerLink]="[item?.path]"
+              >
+                <a class="d-flex flex-column align-items-center">
+                  <img
+                    src="{{ item.img }}"
+                    alt="icon-search"
+                    height="25px"
+                    width="25px"
+                  />
+                  {{ item.title }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </main>
+      </aside>
+    </nav>
+    <div class="search-block row position-relative">
+      <div class="list-most-popular col-lg-12">
+        <aside
+          class="row p-0 my-2 row hide-menu fix-height"
+          [class.fix-menu]="openMenu"
+        >
+          <div class="col-lg-3 treeview js-treeview">
+            <ul *ngFor="let item of searchBarItems">
+              <li [ngClass]="item?._active ? 'selected_active' : ''">
+                <div class="treeview__level" data-level="I">
+                  <span class="level-title" (click)="mergeElementsId(item._id)">
+                    {{ item?.title }}
+                  </span>
+                  <div class="treeview__level-btns">
+                    <div
+                      class="btn-default btn-sm level-add"
+                      *ngIf="item?.children?.length && !item?._active"
+                    ></div>
+                    <div
+                      class="btn-default btn-sm level-add"
+                      *ngIf="item?.children?.length && item?._active"
+                    ></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <main class="col-lg-9 my-2 menu-items">
+            <div class="list-element-menu-grid row">
+              <div
+                class="col-lg-2 col-md-3 col-sm-6 col-6"
+                *ngFor="let item of this.elementsOfList"
+              >
+                <div
+                  class="category-item cursor-pointer"
+                  [routerLink]="[item?.path]"
+                >
+                  <a class="d-flex flex-column align-items-center">
+                    <img
+                      src="{{ item.img }}"
+                      alt="icon-search"
+                      height="25px"
+                      width="25px"
+                    />
+                    {{ item.title }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </main>
+        </aside>
+        <div class="" *ngFor="let item of listBasicCard">
+          <app-list-card-basic [dataOfList]="item"></app-list-card-basic>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+.time-item {
+  height: 45px;
+  min-width: 120px;
+  max-width: 120px;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 4px 0;
+  margin: 5px;
+  background: #ced4da;
+  p {
+    margin: 0;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 10px 27px;
+  }
+}
+.display-column {
+  display: flex;
+  flex-direction: column;
+}
+.reserved {
+  background-color: #ff0000 !important;
+}
+.bg-green {
+  background-color: #36b66b;
+  border: 0;
+}

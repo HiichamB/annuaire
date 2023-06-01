@@ -1,0 +1,27 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Equipe</h2>
+</div>
+<p-galleria
+  [value]="societeData.gallerie"
+  [responsiveOptions]="responsiveOptions"
+  [containerStyle]="{ 'max-width': '100%' }"
+>
+  <ng-template pTemplate="item" let-item>
+    <video
+      controls
+      *ngIf="item.type == 'video'"
+      style="width: 100%; display: block;"
+      [src]="item.previewImageSrc"
+    ></video>
+    <img
+      *ngIf="item.type == 'image'"
+      [src]="item.previewImageSrc"
+      style="width: 100%; display: block;"
+    />
+  </ng-template>
+  <ng-template pTemplate="thumbnail" let-item>
+    <div class="grid grid-nogutter justify-content-center">
+      <img style="max-height: 100px;" [src]="item.thumbnailImageSrc" />
+    </div>
+  </ng-template>
+</p-galleria>

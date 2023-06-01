@@ -1,0 +1,52 @@
+.compare-image {
+  width: 185px;
+}
+.item-row {
+}
+td,
+th {
+  width: 200px;
+  text-align: center;
+
+  table-layout: fixed;
+
+  overflow: hidden;
+  word-wrap: break-word;
+}
+table {
+  overflow: auto;
+  min-width: 300px;
+  width: max-content;
+}
+
+table {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 576px) {
+  table {
+    max-width: 540px;
+  }
+}
+@media (min-width: 768px) {
+  table {
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  table {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  table {
+    max-width: 1140px;
+  }
+}
+.rounded {
+  min-width: 100%;
+  overflow: auto;
+}

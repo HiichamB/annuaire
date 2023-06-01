@@ -1,0 +1,29 @@
+<div class="position-relative card-equipe flip-card">
+  <div class="flip-card-inner text-center">
+    <div
+      class="imgwrap flip-card-front d-flex align-items-center justify-content-center"
+    >
+      <img
+        class="company-logo"
+        alt="Membre Image"
+        [defaultImage]="'/assets/images/personne.jpg'"
+        [lazyLoad]="image"
+        style="max-height: 200px;"
+      />
+    </div>
+    <div
+      class="flip-card-back d-flex flex-column align-items-center justify-content-center"
+    >
+      <h3 class="w-100">
+        {{ nom | uppercase }}
+        {{ prenom | titlecase }}
+      </h3>
+
+      <div>
+        <p class="w-100">
+          {{ fonction }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="">
+  <h3 class="title-secondary">Filiale</h3>
+
+  <div class="row">
+    <div class="col-12" *ngFor="let filiale of societeData.Filiale">
+      <app-card-societe-partenaire
+        class="product-grid-item card"
+        [image]="filiale?.image"
+        [resume]="filiale?.resume"
+        [name]="filiale?.name"
+        [secteur]="filiale?.secteur"
+        [telephone]="filiale?.telephone"
+        [email]="filiale?.email"
+        [localisation]="filiale?.localisation"
+      ></app-card-societe-partenaire>
+    </div>
+  </div>
+</div>
+<div class="">
+  <h3 class="title-secondary">Partenaire</h3>
+  <div class="row">
+    <div class="scol-12" *ngFor="let partenaire of societeData.Partenaire">
+      <app-card-societe-partenaire
+        class="product-grid-item card"
+        [image]="partenaire?.image"
+        [resume]="partenaire?.resume"
+        [name]="partenaire?.name"
+        [secteur]="partenaire?.secteur"
+        [telephone]="partenaire?.telephone"
+        [email]="partenaire?.email"
+        [localisation]="partenaire?.localisation"
+      ></app-card-societe-partenaire>
+    </div>
+  </div>
+</div>

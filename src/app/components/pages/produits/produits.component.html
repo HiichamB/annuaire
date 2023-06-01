@@ -1,0 +1,45 @@
+<div class="">
+  <div class="mb-3">
+    <h2 class="title-primary title-page">Produits</h2>
+  </div>
+  <div class="top-bar rd-flex my-3">
+    <div class="left-flex">
+      <select class="form-control" (change)="onSortChange(val.value)" #val>
+        <option disabled value="null">Select period</option>
+        <option *ngFor="let item of sortOptions" [value]="item.value">
+          {{ item.label }}
+        </option>
+      </select>
+    </div>
+    <div class="right-flex">
+      <input
+        type="text"
+        name="search"
+        [(ngModel)]="filter_value"
+        placeholder="search..."
+        value=""
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="col-lg-3 col-md-4 col-sm-6 col-12 px-1"
+      *ngFor="let product of societeData.Produits"
+    >
+      <app-card-product
+        [id]="product?.id"
+        [product]="product"
+        [categorie]="product?.categorie"
+        [image]="product?.image"
+        [rating]="product?.rating"
+        [titre]="product?.titre"
+        [price]="product?.price"
+        [description]="product?.description"
+        [otherProducts]="product?.others"
+        [promo]="product?.promo"
+        [livraison]="product?.livraison"
+      ></app-card-product>
+    </div>
+  </div>
+</div>

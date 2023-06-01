@@ -1,0 +1,27 @@
+<div class="q-frequentes-list mt-2 mb-4 pb-4">
+  <h2 class="title-lg py-3">Question Frequentes</h2>
+  <div class="" *ngFor="let item of qFrequenteList">
+    <div class="d-flex">
+      <h3 class="title-md">
+        {{ item.question }}
+      </h3>
+      <!-- <div
+        class="btn-default btn-sm level-add"
+        *ngIf="!item?._active"
+        (click)="toggletNavActive(item)"
+      >
+        <i class="fa fa-angle-down"></i>
+      </div>
+      <div
+        class="btn-default btn-sm level-add"
+        *ngIf="item?._active"
+        (click)="toggletNavActive(item)"
+      >
+        <i class="fa fa-angle-up"></i>
+      </div> -->
+    </div>
+    <p style="">
+      {{ item.reponse }}
+    </p>
+  </div>
+</div>

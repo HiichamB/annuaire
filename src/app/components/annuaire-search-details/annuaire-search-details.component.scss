@@ -1,0 +1,33 @@
+.map {
+  height: 0;
+  overflow: hidden;
+  transition: all 0.25s linear;
+}
+.openmap {
+  height: 37vh;
+}
+.first-level-tree {
+  border: 1px solid #413c91ba;
+}
+ul.first-level-tree:hover {
+  background-color: rgba(256, 256, 256, 1);
+}
+.top-details-search {
+  .bar {
+    border-top: 1px solid gray;
+    text-align: end;
+    background-color: #413c91ba;
+    color: #fff;
+  }
+  .map-btn {
+    border: 1px solid gray;
+    display: inline-block;
+  }
+}
+.parentActive {
+  border-left: 2px solid #413c91ba;
+}
+.ShowRoom {
+  height: 500px;
+  background-color: #413c91ba;
+}

@@ -1,0 +1,148 @@
+<div class="">
+  <div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title">
+        {{ 'globale.info-pay' | translate }}
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+        {{ 'globale.info-pay2' | translate }}
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="row recap">
+          <div class="col-md-7">
+            <div class="left border">
+              <div class="row">
+                <span class="header">{{ 'globale.paiement' | translate }}</span>
+                <div class="icons">
+                  <img src="https://img.icons8.com/color/48/000000/visa.png" />
+                  <img
+                    src="https://img.icons8.com/color/48/000000/mastercard-logo.png"
+                  />
+                  <img
+                    src="https://img.icons8.com/color/48/000000/maestro.png"
+                  />
+                </div>
+              </div>
+              <form>
+                <div class="col mb-3">
+                  <span>{{ 'globale.nom-carte' | translate }} :</span>
+                  <input
+                    class="form-control"
+                    placeholder="{{ 'form.exp_nom' | translate }}"
+                  />
+                </div>
+                <div class="col mb-3">
+                  <span>{{ 'globale.num-carte' | translate }} :</span>
+                  <input
+                    class="form-control"
+                    placeholder="{{ 'form.exp_tel' | translate }}"
+                  />
+                </div>
+
+                <div class="row">
+                  <div class="col mb-3">
+                    <span>{{ 'globale.date-exp' | translate }} :</span>
+                    <input class="form-control" placeholder="YY/MM" />
+                  </div>
+                  <div class="col mb-3">
+                    <span>{{ 'globale.cvv' | translate }} :</span>
+                    <input class="form-control" id="cvv" />
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="right border">
+              <div class="header">{{ 'globale.recap-cmd' | translate }}</div>
+              <div *ngFor="let products of panier">
+                <p>
+                  {{ 'globale.nbr-element' | translate }} :
+                  {{ products.products.length }}
+                </p>
+                <div class="scrollable">
+                  <div class="row item" *ngFor="let item of products.products">
+                    <div class="col-4 align-self-center">
+                      <img class="img-fluid img-recap" src="{{ item.image }}" />
+                    </div>
+                    <div class="col-8">
+                      <h5 class="mb-0">
+                        {{ item.name }}
+                      </h5>
+
+                      <p class="mb-0 bold">{{ item.price }} Dh</p>
+
+                      <p class="mb-0">Qty : {{ item.quantite }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr />
+              <div class="row lower">
+                <div class="col text-left">Total</div>
+                <div class="col text-right">500.00 Dh</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  {{ 'globale.livraison' | translate }}
+                </div>
+                <div class="col text-right">Gratuite</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  <b>{{ 'globale.total-payer' | translate }}</b>
+                </div>
+                <div class="col text-right"><b>500.00 Dh</b></div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  <a href="#"><u>Code Promo</u></a>
+                </div>
+              </div>
+              <!-- <button class="btn">Place order</button>
+                    <p class="text-muted text-center">
+                      Complimentary Shipping & Returns
+                    </p> -->
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template *ngIf="modeArab" pTemplate="footer">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <p-button
+            class="text-end"
+            label="{{ 'globale.precedent' | translate }}"
+            (onClick)="previousPage()"
+            icon="pi pi-angle-right"
+            iconPos="left"
+          ></p-button>
+          <p-button
+            class="text-start"
+            label="{{ 'globale.suivant' | translate }}"
+            icon="pi pi-angle-left"
+            (onClick)="nextPage()"
+            iconPos="right"
+          ></p-button>
+        </div>
+      </ng-template>
+      <ng-template *ngIf="!modeArab" pTemplate="footer">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <p-button
+            class="text-start"
+            label="{{ 'globale.precedent' | translate }}"
+            (onClick)="previousPage()"
+            icon="pi pi-angle-left"
+            iconPos="left"
+          ></p-button>
+          <p-button
+            class="text-end"
+            label="{{ 'globale.suivant' | translate }}"
+            (onClick)="nextPage()"
+            icon="pi pi-angle-right"
+            iconPos="right"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

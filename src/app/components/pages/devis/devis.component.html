@@ -1,0 +1,289 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Devis</h2>
+</div>
+<div class="row row-table-devis-page">
+  <div class="col-md-9 list-product-horizontal">
+    <div class="">
+      <p-table
+        [rowExpandMode]="'single'"
+        [scrollable]="true"
+        scrollDirection="horizontal"
+        [responsive]="true"
+        #dt
+        [value]="listFilterProduct"
+        [rows]="5"
+        [paginator]="true"
+        [globalFilterFields]="['titre']"
+        [rowHover]="true"
+        dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+        (onRowExpand)="onRowExpand($event)"
+      >
+        <ng-template pTemplate="caption">
+          <div class="d-flex flex-wrap">
+            <div class="p-d-flex p-ai-center p-jc-between m-2">
+              <h6 class="p-m-0">{{ 'globale.recherche' | translate }}</h6>
+              <span class="p-input-icon-right">
+                <i class="pi pi-search"></i>
+                <input
+                  pInputText
+                  type="text"
+                  (input)="
+                    dt.filterGlobal($any($event.target).value, 'contains')
+                  "
+                  placeholder="Search..."
+                />
+              </span>
+            </div>
+            <div class="p-d-flex p-ai-center p-jc-between m-2">
+              <h6 class="p-m-0">{{ 'globale.filtre' | translate }}</h6>
+              <p-multiSelect
+                display="chip"
+                defaultLabel="Select une Categorie"
+                [options]="filterProduct"
+                [(ngModel)]="selectedCityCodes"
+                optionLabel=""
+                optionValue=""
+                (onChange)="selectFilterChange($event)"
+              ></p-multiSelect>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="checkbox-cont"></th>
+            <th class="img-cont">{{ 'produit.image' | translate }}</th>
+            <th class="name-cont" pSortableColumn="titre">
+              {{ 'produit.produit' | translate }}
+              <p-sortIcon field="titre"></p-sortIcon>
+            </th>
+            <th class="cat-cont" pSortableColumn="categorie">
+              {{ 'produit.categorie' | translate }}
+              <p-sortIcon field="categorie"></p-sortIcon>
+            </th>
+
+            <th class="price-cont" pSortableColumn="price">
+              {{ 'produit.prix' | translate }}
+              <p-sortIcon field="price"></p-sortIcon>
+            </th>
+
+            <th class="qunt-cont" pSortableColumn="quantite">
+              {{ 'produit.quantité' | translate }}
+            </th>
+
+            <th class="price-cont" pSortableColumn="prixTotale">
+              {{ 'produit.total' | translate }}
+              <p-sortIcon field="price"></p-sortIcon>
+            </th>
+            <th class="price-cont">
+              {{ 'produit.details' | translate }}
+            </th>
+            <!-- <th pSortableColumn="rating">
+                Reviews
+                <p-sortIcon field="rating"></p-sortIcon>
+              </th> -->
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-expanded="expanded">
+          <tr
+            class="position-relative height-fix"
+            [class.isOpened]="this.selected == product.id"
+            [class.isBlacked]="this.selected != product.id && !firstTime"
+          >
+            <td class="checkbox-cont">
+              <p-tableCheckbox
+                #e
+                (click)="changeCkeckBox(e, product)"
+                [value]="product"
+              ></p-tableCheckbox>
+            </td>
+            <td>
+              <img
+                [src]="product.image"
+                [alt]="product.name"
+                width="100"
+                class="shadow-4 img-product-table"
+              />
+            </td>
+
+            <td class="cat-cont">{{ product.titre }}</td>
+            <td class="price-cont">{{ product.categorie }}</td>
+            <td class="price-cont">{{ product.price | currency: 'Dh' }}</td>
+
+            <td lass="qunt-cont">
+              <input
+                #quantite
+                type="number"
+                name="qunantite"
+                min="1"
+                value="1"
+                class="input-number-table"
+                [max]="product.stock"
+                (change)="onQuantiteChange(e, $event, product)"
+              />
+            </td>
+            <td class="price-cont">
+              {{ product.totalPrix || product.price | currency: 'Dh' }}
+            </td>
+
+            <td class="price-cont">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-plus"
+                class="p-button-rounded p-button-info p-mr-2"
+                (click)="openDetails(productDetails, product)"
+              ></button>
+            </td>
+          </tr>
+          <div
+            class="w-100 floated-element"
+            [class.isOpened]="this.selected == product.id"
+            [class.isBlacked]="this.selected != product.id && !firstTime"
+            *ngIf="product.options"
+          >
+            <!-- <p class="mx-2" (click)="toggleOption(product.id)">
+                View Options
+              </p> -->
+            <label
+              ngClass="py-2"
+              type="button"
+              [pRowToggler]="product"
+              class=""
+              (click)="eventClickRow(dt, $event)"
+            >
+              {{ 'globale.afficherOptions' | translate }}
+              <i
+                [class]="!expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-up'"
+              ></i>
+            </label>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="rowexpansion" let-product>
+          <div class="mx-3 table-options">
+            <p-table dataKey="idP" [value]="product.options">
+              <ng-template pTemplate="body" let-option>
+                <tr class="position-relative row-options">
+                  <td>
+                    <p-tableCheckbox
+                      (click)="addOptionsCheckBox(e1, option, product)"
+                      #e1
+                      [value]="option"
+                    ></p-tableCheckbox>
+                  </td>
+                  <td>
+                    <img
+                      [src]="option.imageProduct"
+                      [alt]="option.name"
+                      class="shadow-4 img-rowexpansion"
+                    />
+                  </td>
+
+                  <td>{{ option.titre }}</td>
+                  <td>{{ option.categorie }}</td>
+
+                  <td>{{ option.price | currency: 'Dh' }}</td>
+                  <td>
+                    <input
+                      #quantiteOption
+                      type="number"
+                      name="qunantite"
+                      min="1"
+                      value="1"
+                      [max]="option.stock"
+                      class="input-number-table"
+                      (change)="
+                        onQuantiteChange2(quantiteOption, option, product)
+                      "
+                    />
+                  </td>
+                  <td>
+                    {{ option.totalPrix || option.price | currency: 'Dh' }}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="summary">
+          <div class="p-d-flex p-ai-center p-jc-between">
+            In total there are {{ produits ? produits.length : 0 }} products.
+          </div>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="sticky-table" *ngIf="selectedProducts1.length > 0">
+      <h5>Total</h5>
+      <div class="">
+        <p>{{ totalSelectedElementQuantite }} Element Selectionner Pour :</p>
+      </div>
+      <h6 class="my-2">
+        {{ totalSelectedElementPrix | currency: 'Dh' }}
+      </h6>
+      <button class="btn btn-outline-dark" (click)="generateDevis()">
+        Generate Devis
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template let-modal #productDetails>
+  <div class="modal-header">
+    <h4 class="modal-title">Product Details</h4>
+    <button
+      type="button"
+      class="btn"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      Fermer
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="text-center">
+      <img
+        alt="Card"
+        class="img-fluid"
+        style="height: 250px;"
+        [src]="modalImgPrd"
+      />
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5>
+        {{ modalTitrePrd }}
+      </h5>
+      <div class="">
+        <p-rating
+          [cancel]="false"
+          [readonly]="true"
+          [ngModel]="modalRatingPrd"
+        ></p-rating>
+      </div>
+    </div>
+    <div class="mb-2">
+      <i class="pi pi-tag product-category-icon"></i>
+      <span class="product-category">
+        {{ modalCategoriePrd }}
+      </span>
+    </div>
+    <div class="mb-2">
+      <h6 class="">{{ modalPrixPrd }} Dh</h6>
+    </div>
+    <div class="mb-2">
+      <p>{{ modalDescriptionPrd }}</p>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      class="btn btn-outline-danger"
+      (click)="modal.dismiss('Cross click')"
+    >
+      {{ 'globale.fermer' | translate }}
+    </button>
+  </div>
+</ng-template>

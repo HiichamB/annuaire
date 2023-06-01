@@ -1,0 +1,263 @@
+<div class="">
+  <div class="mb-3">
+    <h2 class="title-primary title-page">SAV</h2>
+  </div>
+
+  <form id="contactForm" [formGroup]="SavForm" (ngSubmit)="sendSAV()" #form1>
+    <div class="row">
+      <!-- Name input -->
+
+      <div class="col mb-3">
+        <label class="form-label" for="name">
+          {{ 'form.nom' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="name"
+          type="text"
+          placeholder="{{ 'form.exp_nom' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('name')?.touched && SavForm.get('name')?.invalid
+          }"
+          formControlName="name"
+          name="name"
+        />
+        <div
+          *ngIf="SavForm.get('name')?.touched && SavForm.get('name')?.invalid"
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="SavForm.get('name')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('name')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('name')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('name')?.errors?.['pattern']">
+            {{ 'form.champ_lettre' | translate }}
+          </div>
+        </div>
+      </div>
+      <!-- Prenom Input -->
+      <div class="col mb-3">
+        <label class="form-label" for="prenom">
+          {{ 'form.prenom' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="prenom"
+          type="text"
+          placeholder="{{ 'form.exp_pre' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('prenom')?.touched && SavForm.get('prenom')?.invalid
+          }"
+          formControlName="prenom"
+          name="prenom"
+        />
+        <div
+          *ngIf="
+            SavForm.get('prenom')?.touched && SavForm.get('prenom')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="SavForm.get('prenom')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('prenom')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('prenom')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('prenom')?.errors?.['pattern']">
+            {{ 'form.champ_lettre' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Email address input -->
+
+      <div class="col mb-3">
+        <label class="form-label" for="emailAddress">
+          {{ 'form.email' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="emailAddress"
+          type="email"
+          placeholder="{{ 'form.exp_email' | translate }}"
+          formControlName="email"
+          name="email"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('email')?.touched && SavForm.get('email')?.invalid
+          }"
+        />
+        <div
+          *ngIf="SavForm.get('email')?.touched && SavForm.get('email')?.invalid"
+          class="invalid-feedback"
+        >
+          <div *ngIf="SavForm.get('email')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('email')?.errors?.['email']">
+            {{ 'form.mail_valid' | translate }}
+          </div>
+        </div>
+      </div>
+      <!-- Telephone address input -->
+      <div class="col mb-3">
+        <label class="form-label" for="telephone">
+          {{ 'form.telephone' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="telephone"
+          type="texte"
+          placeholder="{{ 'form.exp_tel' | translate }}"
+          formControlName="telephone"
+          name="telephone"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('telephone')?.touched &&
+              SavForm.get('telephone')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            SavForm.get('telephone')?.touched &&
+            SavForm.get('telephone')?.invalid
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="SavForm.get('telephone')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('telephone')?.errors?.['pattern']">
+            {{ 'form.tel_valid' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('object')?.errors?.['minlength']">
+            {{ 'form.champ_10' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Object  input -->
+
+      <div class="col mb-3">
+        <label class="form-label" for="emailAddress">
+          {{ 'form.object' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="object"
+          type="texte"
+          formControlName="object"
+          name="object"
+          placeholder="{{ 'form.exp_objet' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('object')?.touched && SavForm.get('object')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            SavForm.get('object')?.touched && SavForm.get('object')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="SavForm.get('object')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('object')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('object')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+        </div>
+      </div>
+      <!-- Reference Of Product  input -->
+      <div class="col mb-3">
+        <label class="form-label" for="emailAddress">
+          {{ 'form.reference-item' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="object"
+          type="texte"
+          formControlName="reference"
+          name="reference"
+          placeholder="{{ 'form.exp_ref' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              SavForm.get('reference')?.touched &&
+              SavForm.get('reference')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            SavForm.get('reference')?.touched &&
+            SavForm.get('reference')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="SavForm.get('reference')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('reference')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="SavForm.get('reference')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Message input -->
+    <div class="mb-3">
+      <label class="form-label" for="message">
+        {{ 'form.message' | translate }}
+      </label>
+      <textarea
+        class="form-control"
+        id="message"
+        type="text"
+        placeholder="{{ 'form.c_msg' | translate }}"
+        style="height: 10rem;"
+        formControlName="message"
+        name="message"
+        [ngClass]="{
+          'is-invalid':
+            SavForm.get('email')?.touched && SavForm.get('email')?.invalid
+        }"
+      ></textarea>
+      <div
+        *ngIf="
+          SavForm.get('message')?.touched && SavForm.get('message')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="SavForm.get('message')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="SavForm.get('message')?.errors?.['minlength']">
+          {{ 'form.champ_10' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Form submit button -->
+    <div class=" ">
+      <button class="btn btn-outline-dark btn-lg" type="submit">
+        {{ 'form.Envoyer' | translate }}
+      </button>
+    </div>
+  </form>
+</div>

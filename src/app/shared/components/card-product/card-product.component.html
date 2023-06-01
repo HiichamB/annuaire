@@ -1,0 +1,149 @@
+<div class="product-grid-item card h-100">
+  <div class="product-image">
+    <div class="w-100">
+      <img
+        [routerLink]="['details']"
+        *ngIf="hovredImage != ''"
+        [src]="hovredImage"
+        alt="image"
+        class="image-card-product"
+      />
+      <img
+        [routerLink]="['details']"
+        *ngIf="hovredImage == ''"
+        [src]="image"
+        alt="image"
+        class="image-card-product"
+      />
+    </div>
+    <div
+      [routerLink]="['details']"
+      class="promo-badge"
+      *ngIf="selectedItem && isEmptyObject(selectedItem?.promo) == 0"
+    >
+      <p class="m-0">{{ promo?.taux }}</p>
+    </div>
+    <div
+      [routerLink]="['details']"
+      class="promo-badge"
+      *ngIf="!selectedItem && isEmptyObject(promo) == 0"
+    >
+      <p class="m-0">{{ promo?.taux }}</p>
+    </div>
+    <div class="cart-info cart-wrap">
+      <a href="#">
+        <i class="icon-card fa-regular fa-heart"></i>
+      </a>
+      <a href="#">
+        <i class="icon-card fa-solid fa-cart-shopping"></i>
+      </a>
+
+      <a href="#">
+        <i class="icon-card fa-solid fa-eye"></i>
+      </a>
+      <a (click)="addItemToCompareList()">
+        <i class="icon-card fa-solid fa-code-compare"></i>
+      </a>
+    </div>
+    <div class="other-items" *ngIf="otherProducts?.length > 0">
+      <div class="img-container" *ngFor="let item of otherProducts">
+        <img
+          [src]="item.image"
+          (mouseenter)="changeParentImage(item)"
+          (mouseleave)="resetParentImage()"
+          alt="image"
+          class="image-product-small"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    [routerLink]="['details']"
+    class="product-grid-item-content my-2"
+    *ngIf="selectedItem"
+  >
+    <div class="mb-1">
+      <p-rating
+        [ngModel]="rating"
+        [readonly]="true"
+        [cancel]="false"
+      ></p-rating>
+    </div>
+    <div class="w-100 mb-1">
+      <i class="pi pi-tag product-category-icon"></i>
+      <span class="product-category">
+        {{ categorie }}
+      </span>
+    </div>
+    <div class="">
+      <h5 class="mb-1">{{ titre }}</h5>
+      <p class="truncate truncate-2-line mb-1 small-text">
+        {{ description }}
+      </p>
+    </div>
+    <div
+      class="product-grid-item-bottom d-flex align-items-center"
+      *ngIf="isEmptyObject(selectedItem?.promo) == 0"
+    >
+      <p class="product-price mb-1 text-danger">${{ selectedItem.price }}</p>
+      <del class="product-price mb-1 small-text px-2">
+        ${{ promo?.promoPrice }}
+      </del>
+    </div>
+    <div
+      class="product-grid-item-bottom"
+      *ngIf="isEmptyObject(selectedItem?.promo) != 0"
+    >
+      <p class="product-price mb-1 text-danger">${{ selectedItem.price }}</p>
+    </div>
+    <div class="product-grid-item-bottom" *ngIf="selectedItem?.livraison">
+      <p class="product-price mb-1 text-danger">
+        <i class="icon-card fa-solid fa-truck-fast"></i>
+        {{ 'globale.livraison-gratuite' | translate }}
+      </p>
+    </div>
+  </div>
+  <div
+    [routerLink]="['details']"
+    class="product-grid-item-content my-2"
+    *ngIf="!selectedItem"
+  >
+    <div class="mb-1">
+      <p-rating
+        [ngModel]="rating"
+        [readonly]="true"
+        [cancel]="false"
+      ></p-rating>
+    </div>
+    <div class="w-100 mb-1">
+      <i class="pi pi-tag product-category-icon"></i>
+      <span class="product-category">
+        {{ categorie }}
+      </span>
+    </div>
+    <div class="">
+      <h5 class="">{{ titre }}</h5>
+      <p class="truncate truncate-2-line mb-1 small-text">
+        {{ description }}
+      </p>
+    </div>
+    <div
+      class="product-grid-item-bottom d-flex align-items-center"
+      *ngIf="isEmptyObject(promo) == 0"
+    >
+      <p class="product-price mb-1 text-danger">${{ price }}</p>
+      <del class="product-price mb-1 small-text px-2">
+        ${{ promo?.promoPrice }}
+      </del>
+    </div>
+    <div class="product-grid-item-bottom" *ngIf="isEmptyObject(promo) != 0">
+      <p class="product-price mb-1 text-danger">${{ price }}</p>
+    </div>
+    <div class="product-grid-item-bottom" *ngIf="livraison">
+      <p class="product-price mb-1 text-danger">
+        <i class="icon-card fa-solid fa-truck-fast"></i>
+        {{ 'globale.livraison-gratuite' | translate }}
+      </p>
+    </div>
+  </div>
+</div>

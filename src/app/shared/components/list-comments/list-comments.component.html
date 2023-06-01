@@ -1,0 +1,43 @@
+<section class="comments section-spacing">
+  <h2 class="title-md bold my-3 blue-color">
+    Liste des Temoignages
+  </h2>
+  <div class="" *ngIf="comments.length == 0">
+    <p>Auncun Comments trouvés</p>
+  </div>
+
+  <ol class="commentlist p-0 m-0" *ngIf="comments.length > 0">
+    <li
+      *ngFor="let comment of comments"
+      class="row align-items-center justify-content-center mb-5"
+    >
+      <figure class="comment-figure">
+        <img
+          alt=""
+          [defaultImage]="'assets/images/user.png'"
+          [lazyLoad]="comments.img"
+          class="avatar-rounded"
+          height="70"
+          width="70"
+        />
+      </figure>
+      <div class="comment-content col-sm-10 p-3">
+        <div class="">
+          <h6 class="comment-info j-c-v-sm-container">
+            {{ comment.nom_ou_pseudo }}
+            ( {{ comment.fonction }})
+          </h6>
+        </div>
+
+        <div class="">
+          <p class="j-resume-sm p-0 m-0">
+            {{ comment.commentaire_intervenent }}
+          </p>
+        </div>
+        <span class="comment-info small-text">
+          {{ comment.date }}
+        </span>
+      </div>
+    </li>
+  </ol>
+</section>

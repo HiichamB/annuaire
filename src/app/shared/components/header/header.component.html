@@ -1,0 +1,92 @@
+<div class="header w-100" style="z-index: 5;">
+  <app-menu></app-menu>
+  <div class="right-menu">
+    <div class="icon-bag">
+      <div class="shop-container">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div class="submenu-bag">
+        <ul class="submenu-list">
+          <li
+            class="position-relative"
+            *ngFor="let collection of panier"
+            [class.parentActive]="collection?._active"
+          >
+            <div class="">
+              <h6>{{ collection.vendeur.name }}</h6>
+            </div>
+            <div
+              class="btn-default btn-sm level-add"
+              (click)="toggletNavActive(collection)"
+            >
+              <i class="fa fa-angle-down"></i>
+            </div>
+            <ul
+              [ngClass]="{
+                _active: collection._active,
+                _inactive: !collection._active
+              }"
+            >
+              <li *ngFor="let product of collection.products">
+                <div class="d-flex align-items-center my-1">
+                  <a href="#" class="m-e-10">
+                    <img
+                      alt=""
+                      class="img-submenu-bag"
+                      src="{{ product.image }}"
+                    />
+                  </a>
+                  <div class="media-body px-1">
+                    <a href="#">
+                      <p class="bag-name-item m-0">{{ product.name }}</p>
+                    </a>
+                    <p class="text-description">
+                      <span>
+                        {{ product.quantite }} x $ {{ product.price }}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </li>
+              <div class="total mx-1">
+                <p class="text-description d-flex justify-content-between m-0">
+                  <span>{{ 'produit.total' | translate }}:</span>
+                  <span>200 Dh</span>
+                </p>
+              </div>
+              <div class="bag-panier mx-1">
+                <h5 class="cursor-pointer">
+                  <a (click)="goToCostumerCart(collection.vendeur.id)">
+                    {{ 'panier.details' | translate }}
+                  </a>
+                </h5>
+              </div>
+            </ul>
+          </li>
+          <hr />
+          <h6 class="cursor-pointer">
+            <a (click)="goToAllCart()">
+              {{ 'panier.tous' | translate }}
+            </a>
+          </h6>
+          <hr />
+          <h6 class="cursor-pointer">
+            <a [routerLink]="['/compare']">
+              {{ 'Compare' | translate }}
+            </a>
+          </h6>
+          <hr />
+          <h6 class="cursor-pointer">
+            <a [routerLink]="['/compare-all']">
+              {{ 'Compare All' | translate }}
+            </a>
+          </h6>
+        </ul>
+      </div>
+    </div>
+
+    <div class="shop-container" [routerLink]="['/wishList']">
+      <i class="pi pi-heart"></i>
+    </div>
+  </div>
+</div>

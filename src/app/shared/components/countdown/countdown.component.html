@@ -1,0 +1,31 @@
+<div class="wrapper">
+  <p class="targe-date">
+    {{ 'globale.fin-vente' | translate }}
+    {{ months[month] + ' ' + day + ', ' + year }}
+  </p>
+  <div class="counter">
+    <div class="description">
+      <div class="times">
+        <div class="time-container">
+          <p id="days" class="style-date">{{ days }}</p>
+          <p class="light-txt">{{ 'globale.jours' | translate }}</p>
+        </div>
+        <div class="time-container style-date">
+          <p id="hours">{{ hours }}</p>
+
+          <p class="light-txt">{{ 'globale.heures' | translate }}</p>
+        </div>
+        <div class="time-container style-date">
+          <p id="mins">{{ minutes }}</p>
+
+          <p class="light-txt">{{ 'globale.minutes' | translate }}</p>
+        </div>
+        <div class="time-container">
+          <p id="seconds">{{ this.seconds }}</p>
+
+          <p class="light-txt">{{ 'globale.secondes' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

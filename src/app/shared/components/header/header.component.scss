@@ -1,0 +1,91 @@
+.header {
+  position: relative;
+}
+
+.right-menu {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 1%;
+  display: flex;
+  align-items: center;
+}
+.icon-bag {
+  padding: 5px;
+
+  z-index: 5;
+  &:hover {
+    .submenu-bag {
+      display: block;
+    }
+  }
+}
+
+.submenu-list {
+  width: max-content;
+  padding: 15px 15px;
+  min-width: 270px;
+}
+.submenu-bag {
+  display: none;
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  transform: translateX(-90%);
+  background: #fff;
+  padding: 5px;
+  box-shadow: 3px 4px 8px -3px #000;
+}
+.img-submenu-bag {
+  height: 90px;
+  max-width: 100%;
+}
+.total {
+  border-top: 1px solid #f1f5f4;
+  border-bottom: 1px solid #f1f5f4;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.m-e-10 {
+  margin-inline-end: 10px;
+}
+.bag-name-item {
+  font-size: 1.15rem;
+}
+.media-body p {
+  text-transform: capitalize;
+}
+.bag-panier {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+ul {
+  list-style: none;
+}
+.level-add {
+  position: absolute;
+  right: 0;
+  top: 10px;
+}
+._active,
+._active li {
+  padding-left: 0em;
+}
+.shop-container {
+  background-color: #f1f5f4;
+  height: 32px;
+  width: 32px;
+
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .right-menu {
+    flex-direction: column-reverse;
+  }
+}

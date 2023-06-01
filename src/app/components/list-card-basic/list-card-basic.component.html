@@ -1,0 +1,51 @@
+<div class="my-3">
+  <div class="title-list-basic-container">
+    <div class="w-100">
+      <span class="bl"></span>
+      <div class="flex-space">
+        <h2 class="title-lg">{{ dataOfList.nomCategories }}</h2>
+        <div class="">
+          <a href="/details">
+            {{ 'globale.voir-plus' | translate }}
+
+            <i class="ps-1 fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      <p class="title-md">{{ dataOfList.sousTitre }}</p>
+    </div>
+  </div>
+  <p-tabView (onChange)="onChange($event)">
+    <p-tabPanel
+      [header]="item.name"
+      *ngFor="let item of dataOfList?.submenu; let i = index"
+      [selected]="i == 0"
+      (onClick)="onChange(item.name)"
+    >
+      <div class="list-basic row">
+        <div
+          class="col-lg-3 col-md-6 col-sm-6 col-sx-12"
+          *ngFor="let item of filtredList.children"
+        >
+          <app-card-societe-basic
+            [link]="item.link"
+            [image]="item.image"
+            [name]="item.name"
+          ></app-card-societe-basic>
+        </div>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
+  <div class="list-basic row">
+    <div
+      class="col-lg-3 col-md-6 col-sm-6 col-sx-12"
+      *ngFor="let item of dataOfList.children"
+    >
+      <app-card-societe-basic
+        [link]="item.link"
+        [image]="item.image"
+        [name]="item.name"
+      ></app-card-societe-basic>
+    </div>
+  </div>
+</div>

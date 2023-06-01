@@ -1,0 +1,160 @@
+<div class="px-4 px-lg-0 container">
+  <!-- For demo purpose -->
+  <div class="container text-dark py-5 text-center">
+    <h1 class="display-4">Cart Page</h1>
+  </div>
+  <!-- End -->
+
+  <div class="pb-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+          <!-- Shopping cart table -->
+          <div class="text-center" *ngIf="!ifEmpty">
+            <h3>liste vide selectionner un element</h3>
+          </div>
+          <div class="" *ngIf="ifEmpty">
+            <div
+              class="table-responsive my-2"
+              *ngFor="let panierElement of panier"
+            >
+              <div class="">
+                <h4>{{ panierElement.vendeur.name }}</h4>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="border-0 bg-light">
+                        <div class="p-2 px-3 text-uppercase">
+                          {{ 'produit.produit' | translate }}
+                        </div>
+                      </th>
+                      <th scope="col" class="border-0 bg-light">
+                        <div class="py-2 text-uppercase">
+                          {{ 'produit.prix' | translate }}
+                        </div>
+                      </th>
+                      <th scope="col" class="border-0 bg-light">
+                        <div class="py-2 text-uppercase">
+                          {{ 'produit.quantité' | translate }}
+                        </div>
+                      </th>
+                      <th scope="col" class="border-0 bg-light">
+                        <div class="py-2 text-uppercase">
+                          {{ 'produit.supprimer' | translate }}
+                        </div>
+                      </th>
+                      <th scope="col" class="border-0 bg-light">
+                        <div class="py-2 text-uppercase">
+                          {{ 'produit.total' | translate }}
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of panierElement.products">
+                      <th scope="row" class="border-0">
+                        <div class="p-2">
+                          <img
+                            [src]="item.image"
+                            alt=""
+                            width="100"
+                            class="img-fluid rounded shadow-sm img-shopping-card"
+                          />
+
+                          <div class="ml-3 d-inline-block align-middle">
+                            <h5 class="mb-0">
+                              <a
+                                href="#"
+                                class="text-dark d-inline-block align-middle"
+                              >
+                                {{ item.name }}
+                              </a>
+                            </h5>
+                            <!-- <span
+                            class="text-muted font-weight-normal font-italic d-block"
+                          >
+                            Category: Watches
+                          </span> -->
+                          </div>
+                        </div>
+                      </th>
+                      <td class="border-0 align-middle">
+                        <strong>{{ item.price }}</strong>
+                      </td>
+                      <td class="border-0 align-middle">
+                        <span
+                          class="btn btn-solid btn-light"
+                          href="#"
+                          (click)="decrement(item.idP)"
+                        >
+                          -
+                        </span>
+                        <span class="px-1">{{ item.quantite }}</span>
+                        <span
+                          class="btn btn-solid btn-light"
+                          href="#"
+                          (click)="increment(item.idP)"
+                        >
+                          +
+                        </span>
+                      </td>
+                      <td class="border-0 align-middle">
+                        <a
+                          (click)="removeItem(item.idP, deleteItem)"
+                          class="text-dark"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </a>
+                      </td>
+                      <td class="border-0 align-middle">
+                        <strong>{{ item.quantite * item.price }}</strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <a [routerLink]="'/checkout'">
+                  <button class="btn btn-success pull-right">
+                    {{ 'payement.passer' | translate }}
+                  </button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- End -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #deleteItem let-modal>
+  <div class="modal-header d-flex align-items-center flex-row">
+    <h6>{{ 'globale.confirmation' | translate }}</h6>
+    <button
+      class="btn btn-solid"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">
+        &times;
+      </span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <div class="theme-card">
+      <h6 class="mb-3">{{ 'globale.question1' | translate }}</h6>
+
+      <div class="d-flex position-relative bt pt-1">
+        <div class="border"></div>
+        <button class="btn btn-solid col-md-6" (click)="deleteElement()">
+          {{ 'globale.confirmer' | translate }}
+        </button>
+        <button
+          class="btn btn-solid col-md-6"
+          (click)="modal.dismiss('Cross click')"
+        >
+          {{ 'globale.annuler' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

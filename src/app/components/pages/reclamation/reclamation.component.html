@@ -1,0 +1,334 @@
+<div class="">
+  <div class="mb-3">
+    <h2 class="title-primary title-page">Reclamation</h2>
+  </div>
+
+  <!-- form -->
+  <form
+    class=""
+    id="contactForm"
+    (ngSubmit)="sendReclamation()"
+    [formGroup]="ReclamationForm"
+  >
+    <!-- Name input -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="name">
+          {{ 'form.nom' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="name"
+          type="text"
+          placeholder="{{ 'form.exp_nom' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              ReclamationForm.get('name')?.touched &&
+              ReclamationForm.get('name')?.invalid
+          }"
+          formControlName="name"
+          name="name"
+        />
+        <div
+          *ngIf="
+            ReclamationForm.get('name')?.touched &&
+            ReclamationForm.get('name')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="ReclamationForm.get('name')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('name')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('name')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('name')?.errors?.['pattern']">
+            {{ 'form.champ_lettre' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="prenom">
+          {{ 'form.prenom' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="prenom"
+          type="text"
+          placeholder="{{ 'form.exp_pre' | translate }}"
+          [ngClass]="{
+            'is-invalid':
+              ReclamationForm.get('prenom')?.touched &&
+              ReclamationForm.get('prenom')?.invalid
+          }"
+          formControlName="prenom"
+          name="prenom"
+        />
+        <div
+          *ngIf="
+            ReclamationForm.get('prenom')?.touched &&
+            ReclamationForm.get('prenom')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="ReclamationForm.get('prenom')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('prenom')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('prenom')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('prenom')?.errors?.['pattern']">
+            {{ 'form.champ_lettre' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Email address input -->
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="emailAddress">
+          {{ 'form.email' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="emailAddress"
+          type="email"
+          placeholder="{{ 'form.exp_email' | translate }}"
+          formControlName="email"
+          name="email"
+          [ngClass]="{
+            'is-invalid':
+              ReclamationForm.get('email')?.touched &&
+              ReclamationForm.get('email')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            ReclamationForm.get('email')?.touched &&
+            ReclamationForm.get('email')?.invalid
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="ReclamationForm.get('email')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('email')?.errors?.['email']">
+            {{ 'form.mail_valid' | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Telephone address input -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="telephone">
+          {{ 'form.telephone' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="telephone"
+          type="texte"
+          placeholder="{{ 'form.exp_tel' | translate }}"
+          formControlName="telephone"
+          name="telephone"
+          [ngClass]="{
+            'is-invalid':
+              ReclamationForm.get('telephone')?.touched &&
+              ReclamationForm.get('telephone')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            ReclamationForm.get('telephone')?.touched &&
+            ReclamationForm.get('telephone')?.invalid
+          "
+          class="invalid-feedback"
+        >
+          <div *ngIf="ReclamationForm.get('telephone')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('telephone')?.errors?.['pattern']">
+            {{ 'form.tel_valid' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col">
+        <label class="form-label" for="object">
+          {{ 'form.object' | translate }}
+        </label>
+        <input
+          class="form-control"
+          id="object"
+          type="texte"
+          placeholder="{{ 'form.exp_tel' | translate }}"
+          formControlName="object"
+          name="object"
+          [ngClass]="{
+            'is-invalid':
+              ReclamationForm.get('object')?.touched &&
+              ReclamationForm.get('object')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            ReclamationForm.get('object')?.touched &&
+            ReclamationForm.get('object')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="ReclamationForm.get('object')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('object')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+          <div *ngIf="ReclamationForm.get('object')?.errors?.['maxlength']">
+            {{ 'form.champ_30' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" formArrayName="preuves">
+      <div
+        class="d-flex flex-wrap align-items-center"
+        *ngFor="let preuve of preuves.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <div class="row flex-grow-1">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="titrePreuve">
+              {{ 'form.titre' | translate }}
+            </label>
+            <input
+              class="form-control"
+              type="text"
+              name="titrePreuve"
+              formControlName="titrePreuve"
+              [ngClass]="{
+                'is-invalid':
+                  preuves.controls[i].get('titrePreuve')?.touched &&
+                  preuves.controls[i].get('titrePreuve')?.invalid
+              }"
+            />
+            <div
+              *ngIf="
+                preuves.controls[i].get('titrePreuve')?.touched &&
+                preuves.controls[i].get('titrePreuve')?.invalid
+              "
+              class="invalid-feedback mb-2"
+            >
+              <div
+                *ngIf="  preuves.controls[i].get('titrePreuve')?.errors?.['required']"
+              >
+                {{ 'form.champ_oblig' | translate }}
+              </div>
+              <div
+                *ngIf="  preuves.controls[i].get('titrePreuve')?.errors?.['minlength']"
+              >
+                {{ 'form.champ_3' | translate }}
+              </div>
+              <div
+                *ngIf="  preuves.controls[i].get('titrePreuve')?.errors?.['maxlength']"
+              >
+                {{ 'form.champ_30' | translate }}
+              </div>
+            </div>
+          </div>
+          <div class="d-flex col-md-6 mb-3" style="height: 70px;">
+            <div class="file-upload-wrapper">
+              <label class="form-label" for="valeurPreuve">
+                {{ 'form.file' | translate }}
+              </label>
+              <input
+                class="form-control"
+                data-parent="voitures"
+                #preuvetest
+                type="file"
+                name="valeurPreuve"
+                formControlName="valeurPreuve"
+                (change)="onFileSelected($event, i)"
+                [ngClass]="{
+                  'is-invalid':
+                    preuves.controls[i].get('valeurPreuve')?.touched &&
+                    preuves.controls[i].get('valeurPreuve')?.invalid
+                }"
+              />
+              <span class="span-preuve">{{ getCurrentFileName(i) }}</span>
+
+              <div
+                *ngIf="
+                  preuves.controls[i].get('valeurPreuve')?.touched &&
+                  preuves.controls[i].get('valeurPreuve')?.invalid
+                "
+                class="invalid-feedback mb-2 mt-3"
+              >
+                <div
+                  *ngIf="preuves.controls[i].get('valeurPreuve')?.errors?.['required']"
+                >
+                  {{ 'form.champ_oblig' | translate }}
+                </div>
+              </div>
+            </div>
+            <div
+              class="reclamation-btn delete-btn-container mx-1"
+              *ngIf="i != 0"
+            >
+              <div class="delete-btn" (click)="deletePreuve(i)">
+                <i class="fa fa-trash"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 mb-4">
+      <button type="button" (click)="newPreuve()" class="btn btn-outline-dark">
+        Ajouter
+      </button>
+    </div>
+    <!-- Message input -->
+    <div class="mb-3">
+      <label class="form-label" for="message">
+        {{ 'form.message' | translate }}
+      </label>
+      <textarea
+        class="form-control"
+        id="message"
+        type="text"
+        placeholder="{{ 'form.c_msg' | translate }}"
+        style="height: 10rem;"
+        formControlName="message"
+        name="message"
+      ></textarea>
+      <div
+        *ngIf="
+          ReclamationForm.get('message')?.touched &&
+          ReclamationForm.get('message')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="ReclamationForm.get('message')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="ReclamationForm.get('message')?.errors?.['minlength']">
+          {{ 'form.champ_10' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Form submit button -->
+    <!-- Form submit button -->
+
+    <button class="btn btn-outline-dark btn-lg" type="submit">
+      {{ 'form.Envoyer' | translate }}
+    </button>
+  </form>
+</div>

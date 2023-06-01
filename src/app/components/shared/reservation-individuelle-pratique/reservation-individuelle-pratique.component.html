@@ -1,0 +1,359 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">
+    Reservation Individuelle Pratique
+  </h2>
+</div>
+
+<form
+  class="row bg-white"
+  id="contactForm"
+  (ngSubmit)="sendReservation()"
+  [formGroup]="reservationPratiqueIndividuelleForm"
+>
+  <!-- Heure  input -->
+  <div class="row">
+    <div class="col mb-3">
+      <div>
+        <label for="" class="mb-2">
+          Date du Cours
+        </label>
+
+        <input
+          type="date"
+          class="form-control"
+          (change)="heureDebutChange($event)"
+        />
+      </div>
+    </div>
+    <!-- <div class="col mb-3">
+        <div>
+          <label for="" class="mb-2">
+            Heure D'arrivé
+          </label>
+          <input type="time" class="form-control" />
+        </div>
+      </div> -->
+    <div class="col mb-3">
+      <div class="d-flex flex-row">
+        <label for="rd3" class="">
+          Heure de début
+          <igx-time-picker
+            #datePicker
+            [inputFormat]="'H:mm'"
+            [minValue]="reservationPratiqueIndividuelleForm.value.heureStart"
+            [maxValue]="'23:59'"
+            [itemsDelta]="{ minutes: 15 }"
+            formControlName="heureEnd"
+            (valueChange)="changeHeure(datePicker)"
+            [ngClass]="{
+              'igx-input-group--invalid is-invalid':
+                reservationPratiqueIndividuelleForm.get('heureEnd')?.touched &&
+                reservationPratiqueIndividuelleForm.get('heureEnd')?.invalid
+            }"
+          ></igx-time-picker>
+
+          <div
+            *ngIf="
+              reservationPratiqueIndividuelleForm.get('heureEnd')?.touched &&
+              reservationPratiqueIndividuelleForm.get('heureEnd')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div
+              *ngIf="reservationPratiqueIndividuelleForm.get('heureEnd')?.errors?.['required']"
+            >
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="col mb-3">
+    <div>
+      <label for="" class="mb-2">
+        Durée du Cours :
+      </label>
+
+      <select class="form-select">
+        <option value="1">1heure</option>
+        <option value="1">2 Heure</option>
+        <option value="1">3 Heure</option>
+        <option value="1">Demi Journée</option>
+        <option value="1">Une Journéé</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Info P NomPrenom input -->
+  <div class="row">
+    <div class="col mb-3">
+      <label class="form-label" for="name">
+        {{ 'form.nom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="name"
+        type="text"
+        placeholder="{{ 'form.exp_nom' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            reservationPratiqueIndividuelleForm.get('name')?.touched &&
+            reservationPratiqueIndividuelleForm.get('name')?.invalid
+        }"
+        formControlName="name"
+        name="name"
+      />
+      <div
+        *ngIf="
+          reservationPratiqueIndividuelleForm.get('name')?.touched &&
+          reservationPratiqueIndividuelleForm.get('name')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('name')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('name')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('name')?.errors?.['maxlength']"
+        >
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('name')?.errors?.['pattern']"
+        >
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col mb-3">
+      <label class="form-label" for="prenom">
+        {{ 'form.prenom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="prenom"
+        type="text"
+        placeholder="{{ 'form.exp_pre' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            reservationPratiqueIndividuelleForm.get('prenom')?.touched &&
+            reservationPratiqueIndividuelleForm.get('prenom')?.invalid
+        }"
+        formControlName="prenom"
+        name="prenom"
+      />
+      <div
+        *ngIf="
+          reservationPratiqueIndividuelleForm.get('prenom')?.touched &&
+          reservationPratiqueIndividuelleForm.get('prenom')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('prenom')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('prenom')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('prenom')?.errors?.['maxlength']"
+        >
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('prenom')?.errors?.['pattern']"
+        >
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Email address input -->
+    <div class="col mb-3">
+      <label class="form-label" for="emailAddress">
+        {{ 'form.email' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="emailAddress"
+        type="email"
+        placeholder="{{ 'form.exp_email' | translate }}"
+        formControlName="email"
+        name="email"
+        [ngClass]="{
+          'is-invalid':
+            reservationPratiqueIndividuelleForm.get('email')?.touched &&
+            reservationPratiqueIndividuelleForm.get('email')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          reservationPratiqueIndividuelleForm.get('email')?.touched &&
+          reservationPratiqueIndividuelleForm.get('email')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('email')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('email')?.errors?.['email']"
+        >
+          {{ 'form.mail_valid' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Telephone address input -->
+    <div class="col mb-3">
+      <label class="form-label" for="telephone">
+        {{ 'form.telephone' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="telephone"
+        type="texte"
+        placeholder="{{ 'form.exp_tel' | translate }}"
+        formControlName="telephone"
+        name="telephone"
+        [ngClass]="{
+          'is-invalid':
+            reservationPratiqueIndividuelleForm.get('telephone')?.touched &&
+            reservationPratiqueIndividuelleForm.get('telephone')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          reservationPratiqueIndividuelleForm.get('telephone')?.touched &&
+          reservationPratiqueIndividuelleForm.get('telephone')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('telephone')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('telephone')?.errors?.['pattern']"
+        >
+          {{ 'form.tel_valid' | translate }}
+        </div>
+        <div
+          *ngIf="reservationPratiqueIndividuelleForm.get('telephone')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_10' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Titre Input -->
+  <div>
+    <label for="titre">
+      Titre
+    </label>
+
+    <input
+      type="text"
+      name="titre"
+      class="form-control"
+      formControlName="titre"
+      [ngClass]="{
+        'is-invalid':
+          reservationPratiqueIndividuelleForm.get('titre')?.touched &&
+          reservationPratiqueIndividuelleForm.get('titre')?.invalid
+      }"
+    />
+
+    <div
+      *ngIf="
+        reservationPratiqueIndividuelleForm.get('titre')?.touched &&
+        reservationPratiqueIndividuelleForm.get('titre')?.invalid
+      "
+      class="invalid-feedback mb-2"
+    >
+      <div
+        *ngIf="reservationPratiqueIndividuelleForm.get('titre')?.errors?.['required']"
+      >
+        {{ 'form.champ_oblig' | translate }}
+      </div>
+      <div
+        *ngIf="reservationPratiqueIndividuelleForm.get('titre')?.errors?.['minlength']"
+      >
+        {{ 'form.champ_3' | translate }}
+      </div>
+      <div
+        *ngIf="reservationPratiqueIndividuelleForm.get('titre')?.errors?.['maxlength']"
+      >
+        {{ 'form.champ_30' | translate }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Message  input -->
+  <div class="mb3">
+    <label for="content">
+      Message
+    </label>
+
+    <textarea
+      type="text"
+      name="content"
+      class="form-control"
+      formControlName="content"
+      [ngClass]="{
+        'is-invalid':
+          reservationPratiqueIndividuelleForm.get('content')?.touched &&
+          reservationPratiqueIndividuelleForm.get('content')?.invalid
+      }"
+    ></textarea>
+    <div
+      *ngIf="
+        reservationPratiqueIndividuelleForm.get('content')?.touched &&
+        reservationPratiqueIndividuelleForm.get('content')?.invalid
+      "
+      class="invalid-feedback mb-2"
+    >
+      <div
+        *ngIf="reservationPratiqueIndividuelleForm.get('content')?.errors?.['required']"
+      >
+        {{ 'form.champ_oblig' | translate }}
+      </div>
+      <div
+        *ngIf="reservationPratiqueIndividuelleForm.get('content')?.errors?.['minlength']"
+      >
+        {{ 'form.champ_3' | translate }}
+      </div>
+    </div>
+  </div>
+
+  <div class="my-2 col align-self-end">
+    <input
+      type="submit"
+      class="btn btn-outline-dark"
+      value="Enregistrer"
+      style="
+        border-radius: 0.25rem;
+        display: inline-block;
+        height: auto;
+        width: max-content;
+      "
+    />
+  </div>
+</form>

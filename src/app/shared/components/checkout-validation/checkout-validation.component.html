@@ -1,0 +1,199 @@
+<div class="">
+  <div class="stepsdemo-content">
+    <p-card>
+      <ng-template pTemplate="title">
+        {{ 'globale.validation' | translate }}
+      </ng-template>
+      <ng-template pTemplate="subtitle">
+        {{ 'globale.validation-2' | translate }}
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="row recap">
+          <div class="col-md-5">
+            <div class="right border">
+              <div
+                class="header d-flex align-items-center justify-content-between"
+              >
+                {{ 'globale.moreInfo' | translate }}
+              </div>
+
+              <hr />
+              <div class="form-check">
+                <input
+                  class="form-check-input p-0"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Oui, je souhaite ajouter 0,25 € pour compenser l’empreinte
+                  carbone de ma commande.
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input p-0"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckChecked"
+                  checked
+                />
+                <label class="form-check-label" for="flexCheckChecked">
+                  Oui, je souhaite ajouter 1€ pour aider les associations.
+                </label>
+              </div>
+            </div>
+
+            <div class="right border">
+              <div class="header">
+                {{ 'globale.recap-cmd' | translate }}
+              </div>
+              <div *ngFor="let products of panier">
+                <p>
+                  {{ 'globale.nbr-element' | translate }} :
+                  {{ products.products.length }}
+                </p>
+                <div class="row item" *ngFor="let item of products.products">
+                  <div class="col-4 align-self-center">
+                    <img class="img-fluid img-recap" src="{{ item.image }}" />
+                  </div>
+                  <div class="col-8">
+                    <h5 class="mb-0">
+                      {{ item.name }}
+                    </h5>
+
+                    <p class="mb-0 bold">{{ item.price }} Dh</p>
+
+                    <p class="mb-0">Qty : {{ item.quantite }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <button class="btn">Place order</button>
+                  <p class="text-muted text-center">
+                    Complimentary Shipping & Returns
+                  </p> -->
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="right border">
+              <div
+                class="header d-flex align-items-center justify-content-between"
+              >
+                {{ 'globale.recap-cmd' | translate }}
+                <a [routerLink]="['/cart']">
+                  <i class="pi pi-pencil"></i>
+                </a>
+              </div>
+
+              <hr />
+              <div class="row lower">
+                <div class="col text-left">Total</div>
+                <div class="col text-right">1875.00 Dh</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  {{ 'globale.livraison' | translate }}
+                </div>
+                <div class="col text-right">Gratuite</div>
+              </div>
+              <div class="row lower">
+                <div class="col text-left">
+                  <b>{{ 'globale.total-payer' | translate }}</b>
+                </div>
+                <div class="col text-right"><b>1875.00 Dh</b></div>
+              </div>
+              <!-- <div class="row lower">
+                <div class="col text-left">
+                  <a href="#"><u>Code Promo</u></a>
+                </div>
+              </div> -->
+              <!-- <button class="btn">Place order</button>
+                <p class="text-muted text-center">
+                  Complimentary Shipping & Returns
+                </p> -->
+            </div>
+            <div class="right border my-2">
+              <div
+                class="header d-flex align-items-center justify-content-between"
+              >
+                {{ 'globale.adr-liv' | translate }}
+
+                <a [routerLink]="['/checkout/adresse-form']">
+                  <i class="pi pi-pencil"></i>
+                </a>
+              </div>
+
+              <hr />
+              <div class="row lower">
+                <div class="col text-left">
+                  120 Rue La Resistance Casablanca Maroc 21400
+                </div>
+              </div>
+            </div>
+            <div class="right border my-2">
+              <div
+                class="header d-flex align-items-center justify-content-between"
+              >
+                {{ 'globale.mode-paiement' | translate }}
+
+                <a [routerLink]="['/checkout/payement-form']">
+                  <i class="pi pi-pencil"></i>
+                </a>
+              </div>
+
+              <hr />
+              <div class="row lower">
+                <div class="col text-left">
+                  <img
+                    class="img-fluid"
+                    height="20px"
+                    src="https://img.alicdn.com/tfs/TB1xcMWdEKF3KVjSZFEXXXExFXa-68-48.png"
+                  />
+                  {{ 'globale.carte-fin' | translate }} : ************2540
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template *ngIf="modeArab" pTemplate="footer">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <p-button
+            class="text-end"
+            label="{{ 'globale.precedent' | translate }}"
+            (onClick)="previousPage()"
+            icon="pi pi-angle-right"
+            iconPos="left"
+          ></p-button>
+          <p-button
+            class="text-start"
+            label="{{ 'globale.suivant' | translate }}"
+            icon="pi pi-angle-left"
+            (onClick)="nextPage()"
+            iconPos="right"
+          ></p-button>
+        </div>
+      </ng-template>
+      <ng-template *ngIf="!modeArab" pTemplate="footer">
+        <div class="d-flex flex-row align-items-center justify-content-between">
+          <p-button
+            class="text-start"
+            label="{{ 'globale.precedent' | translate }}"
+            (onClick)="previousPage()"
+            icon="pi pi-angle-left"
+            iconPos="left"
+          ></p-button>
+          <p-button
+            class="text-end"
+            label="{{ 'globale.suivant' | translate }}"
+            (onClick)="nextPage()"
+            icon="pi pi-angle-right"
+            iconPos="right"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

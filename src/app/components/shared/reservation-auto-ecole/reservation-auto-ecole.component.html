@@ -1,0 +1,53 @@
+<div class="">
+  <div class="mb-3">
+    <h2 class="title-primary title-page">
+      Reservation Auto Ecole
+    </h2>
+  </div>
+
+  <div class="list-type-cours col-12 row justify-content-between">
+    <div class="cours-container col-md-5">
+      <i class="fa-solid fa-car-side"></i>
+
+      <h4>Cours de Conduite Pratique</h4>
+      <a
+        class="btn btn-outline-dark"
+        [routerLink]="['reservation-cours-pratique']"
+      >
+        Reserver un cours
+      </a>
+    </div>
+    <div class="cours-container col-md-5">
+      <i class="fa-solid fa-chalkboard-user"></i>
+
+      <h4>Cours de Conduite Theorique</h4>
+      <button
+        [routerLink]="['reservation-cours-theorique']"
+        class="btn btn-outline-dark"
+      >
+        Reserver un cours
+      </button>
+    </div>
+    <div class="cours-container col-md-5">
+      <i class="fa-solid fa-user-astronaut"></i>
+
+      <h4>Cours Individuelle Pratique</h4>
+      <a
+        class="btn btn-outline-dark"
+        [routerLink]="['reservation-individuelle-pratique']"
+      >
+        Reserver un cours
+      </a>
+    </div>
+    <div class="cours-container col-md-5">
+      <i class="fa-brands fa-discourse"></i>
+      <h4>Cours Individuelle Théorique</h4>
+      <button
+        [routerLink]="['reservation-individuelle-pratique']"
+        class="btn btn-outline-dark"
+      >
+        Reserver un cours
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,283 @@
+<div class="mb-3">
+  <h2 class="title-secondary">DEMANDE DE DEVIS - Isolation Thérmique</h2>
+</div>
+<form class="row bg-white" [formGroup]="devisForm" (ngSubmit)="sendDevis()">
+  <div
+    class="question-container"
+    [class.bg-colored]="i % 2 != 0"
+    *ngFor="let question of devisEnLigne.questions; let i = index"
+  >
+    <div
+      *ngIf="question.type == 'simple'"
+      [ngClass]="{
+        'is-invalid':
+          devisForm.get(question.titre)?.touched &&
+          devisForm.get(question.titre)?.invalid
+      }"
+      class=""
+    >
+      <div class="">
+        <h5 class="my-3">{{ question.titre }}</h5>
+      </div>
+      <div class="">
+        <label
+          *ngFor="let reponse of question.reponse"
+          class="reponse-container mb-3"
+          [class.colored-border]="radioElement.checked"
+        >
+          <span>{{ reponse }}</span>
+
+          <input
+            #radioElement
+            type="radio"
+            formControlName="{{ question.titre }}"
+            name="{{ question.titre }}"
+            value="{{ reponse }}"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div
+      [ngClass]="{
+        'is-invalid':
+          devisForm.get(question.titre)?.touched &&
+          devisForm.get(question.titre)?.invalid
+      }"
+      class=""
+      *ngIf="question.type == 'multiple'"
+    >
+      <div class="">
+        <h5 class="my-3">{{ question.titre }}</h5>
+      </div>
+      <div class="">
+        <label
+          *ngFor="let reponse of question.reponse"
+          class="reponse-container mb-3"
+          [class.colored-border]="checkboxElement.checked"
+        >
+          <span>{{ reponse }}</span>
+          <input
+            #checkboxElement
+            (change)="onCheckboxChange($event, question.titre)"
+            type="checkbox"
+            formArrayName="{{ question.titre }}"
+            name="{{ question.titre }}"
+            [value]="reponse"
+          />
+        </label>
+      </div>
+    </div>
+
+    <div class="row m-0 my-3" *ngIf="question.type == 'number'">
+      <div class="col-md-6">
+        <h5>{{ question.titre }}</h5>
+      </div>
+      <div class="col-md-6">
+        <label class="reponse-container mb-3">
+          <input
+            class="form-control"
+            type="number"
+            formControlName="{{ question.titre }}"
+            name="{{ question.titre }}"
+            [ngClass]="{
+              'is-invalid':
+                devisForm.get(question.titre)?.touched &&
+                devisForm.get(question.titre)?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              devisForm.get(question.titre)?.touched &&
+              devisForm.get(question.titre)?.invalid
+            "
+            class="invalid-feedback mb-2 w-100"
+          >
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+    <div
+      [ngClass]="{
+        'is-invalid':
+          devisForm.get(question.titre)?.touched &&
+          devisForm.get(question.titre)?.invalid
+      }"
+      class="row m-0 my-3"
+      *ngIf="question.type == 'text'"
+    >
+      <div class="col-md-6">
+        <h5>{{ question.titre }}</h5>
+      </div>
+      <div class="col-md-6">
+        <label class="reponse-container mb-3">
+          <textarea
+            class="form-control"
+            type="number"
+            formControlName="{{ question.titre }}"
+            name="{{ question.titre }}"
+            [ngClass]="{
+              'is-invalid':
+                devisForm.get(question.titre)?.touched &&
+                devisForm.get(question.titre)?.invalid
+            }"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+    <div
+      *ngIf="question.type == 'select'"
+      [ngClass]="{
+        'is-invalid':
+          devisForm.get(question.titre)?.touched &&
+          devisForm.get(question.titre)?.invalid
+      }"
+      class="row m-0 my-3"
+    >
+      <div class="col-md-6">
+        <h5>{{ question.titre }}</h5>
+      </div>
+      <div class="col-md-6">
+        <label class="reponse-container mb-3">
+          <select
+            [ngClass]="{
+              'is-invalid':
+                devisForm.get(question.titre)?.touched &&
+                devisForm.get(question.titre)?.invalid
+            }"
+            class="form-select"
+            type="number"
+            formControlName="{{ question.titre }}"
+            name="{{ question.titre }}"
+          >
+            <option *ngFor="let reponse of question.reponse" [value]="reponse">
+              {{ reponse }}
+            </option>
+          </select>
+          <div
+            *ngIf="
+              devisForm.get(question.titre)?.touched &&
+              devisForm.get(question.titre)?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['minlength']">
+              {{ 'form.champ_min' | translate
+              }}{{devisForm.get(question.titre)?.errors?.['minlength']?.requiredLength}}
+            </div>
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['maxlength']">
+              {{ 'form.champ_max' | translate
+              }}{{devisForm.get(question.titre)?.errors?.['maxlength']?.requiredLength}}
+            </div>
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['min']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+            <div *ngIf="devisForm.get(question.titre)?.errors?.['max']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div
+      *ngIf="
+        devisForm.get(question.titre)?.touched &&
+        devisForm.get(question.titre)?.invalid
+      "
+      class="invalid-feedback mb-2"
+    >
+      <div *ngIf="devisForm.get(question.titre)?.errors?.['required']">
+        {{ 'form.champ_oblig' | translate }}
+      </div>
+      <div *ngIf="devisForm.get(question.titre)?.errors?.['minlength']">
+        {{ 'form.champ_min' | translate
+        }}{{devisForm.get(question.titre)?.errors?.['minlength']?.requiredLength}}
+      </div>
+      <div *ngIf="devisForm.get(question.titre)?.errors?.['maxlength']">
+        {{ 'form.champ_max' | translate
+        }}{{devisForm.get(question.titre)?.errors?.['maxlength']?.requiredLength}}
+      </div>
+      <div *ngIf="devisForm.get(question.titre)?.errors?.['min']">
+        {{ 'form.champ_lettre' | translate }}
+      </div>
+      <div *ngIf="devisForm.get(question.titre)?.errors?.['max']">
+        {{ 'form.champ_lettre' | translate }}
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="devisEnLigne.questionLibre"
+    class="question-container"
+    formArrayName="questions"
+  >
+    <div
+      class="mb-2 position-relative d-flex flex-wrap align-items-center"
+      *ngFor="let question of questions.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <label class="form-label w-100" for="question">
+        {{ 'form.question' | translate }} {{ i + 1 }}
+      </label>
+      <div class="flex-grow-1">
+        <input
+          type="text"
+          formControlName="questionValue"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              questions.controls[i].get('questionValue')?.touched &&
+              questions.controls[i].get('questionValue')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            questions.controls[i].get('questionValue')?.touched &&
+            questions.controls[i].get('questionValue')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div
+            *ngIf=" questions.controls[i].get('questionValue')?.errors?.['required']"
+          >
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div
+            *ngIf=" questions.controls[i].get('questionValue')?.errors?.['minlength']"
+          >
+            {{ 'form.champ_10' | translate }}
+          </div>
+          <div
+            *ngIf=" questions.controls[i].get('questionValue')?.errors?.['maxlength']"
+          >
+            {{ 'form.champ_30' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="delete-btn-container mx-1" *ngIf="i != 0">
+        <div class="delete-btn" (click)="deleteQuestion(i)">
+          <i class="fa-solid fa-trash"></i>
+        </div>
+      </div>
+    </div>
+    <button
+      type="button"
+      (click)="newQuestion()"
+      class="btn btn-outline-dark mb-2 btn-sm"
+    >
+      Ajouter Des Question
+    </button>
+  </div>
+
+  <div class="my-3">
+    <button type="submit" class="btn btn-outline-dark">
+      Enregistrer
+    </button>
+  </div>
+</form>

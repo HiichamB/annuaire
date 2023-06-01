@@ -1,0 +1,14 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Distinction</h2>
+</div>
+<div class="row">
+  <div class="col-12" *ngFor="let distinction of societeData.Distinction">
+    <app-card-distinction
+      class="product-grid-item card"
+      [image]="distinction?.image"
+      [resume]="distinction?.resume"
+      [titre]="distinction?.titre"
+      [date]="distinction?.date"
+    ></app-card-distinction>
+  </div>
+</div>

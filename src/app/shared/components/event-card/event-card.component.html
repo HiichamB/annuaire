@@ -1,0 +1,42 @@
+<div class="card-h-l px-2 py-1">
+  <figure class="j-image-container img-container">
+    <a [routerLink]="['/details/details/evenement/details']">
+      <img
+        class="j-image j-img-c card-img"
+        alt="article image"
+        src=""
+        [defaultImage]="'assets/images/event.jpg'"
+        [lazyLoad]="img"
+      />
+    </a>
+  </figure>
+  <div class="info-container">
+    <h5 class="title-md">
+      <a [routerLink]="link">
+        <i class="fa fa-bell blue-color" style="font-size: 20px;"></i>
+        {{ title }}
+      </a>
+    </h5>
+    <p class="j-description j-resume-lg">
+      {{ resume }}
+    </p>
+    <div class="">
+      <p class="j-description j-resume-lg">
+        <i class="fa fa-map"></i>
+
+        {{ localisation }}
+      </p>
+    </div>
+    <div class="d-flex align-items-center justify-content-between flex-wrap">
+      <div class="my-2">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        {{ dateDebut | date: 'dd-mm-yyyy' }}
+      </div>
+
+      <div class="my-2">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        {{ dateFin | date: 'dd-MM-yyyy' }}
+      </div>
+    </div>
+  </div>
+</div>

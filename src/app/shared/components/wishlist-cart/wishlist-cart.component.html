@@ -1,0 +1,96 @@
+<div class="px-4 px-lg-0 mb container">
+  <!-- For demo purpose -->
+  <div class="container text-dark py-5 text-center">
+    <h1 class="display-4">WishList</h1>
+  </div>
+  <div class="w-100 text-center" *ngIf="!ifEmpty">
+    <h3>liste vide selectionner un element</h3>
+  </div>
+  <div
+    *ngIf="ifEmpty"
+    class="grid-column col-lg-12 p-5 bg-white rounded shadow-sm"
+  >
+    <div class="card ecommerce-card mb-5" *ngFor="let wishListItem of wishlist">
+      <div class="item-img text-center">
+        <a [routerLink]="'/details/details/product'">
+          <img
+            src="{{ wishListItem.image }}"
+            class="img-fluid"
+            alt="img-placeholder"
+          />
+        </a>
+      </div>
+      <div class="card-body">
+        <a
+          class="item-wrapper cursor-pointer"
+          [routerLink]="'/cart/details/product'"
+        >
+          <div class="d-flex justify-content-between">
+            <div class="item-name">
+              <h5 class="item-name">{{ wishListItem.name }}</h5>
+            </div>
+            <div class="item-rating">
+              <p-rating
+                [ngModel]="'{{ wishListItem.rating }}'"
+                [readonly]="true"
+                [cancel]="false"
+              ></p-rating>
+            </div>
+          </div>
+
+          <div class="item-cost">
+            <h6 class="item-price">{{ wishListItem.price }} DH</h6>
+          </div>
+        </a>
+
+        <p class="card-text item-description truncate truncate-3-line">
+          On Retina display that never sleeps, so it’s easy to see the time and
+          other important information, without raising or tapping the display.
+          New location features, from a built-in compass to current elevation,
+          help users better navigate their day, while international emergency
+          calling1 allows customers to call emergency services directly from
+          Apple Watch in over 150 countries, even without iPhone nearby. Apple
+          Watch Series 5 is available in a wider range of materials, including
+          aluminium, stainless steel, ceramic and an all-new titanium.
+        </p>
+      </div>
+      <div class="item-options text-center">
+        <button
+          type="button"
+          class="btn btn-danger btn-cart"
+          (click)="removeItem(wishListItem.idP)"
+        >
+          <i class="fa fa-trash"></i>
+          <span>Remove</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-dark btn-cart"
+          (click)="addToCart(wishListItem)"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-shopping-cart"
+          >
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path
+              d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+            ></path>
+          </svg>
+          <span class="add-to-cart">
+            {{ 'globale.add-cart' | translate }}
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

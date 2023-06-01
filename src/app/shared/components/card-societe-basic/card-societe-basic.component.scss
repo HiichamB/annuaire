@@ -1,0 +1,41 @@
+.info {
+  position: absolute;
+  width: 100%;
+  z-index: 9;
+  display: block;
+  padding: 35px 15px 0 15px;
+  color: #fff;
+  left: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, #000);
+  border-radius: 10px;
+}
+figure {
+  overflow: hidden;
+  border-radius: 10px;
+  .img-card {
+    height: 175px;
+    width: 100%;
+    filter: rgba(0, 0, 0, 0.2);
+  }
+}
+.radius-card {
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  .img-card {
+    height: 175px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .img-card {
+    height: 155px;
+  }
+}
+@media screen and (min-width: 992px) {
+  .img-card {
+    height: 175px;
+  }
+}

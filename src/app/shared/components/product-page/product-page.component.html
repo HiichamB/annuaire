@@ -1,0 +1,4332 @@
+<div class="">
+  <div class="advantages my-3">
+    <div>
+      <img src="https://www.yves-rocher.ma/img/footer/user-secure.svg" />
+      <span>Paiement sécurisé</span>
+    </div>
+
+    <div>
+      <img
+        src="https://www.yves-rocher.ma/uimg/homepage/cash_delivery_new.svg"
+      />
+      <span>Paiement à la livraison</span>
+    </div>
+
+    <div>
+      <img src="	https://www.yves-rocher.ma/img/footer/gift.svg" />
+      <span>Cadeaux pour les commandes</span>
+    </div>
+
+    <div>
+      <img
+        class="large_svg loaded"
+        src="https://www.yves-rocher.ma/uimg/homepage/viaphone_new.svg"
+      />
+      <span>Service Clients</span>
+    </div>
+  </div>
+
+  <div>
+    <p-inputSwitch (onChange)="handleChange($event)"></p-inputSwitch>
+  </div>
+  <div class="row g-0">
+    <div class="" *ngIf="modeNavigation == 'location'">
+      <h6>Produit en Location</h6>
+
+      <p-tabView>
+        <p-tabPanel header="Details">
+          <div class="row">
+            <div class="col-md-6 border-end">
+              <div class="d-flex flex-column justify-content-center">
+                <div class="main_image position-relative">
+                  <img
+                    *ngIf="selectedImage == ''"
+                    [src]="product.imageProduct"
+                    id="main_product_image"
+                    (mousemove)="onMousemove($event)"
+                    (mouseout)="onMouseout()"
+                    [style]="
+                      'transform: scale(' +
+                      scaleValue +
+                      ') translate(' +
+                      clientX +
+                      'px,' +
+                      clientY +
+                      'px)'
+                    "
+                  />
+
+                  <img
+                    *ngIf="selectedImage != ''"
+                    [src]="selectedImage"
+                    id="main_product_image"
+                    (mousemove)="onMousemove($event)"
+                    (mouseout)="onMouseout()"
+                    [style]="
+                      'transform: scale(' +
+                      scaleValue +
+                      ') translate(' +
+                      clientX +
+                      'px,' +
+                      clientY +
+                      'px)'
+                    "
+                  />
+                  <div class="promo-badge" *ngIf="selectedItem?.promo">
+                    <p class="m-0">Promo</p>
+                  </div>
+                </div>
+                <div class="thumbnail_images">
+                  <ul id="thumbnail">
+                    <li>
+                      <img
+                        (click)="changeParentImage(selectedItem.imageProduct)"
+                        [src]="selectedItem.imageProduct"
+                        class="image-product-small"
+                        width="70"
+                      />
+                    </li>
+                    <li *ngFor="let item of selectedItem?.otherImages">
+                      <img
+                        [src]="item"
+                        (click)="changeParentImage(item)"
+                        alt="image"
+                        class="image-product-small"
+                        width="70"
+                      />
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 right-side">
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="title-primary">{{ produit.titre }}</h3>
+                </div>
+                <div class="ratings d-flex flex-row align-items-center my-2">
+                  <p-rating
+                    [ngModel]="selectedItem?.rating"
+                    [readonly]="true"
+                    [cancel]="false"
+                  ></p-rating>
+                  <p class="title-secondary m-0">
+                    &nbsp; ({{ totalReviews }}Review)
+                  </p>
+                </div>
+                <div class="">
+                  <p>
+                    <i class="fa-solid fa-tag"></i>
+                    {{ produit?.categorie }}
+                  </p>
+                </div>
+
+                <div
+                  class="product-grid-item-bottom d-flex align-items-center section-space"
+                  *ngIf="selectedItem?.promo"
+                >
+                  <h3 class="title-secondary mb-1 font-weight-bold">
+                    {{ selectedItem?.price }} DH
+                  </h3>
+                  <del
+                    class="title-secondary mb-1 small-text px-2 font-weight-bold"
+                  >
+                    {{ selectedItem?.promo?.promoPrice }} Dh
+                  </del>
+                  <span class="text-danger font-weight-bold">
+                    {{ selectedItem?.promo?.taux }}
+                  </span>
+                </div>
+                <div
+                  class="product-grid-item-bottom section-space"
+                  *ngIf="!selectedItem?.promo"
+                >
+                  <h3 class="title-secondary mb-1 font-weight-bold">
+                    {{ selectedItem?.price }} DH
+                  </h3>
+                </div>
+
+                <div class="thumbnail_images section-space">
+                  <ul id="thumbnail" class="justify-content-start">
+                    <li>
+                      <img
+                        [src]="produit.imageProduct"
+                        (click)="changeSelectedItem(produit)"
+                        alt="image"
+                        class="image-product-small"
+                        width="70"
+                      />
+                    </li>
+                    <li *ngFor="let item of produit?.others">
+                      <img
+                        [src]="item.imageProduct"
+                        (click)="changeSelectedItem(item)"
+                        alt="image"
+                        class="image-product-small"
+                        width="70"
+                      />
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="section-space"></div>
+                <div class="section-space" *ngIf="selectedItem?.timer">
+                  <app-countdown></app-countdown>
+                </div>
+
+                <div class="section-space">
+                  <div class="border-product">
+                    <h6 class="product-title">
+                      {{ 'globale.partager' | translate }}
+                    </h6>
+                    <div class="product-icon">
+                      <ul class="product-social p-0 m-0">
+                        <li>
+                          <a href="#"><i class="fa fa-facebook-f"></i></a>
+                        </li>
+                        <li>
+                          <a href="#"><i class="fa fa-google-plus"></i></a>
+                        </li>
+                        <li>
+                          <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                          <a href="#"><i class="fa fa-instagram"></i></a>
+                        </li>
+                        <li>
+                          <a href="#"><i class="fa fa-rss"></i></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="section-space">
+                <app-mode-payment></app-mode-payment>
+              </div> -->
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="product-shipping">
+                <h4 class="my-2 py-1">
+                  {{ 'enquette.object' | translate }}
+                </h4>
+
+                <h6 class="my-2 py-1">
+                  {{ 'enquette.question' | translate }}
+                </h6>
+                <div class="my-1">
+                  <p-rating [cancel]="false"></p-rating>
+                </div>
+              </div>
+            </div>
+            <div class=" " id="link">
+              <p-tabView [scrollable]="true">
+                <p-tabPanel header="Description">
+                  {{ selectedItem.description }}
+                </p-tabPanel>
+                <p-tabPanel header="Produit et Conseils">
+                  <p-accordion>
+                    <p-accordionTab
+                      *ngFor="let qR of produit?.aboutProduct"
+                      header="{{ qR.question }}"
+                    >
+                      {{ qR.reponse }}
+                    </p-accordionTab>
+                  </p-accordion>
+                </p-tabPanel>
+                <p-tabPanel header="Reviews">
+                  <!-- Form Devis-->
+                  <p-tabView>
+                    <p-tabPanel header="Add Review">
+                      <div class=" ">
+                        <!-- Bootstrap 5 starter form -->
+                        <form
+                          id="contactForm"
+                          (ngSubmit)="sendDevis()"
+                          [formGroup]="reviewForm"
+                          #form2
+                        >
+                          <!-- Rating input -->
+
+                          <div class="mb-3 col">
+                            <p-rating
+                              [readonly]="true"
+                              [cancel]="false"
+                            ></p-rating>
+                          </div>
+                          <div class="row">
+                            <!-- Name input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="name">
+                                  {{ 'form.nom' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="name"
+                                  type="text"
+                                  placeholder="{{ 'form.exp_nom' | translate }}"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('name')?.touched &&
+                                      reviewForm.get('name')?.invalid
+                                  }"
+                                  formControlName="name"
+                                  name="name"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('name')?.touched &&
+                                    reviewForm.get('name')?.invalid
+                                  "
+                                  class="invalid-feedback mb-2"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                                  >
+                                    {{ 'form.champ_3' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                                  >
+                                    {{ 'form.champ_30' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                                  >
+                                    {{ 'form.champ_lettre' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Email address input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="emailAddress">
+                                  {{ 'form.email' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="emailAddress"
+                                  type="email"
+                                  placeholder="{{
+                                    'form.exp_email' | translate
+                                  }}"
+                                  formControlName="email"
+                                  name="email"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('email')?.touched &&
+                                      reviewForm.get('email')?.invalid
+                                  }"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('email')?.touched &&
+                                    reviewForm.get('email')?.invalid
+                                  "
+                                  class="invalid-feedback"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('email')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('email')?.errors?.['email']"
+                                  >
+                                    {{ 'form.mail_valid' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Telephone address input -->
+                          <div class="row">
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="telephone">
+                                  {{ 'form.telephone' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="telephone"
+                                  type="texte"
+                                  placeholder="{{ 'form.exp_tel' | translate }}"
+                                  formControlName="telephone"
+                                  name="telephone"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('telephone')?.touched &&
+                                      reviewForm.get('telephone')?.invalid
+                                  }"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('telephone')?.touched &&
+                                    reviewForm.get('telephone')?.invalid
+                                  "
+                                  class="invalid-feedback"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                                  >
+                                    {{ 'form.tel_valid' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                                  >
+                                    {{ 'form.champ_10' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Devis  input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="object">
+                                  {{ 'form.object' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="object"
+                                  type="texte"
+                                  [disabled]="true"
+                                  placeholder="Object"
+                                  formControlName="object"
+                                  name="object"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Message input -->
+                          <div class="mb-3">
+                            <label class="form-label" for="message">
+                              {{ 'form.message' | translate }}
+                            </label>
+                            <textarea
+                              class="form-control"
+                              id="message"
+                              type="text"
+                              placeholder="{{ 'form.c_msg' | translate }}"
+                              style="height: 10rem;"
+                            ></textarea>
+                            <div
+                              *ngIf="
+                                reviewForm.get('message')?.touched &&
+                                reviewForm.get('message')?.invalid
+                              "
+                              class="invalid-feedback mb-2"
+                            >
+                              <div
+                                *ngIf="reviewForm.get('message')?.errors?.['required']"
+                              >
+                                {{ 'form.champ_oblig' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                              >
+                                {{ 'form.champ_10' | translate }}
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Form submit button -->
+                          <div class="">
+                            <button
+                              class="btn btn-outline-dark btn-lg col-md-3"
+                              type="submit"
+                            >
+                              {{ 'form.Envoyer' | translate }}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </p-tabPanel>
+                    <p-tabPanel header="All Reviews">
+                      <div class="row position-relative">
+                        <div class="col-md-4 fixed-element">
+                          <app-review-bars></app-review-bars>
+                        </div>
+                        <div class="col-md-8 review-list">
+                          <div
+                            class="row review"
+                            *ngFor="let review of reviews"
+                          >
+                            <div class="col-md-3">
+                              <h5>{{ review.name }}</h5>
+                            </div>
+                            <div class="col-md-9">
+                              <div class="mb-3">
+                                <p-rating
+                                  [readonly]="true"
+                                  [cancel]="false"
+                                ></p-rating>
+                              </div>
+                              <div class="">
+                                <p class="text-description m-0">
+                                  {{ review.commentaire }}
+                                </p>
+                                <p class="light-txt m-0">
+                                  {{ review.date | date: 'dd/MM/yyyy' }}
+                                </p>
+                              </div>
+
+                              <div class="d-flex my-3">
+                                <img
+                                  *ngFor="let item of review?.images"
+                                  src="{{ item }}"
+                                  alt="Image"
+                                  height="80"
+                                  width="80"
+                                  class="mx-3 cursor-pointer"
+                                  (click)="openModal(detail_content, item)"
+                                />
+                                <ng-template #detail_content let-modal>
+                                  <div class="modal-header">
+                                    <button
+                                      type="button"
+                                      class="close"
+                                      aria-label="Close"
+                                      (click)="modal.dismiss('Cross click')"
+                                    >
+                                      <span aria-hidden="true">
+                                        &times;
+                                      </span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body text-center">
+                                    <div class="theme-card">
+                                      <img src="{{ imgModal }}" />
+                                    </div>
+                                  </div>
+                                </ng-template>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </p-tabPanel>
+                  </p-tabView>
+                </p-tabPanel>
+                <p-tabPanel header="SAV">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p>
+                        Le service après-vente (SAV) est un des services d'une
+                        entreprise, assurant la mise en marche, l'entretien et
+                        la réparation d'un bien que cette entreprise a vendu ou
+                        pas. Le SAV est souvent réduit à la notion
+                        d'intervention technique mais il inclut l'ensemble des
+                        services associés aux biens concernés, réalisés après la
+                        vente. Ce terme est très employé dans le cadre de biens
+                        de consommation comme l'électroménager et l'automobile,
+                        où il est souvent associé à la maintenance. Dans le
+                        domaine de l'industrie, le service après-vente
+                        accompagne la vie d'un équipement de production,
+                        assurant la prise en charge de l'installation, de la
+                        mise en route, de l'entretien préventif, des dépannages
+                        et autres réparations, de l'assistance technique et de
+                        la gestion des pièces de rechange. Ainsi, le service
+                        après-vente reste une forte valeur ajoutée que le
+                        service commercial doit bien exploiter lors des
+                        négociations commerciales. Dans les activités de service
+                        pur, on emploie généralement l'expression service
+                        client, qui est plus générale, dans la mesure où elle
+                        inclut l'ensemble de la relation client. Le service
+                        après-vente est un domaine de l'entreprise où l'on peut
+                        avantageusement mettre en œuvre une démarche de
+                        développement durable. En effet, en développant une
+                        politique de réparabilité des produits, il est possible
+                        de lutter contre l'obsolescence programmée, dont les
+                        coûts économiques et environnementaux sont très élevés.
+                        Les projets de réparabilité permettent à l'entreprise de
+                        conserver ses clients et d'améliorer son image1. En
+                        France, selon la loi de modernisation de l'économie pour
+                        un consommateur, l'appel vers le SAV ne peut pas être
+                        surtaxé.
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <div class=" ">
+                        <!-- Bootstrap 5 starter form -->
+                        <form
+                          id="contactForm"
+                          (ngSubmit)="sendDevis()"
+                          [formGroup]="reviewForm"
+                          #form2
+                        >
+                          <!-- Rating input -->
+
+                          <div class="row">
+                            <!-- Name input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="name">
+                                  {{ 'form.nom' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="name"
+                                  type="text"
+                                  placeholder="{{ 'form.exp_nom' | translate }}"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('name')?.touched &&
+                                      reviewForm.get('name')?.invalid
+                                  }"
+                                  formControlName="name"
+                                  name="name"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('name')?.touched &&
+                                    reviewForm.get('name')?.invalid
+                                  "
+                                  class="invalid-feedback mb-2"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                                  >
+                                    {{ 'form.champ_3' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                                  >
+                                    {{ 'form.champ_30' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                                  >
+                                    {{ 'form.champ_lettre' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Email address input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="emailAddress">
+                                  {{ 'form.email' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="emailAddress"
+                                  type="email"
+                                  placeholder="{{
+                                    'form.exp_email' | translate
+                                  }}"
+                                  formControlName="email"
+                                  name="email"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('email')?.touched &&
+                                      reviewForm.get('email')?.invalid
+                                  }"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('email')?.touched &&
+                                    reviewForm.get('email')?.invalid
+                                  "
+                                  class="invalid-feedback"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('email')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('email')?.errors?.['email']"
+                                  >
+                                    {{ 'form.mail_valid' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Telephone +Devis address input -->
+                          <!-- Telephone  address input -->
+
+                          <div class="row">
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="telephone">
+                                  {{ 'form.telephone' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="telephone"
+                                  type="texte"
+                                  placeholder="{{ 'form.exp_tel' | translate }}"
+                                  formControlName="telephone"
+                                  name="telephone"
+                                  [ngClass]="{
+                                    'is-invalid':
+                                      reviewForm.get('telephone')?.touched &&
+                                      reviewForm.get('telephone')?.invalid
+                                  }"
+                                />
+                                <div
+                                  *ngIf="
+                                    reviewForm.get('telephone')?.touched &&
+                                    reviewForm.get('telephone')?.invalid
+                                  "
+                                  class="invalid-feedback"
+                                >
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                                  >
+                                    {{ 'form.champ_oblig' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                                  >
+                                    {{ 'form.tel_valid' | translate }}
+                                  </div>
+                                  <div
+                                    *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                                  >
+                                    {{ 'form.champ_10' | translate }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!-- Devis  input -->
+                            <div class="mb-3 col">
+                              <div class="col">
+                                <label class="form-label" for="object">
+                                  {{ 'form.object' | translate }}
+                                </label>
+                                <input
+                                  class="form-control"
+                                  id="object"
+                                  type="texte"
+                                  [disabled]="true"
+                                  placeholder="Object"
+                                  formControlName="object"
+                                  name="object"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Reference  input -->
+
+                          <div class="col mb-3">
+                            <label class="form-label" for="reference">
+                              {{ 'form.reference' | translate }}
+                            </label>
+                            <input
+                              class="form-control"
+                              id="reference"
+                              type="texte"
+                              [disabled]="true"
+                              placeholder="reference"
+                              formControlName="reference"
+                              name="reference"
+                            />
+                          </div>
+                          <!-- Message input -->
+
+                          <div class="mb-3">
+                            <label class="form-label" for="message">
+                              {{ 'form.message' | translate }}
+                            </label>
+                            <textarea
+                              class="form-control"
+                              id="message"
+                              type="text"
+                              placeholder="{{ 'form.c_msg' | translate }}"
+                              style="height: 10rem;"
+                            ></textarea>
+                            <div
+                              *ngIf="
+                                reviewForm.get('message')?.touched &&
+                                reviewForm.get('message')?.invalid
+                              "
+                              class="invalid-feedback mb-2"
+                            >
+                              <div
+                                *ngIf="reviewForm.get('message')?.errors?.['required']"
+                              >
+                                {{ 'form.champ_oblig' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                              >
+                                {{ 'form.champ_10' | translate }}
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Form submit button -->
+                          <div class="d-grid">
+                            <button
+                              class="btn btn-outline-dark btn-lg"
+                              type="submit"
+                            >
+                              {{ 'form.Envoyer' | translate }}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </p-tabPanel>
+                <p-tabPanel header="Reclamation">
+                  <div class=" ">
+                    <form
+                      id="contactForm"
+                      (ngSubmit)="sendDevis()"
+                      [formGroup]="reviewForm"
+                      #form2
+                    >
+                      <!-- Rating input -->
+
+                      <div class="row">
+                        <!-- Name input -->
+                        <div class="mb-3 col">
+                          <div class="col">
+                            <label class="form-label" for="name">
+                              {{ 'form.nom' | translate }}
+                            </label>
+                            <input
+                              class="form-control"
+                              id="name"
+                              type="text"
+                              placeholder="{{ 'form.exp_nom' | translate }}"
+                              [ngClass]="{
+                                'is-invalid':
+                                  reviewForm.get('name')?.touched &&
+                                  reviewForm.get('name')?.invalid
+                              }"
+                              formControlName="name"
+                              name="name"
+                            />
+                            <div
+                              *ngIf="
+                                reviewForm.get('name')?.touched &&
+                                reviewForm.get('name')?.invalid
+                              "
+                              class="invalid-feedback mb-2"
+                            >
+                              <div
+                                *ngIf="reviewForm.get('name')?.errors?.['required']"
+                              >
+                                {{ 'form.champ_oblig' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                              >
+                                {{ 'form.champ_3' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                              >
+                                {{ 'form.champ_30' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                              >
+                                {{ 'form.champ_lettre' | translate }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Email address input -->
+                        <div class="mb-3 col">
+                          <div class="col">
+                            <label class="form-label" for="emailAddress">
+                              {{ 'form.email' | translate }}
+                            </label>
+                            <input
+                              class="form-control"
+                              id="emailAddress"
+                              type="email"
+                              placeholder="{{ 'form.exp_email' | translate }}"
+                              formControlName="email"
+                              name="email"
+                              [ngClass]="{
+                                'is-invalid':
+                                  reviewForm.get('email')?.touched &&
+                                  reviewForm.get('email')?.invalid
+                              }"
+                            />
+                            <div
+                              *ngIf="
+                                reviewForm.get('email')?.touched &&
+                                reviewForm.get('email')?.invalid
+                              "
+                              class="invalid-feedback"
+                            >
+                              <div
+                                *ngIf="reviewForm.get('email')?.errors?.['required']"
+                              >
+                                {{ 'form.champ_oblig' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('email')?.errors?.['email']"
+                              >
+                                {{ 'form.mail_valid' | translate }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Telephone +Devis address input -->
+                      <!-- Telephone  address input -->
+
+                      <div class="row">
+                        <div class="mb-3 col">
+                          <div class="col">
+                            <label class="form-label" for="telephone">
+                              {{ 'form.telephone' | translate }}
+                            </label>
+                            <input
+                              class="form-control"
+                              id="telephone"
+                              type="texte"
+                              placeholder="{{ 'form.exp_tel' | translate }}"
+                              formControlName="telephone"
+                              name="telephone"
+                              [ngClass]="{
+                                'is-invalid':
+                                  reviewForm.get('telephone')?.touched &&
+                                  reviewForm.get('telephone')?.invalid
+                              }"
+                            />
+                            <div
+                              *ngIf="
+                                reviewForm.get('telephone')?.touched &&
+                                reviewForm.get('telephone')?.invalid
+                              "
+                              class="invalid-feedback"
+                            >
+                              <div
+                                *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                              >
+                                {{ 'form.champ_oblig' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                              >
+                                {{ 'form.tel_valid' | translate }}
+                              </div>
+                              <div
+                                *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                              >
+                                {{ 'form.champ_10' | translate }}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Devis  input -->
+                        <div class="mb-3 col">
+                          <div class="col">
+                            <label class="form-label" for="object">
+                              {{ 'form.object' | translate }}
+                            </label>
+                            <input
+                              class="form-control"
+                              id="object"
+                              type="texte"
+                              [disabled]="true"
+                              placeholder="Object"
+                              formControlName="object"
+                              name="object"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Message input -->
+
+                      <div class="mb-3">
+                        <label class="form-label" for="message">
+                          {{ 'form.message' | translate }}
+                        </label>
+                        <textarea
+                          class="form-control"
+                          id="message"
+                          type="text"
+                          placeholder="{{ 'form.c_msg' | translate }}"
+                          style="height: 10rem;"
+                        ></textarea>
+                        <div
+                          *ngIf="
+                            reviewForm.get('message')?.touched &&
+                            reviewForm.get('message')?.invalid
+                          "
+                          class="invalid-feedback mb-2"
+                        >
+                          <div
+                            *ngIf="reviewForm.get('message')?.errors?.['required']"
+                          >
+                            {{ 'form.champ_oblig' | translate }}
+                          </div>
+                          <div
+                            *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                          >
+                            {{ 'form.champ_10' | translate }}
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Form submit button -->
+                      <div class="">
+                        <button
+                          class="btn btn-outline-dark btn-lg col-md-3"
+                          type="submit"
+                        >
+                          {{ 'form.Envoyer' | translate }}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </p-tabPanel>
+                <p-tabPanel header="CashBack">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <h4>Actualités ENGIE - Electricité et Gaz 2022</h4>
+                      <p>
+                        Envie de changer de fournisseur d'énergie ? ENGIE vous
+                        accompagne lors de votre déménagement en vous facilitant
+                        les formalités administratives. En effectuant une
+                        demande de contrat sur le site, vous pourrez être
+                        recontacté dans les 24h par un conseiller qui saura vous
+                        accompagner lors de vos différentes démarches. Maîtriser
+                        votre consommation simplement depuis votre espace client
+                        ou directement depuis l'application. ENGIE vous propose
+                        des écogestes afin de réduire votre consommation. Besoin
+                        de cartons pour votre déménagement ? Commandez-en sur le
+                        site ENGIE pour les recevoir sous 48h. Profitez
+                        également du cashback iGraal pour faire de belles
+                        réductions lors de votre souscription à ENGIE.
+                      </p>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="cashback-card" *ngFor="let i of cashBack">
+                        <div class="row align-items-center">
+                          <div class="col-md-3 text-center">
+                            <h2 class="text-warning bold">{{ i.value }}</h2>
+                          </div>
+                          <div class="col-md-6">
+                            <p class="m-0 pb-1">{{ i.tag }}</p>
+                            <h4 class="text-dark bold">
+                              {{ i.title }}
+                            </h4>
+                            <p class="small-text">
+                              {{ 'globale.jusqu' | translate }}
+                              {{ i.date | date: 'dd-MM-yyyy' }}
+                            </p>
+                          </div>
+                          <div class="col-md-3">
+                            <button class="btn btn-solid btn-info col-md-12">
+                              {{ 'globale.profiter' | translate }}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </p-tabPanel>
+                <p-tabPanel header="A Propos Livraison ">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="text-dark">
+                        Pay on delivery is available
+                      </p>
+                      <p class="text-dark">
+                        Les colis envoyés par ce service logistique sont suivis
+                        avec succès grâce à notre service.
+                      </p>
+                      <p class="text-dark">
+                        Easy 30 days returns and exchanges
+                      </p>
+
+                      <h5 class="text-dark">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                        Retour gratuit sous 100 jours
+                      </h5>
+                    </div>
+                    <div class="col-md-6">
+                      <div
+                        class="livraison-bloc"
+                        *ngFor="let item of produit?.shipping"
+                      >
+                        <label class="w-100 text-dark bold">
+                          <h6 class="bold">
+                            {{ 'globale.livraison' | translate }} :
+                            {{ item.prix }} DH
+                          </h6>
+                          <p class="m-0 text-dark bold">
+                            {{ 'globale.date-l-e' | translate }} :
+                            {{ livraisonDate(item.duree) }}
+                          </p>
+                          <p class="m-0 text-dark bold">
+                            {{ 'globale.livre-p' | translate }} :
+                            {{ item.company }}
+                          </p>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </p-tabPanel>
+              </p-tabView>
+            </div>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'globale.planning' | translate }}">
+          <div class="modal-body text-center">
+            <div class="my-3">
+              <div
+                class="d-flex flex-row justify-content-between align-items-end"
+              >
+                <div class="mb-2 width-select">
+                  <h6>Produits Disponibles:</h6>
+                  <select class="form-select" name="" id="">
+                    <!-- <option *ngFor="let i of data">{{ i.agent.name }}</option> -->
+                  </select>
+                </div>
+                <div class="mb-2 width-select">
+                  <select
+                    #viewDayOptionSelect
+                    class="form-select"
+                    [ngModel]="viewDays"
+                    (change)="viewDaysOptionChanged(viewDayOptionSelect.value)"
+                  >
+                    <option [value]="1">
+                      {{ 'calendar.1-j' | translate }}
+                    </option>
+                    <option [value]="3">
+                      {{ 'calendar.3-j' | translate }}
+                    </option>
+                    <option [value]="7">
+                      {{ 'calendar.7-j' | translate }}
+                    </option>
+                  </select>
+                </div>
+                <div class="mb-2">
+                  <div class="btn-group m-1" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark btn-top-calendar"
+                      mwlCalendarPreviousView
+                      [view]="view"
+                      [(viewDate)]="viewDate"
+                      [daysInWeek]="viewDays"
+                      [excludeDays]="excludeDays"
+                      [disabled]="prevBtnDisabled"
+                      (viewDateChange)="dateOrViewChanged()"
+                    >
+                      <span class="valign-center">
+                        <i title="Precedente" class="material-icons md-18">
+                          keyboard_arrow_left
+                        </i>
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-light btn-top-calendar"
+                      mwlCalendarToday
+                      [(viewDate)]="viewDate"
+                      (viewDateChange)="dateOrViewChanged()"
+                    >
+                      <span class="valign-center">
+                        <i title="Oggi" class="material-icons md-18">today</i>
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-outline-dark btn-top-calendar"
+                      mwlCalendarNextView
+                      [view]="view"
+                      [(viewDate)]="viewDate"
+                      [daysInWeek]="viewDays"
+                      [excludeDays]="excludeDays"
+                      [disabled]="nextBtnDisabled"
+                      (viewDateChange)="dateOrViewChanged()"
+                    >
+                      <span class="valign-center">
+                        <i title="Successivo" class="material-icons md-18">
+                          keyboard_arrow_right
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <calendar-scheduler-view
+              [viewDays]="viewDays"
+              [viewDate]="viewDate"
+              [events]="events"
+              [locale]="locale"
+              [responsive]="true"
+              [weekStartsOn]="weekStartsOn"
+              [excludeDays]="excludeDays"
+              [startsWithToday]="startsWithToday"
+              [hourSegments]="hourSegments"
+              [dayStartHour]="dayStartHour"
+              [dayEndHour]="dayEndHour"
+              [dayStartMinute]="dayStartMinute"
+              [dayEndMinute]="dayEndMinute"
+              [dayModifier]="dayModifier"
+              [hourModifier]="hourModifier"
+              [segmentModifier]="segmentModifier"
+              [eventModifier]="eventModifier"
+              [showEventActions]="true"
+              [showSegmentHour]="false"
+              [zoomEventOnHover]="false"
+              (viewDaysChanged)="calendarService.viewDaysChanged($event)"
+              (hourClicked)="calendarService.hourClicked($event.hour)"
+              (eventTimesChanged)="eventTimesChanged($event)"
+              [refresh]="refresh"
+            ></calendar-scheduler-view>
+          </div>
+        </p-tabPanel>
+        <p-tabPanel header="Reserver">
+          <form
+            class="row"
+            id="contactForm"
+            (ngSubmit)="sendLocation()"
+            [formGroup]="locationForm"
+          >
+            <!-- Heure  input -->
+            <div class="row">
+              <div class="col mb-3">
+                <div>
+                  <label for="" class="mb-2">
+                    Heure Debut
+                  </label>
+                  <input
+                    class="form-control"
+                    id="heureDebut"
+                    type="datetime-local"
+                    formControlName="heureDebut"
+                    name="heureDebut"
+                    (change)="heureDebutChange($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        locationForm.get('heureDebut')?.touched &&
+                        locationForm.get('heureDebut')?.invalid
+                    }"
+                  />
+                  <div
+                    *ngIf="
+                      locationForm.get('heureDebut')?.touched &&
+                      locationForm.get('heureDebut')?.invalid
+                    "
+                    class="invalid-feedback"
+                  >
+                    <div
+                      *ngIf="locationForm.get('heureDebut')?.errors?.['required']"
+                    >
+                      {{ 'form.champ_oblig' | translate }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col mb-3">
+                <div>
+                  <label for="" class="mb-2">
+                    Heure Fin
+                  </label>
+                  <input
+                    class="form-control"
+                    id="heureFin"
+                    type="datetime-local"
+                    formControlName="heureFin"
+                    name="heureFin"
+                    [min]="heureFinMin"
+                    (change)="heureFinChange($event)"
+                    [ngClass]="{
+                      'is-invalid':
+                        locationForm.get('heureFin')?.touched &&
+                        locationForm.get('heureFin')?.invalid
+                    }"
+                  />
+                  <div
+                    *ngIf="
+                      locationForm.get('heureFin')?.touched &&
+                      locationForm.get('heureFin')?.invalid
+                    "
+                    class="invalid-feedback"
+                  >
+                    <div
+                      *ngIf="locationForm.get('heureFin')?.errors?.['required']"
+                    >
+                      {{ 'form.champ_oblig' | translate }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-5 d-flex flex-column">
+              <label for="quantite">Quantité</label>
+              <div class="my-2 d-flex">
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="quantite"
+                  [max]="quantiteDispo"
+                  [min]="1"
+                />
+              </div>
+            </div>
+            <!--Debut  Table info -->
+            <div class="my-2" *ngIf="locationForm.value.quantite">
+              <h6>
+                Information
+              </h6>
+              <table class="table-recap">
+                <thead style="width: 724px; top: 0px; z-index: auto;" class="">
+                  <tr class="">
+                    <th class="" style="width: 200px;">
+                      Details
+                    </th>
+                    <th class="" style="width: 150px;">
+                      Personnes
+                    </th>
+                    <th class="" style="width: 150px;">
+                      Tarif
+                    </th>
+                    <th class="" style="width: 300px;">Vos options</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <ul class="list-details-info">
+                        <li>
+                          <img
+                            src="https://cdn-icons-png.flaticon.com/512/567/567301.png"
+                            class="icon-list"
+                          />
+                          A/C
+                        </li>
+                        <li>
+                          <img
+                            src="https://cdn-icons-png.flaticon.com/512/84/84928.png"
+                            class="icon-list"
+                          />
+
+                          Sièges Cuir
+                        </li>
+                        <li>
+                          <img
+                            src="https://img1.freepng.fr/20180420/wve/kisspng-car-rim-alloy-wheel-computer-icons-rim-vector-5adab365482895.8635628615242822132956.jpg"
+                            class="icon-list"
+                          />
+
+                          Jantes
+                        </li>
+                        <li>
+                          <img
+                            src="https://st2.depositphotos.com/47577860/48168/v/600/depositphotos_481688844-stock-illustration-child-seat-isofix-icon-in.jpg"
+                            class="icon-list"
+                          />
+
+                          Iso Fix
+                        </li>
+                        <li>
+                          <img
+                            src="https://cdn-icons-png.flaticon.com/512/567/567301.png"
+                            class="icon-list"
+                          />
+
+                          App Connect
+                        </li>
+                      </ul>
+                    </td>
+
+                    <td>5 Personnes</td>
+
+                    <td>
+                      {{ product.price * locationForm.value.quantite }} DH
+                    </td>
+
+                    <td class="options-area">
+                      <div class="" *ngFor="let opt of options">
+                        <div
+                          class=""
+                          *ngIf="
+                            calendarService.getQuantiteRestante(
+                              locationForm.value.heureDebut,
+                              locationForm.value.Fin,
+                              opt
+                            ) > locationForm.value.quantite
+                          "
+                        >
+                          <label for="">
+                            <input
+                              type="checkbox"
+                              name="option1"
+                              value="option1"
+                            />
+                            {{ opt.titre }} ( +
+                            {{ opt.price * locationForm.value.quantite }} DH)
+                          </label>
+                        </div>
+                      </div>
+                      <!-- <label for="">
+                        <input type="checkbox" name="option2" value="option2" />
+                        Option 2 (+ 25 DH)
+                      </label>
+                      <label for="">
+                        <input type="checkbox" name="option3" value="option3" />
+                        Option 3 (+ 15 DH)
+                      </label>
+                      <label for="">
+                        <input type="checkbox" name="option4" value="option4" />
+                        Option 4 (+ 50 DH)
+                      </label> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Fin Table info -->
+
+            <!-- Info P NomPrenom input -->
+            <div class="row">
+              <div class="col mb-3">
+                <label class="form-label" for="name">
+                  {{ 'form.nom' | translate }}
+                </label>
+                <input
+                  class="form-control"
+                  id="name"
+                  type="text"
+                  placeholder="{{ 'form.exp_nom' | translate }}"
+                  [ngClass]="{
+                    'is-invalid':
+                      locationForm.get('name')?.touched &&
+                      locationForm.get('name')?.invalid
+                  }"
+                  formControlName="name"
+                  name="name"
+                />
+                <div
+                  *ngIf="
+                    locationForm.get('name')?.touched &&
+                    locationForm.get('name')?.invalid
+                  "
+                  class="invalid-feedback mb-2"
+                >
+                  <div *ngIf="locationForm.get('name')?.errors?.['required']">
+                    {{ 'form.champ_oblig' | translate }}
+                  </div>
+                  <div *ngIf="locationForm.get('name')?.errors?.['minlength']">
+                    {{ 'form.champ_3' | translate }}
+                  </div>
+                  <div *ngIf="locationForm.get('name')?.errors?.['maxlength']">
+                    {{ 'form.champ_30' | translate }}
+                  </div>
+                  <div *ngIf="locationForm.get('name')?.errors?.['pattern']">
+                    {{ 'form.champ_lettre' | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col mb-3">
+                <label class="form-label" for="prenom">
+                  {{ 'form.prenom' | translate }}
+                </label>
+                <input
+                  class="form-control"
+                  id="prenom"
+                  type="text"
+                  placeholder="{{ 'form.exp_pre' | translate }}"
+                  [ngClass]="{
+                    'is-invalid':
+                      locationForm.get('prenom')?.touched &&
+                      locationForm.get('prenom')?.invalid
+                  }"
+                  formControlName="prenom"
+                  name="prenom"
+                />
+                <div
+                  *ngIf="
+                    locationForm.get('prenom')?.touched &&
+                    locationForm.get('prenom')?.invalid
+                  "
+                  class="invalid-feedback mb-2"
+                >
+                  <div *ngIf="locationForm.get('prenom')?.errors?.['required']">
+                    {{ 'form.champ_oblig' | translate }}
+                  </div>
+                  <div
+                    *ngIf="locationForm.get('prenom')?.errors?.['minlength']"
+                  >
+                    {{ 'form.champ_3' | translate }}
+                  </div>
+                  <div
+                    *ngIf="locationForm.get('prenom')?.errors?.['maxlength']"
+                  >
+                    {{ 'form.champ_30' | translate }}
+                  </div>
+                  <div *ngIf="locationForm.get('prenom')?.errors?.['pattern']">
+                    {{ 'form.champ_lettre' | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Email address input -->
+              <div class="col mb-3">
+                <label class="form-label" for="emailAddress">
+                  {{ 'form.email' | translate }}
+                </label>
+                <input
+                  class="form-control"
+                  id="emailAddress"
+                  type="email"
+                  placeholder="{{ 'form.exp_email' | translate }}"
+                  formControlName="email"
+                  name="email"
+                  [ngClass]="{
+                    'is-invalid':
+                      locationForm.get('email')?.touched &&
+                      locationForm.get('email')?.invalid
+                  }"
+                />
+                <div
+                  *ngIf="
+                    locationForm.get('email')?.touched &&
+                    locationForm.get('email')?.invalid
+                  "
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="locationForm.get('email')?.errors?.['required']">
+                    {{ 'form.champ_oblig' | translate }}
+                  </div>
+                  <div *ngIf="locationForm.get('email')?.errors?.['email']">
+                    {{ 'form.mail_valid' | translate }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Telephone address input -->
+              <div class="col mb-3">
+                <label class="form-label" for="telephone">
+                  {{ 'form.telephone' | translate }}
+                </label>
+                <input
+                  class="form-control"
+                  id="telephone"
+                  type="texte"
+                  placeholder="{{ 'form.exp_tel' | translate }}"
+                  formControlName="telephone"
+                  name="telephone"
+                  [ngClass]="{
+                    'is-invalid':
+                      locationForm.get('telephone')?.touched &&
+                      locationForm.get('telephone')?.invalid
+                  }"
+                />
+                <div
+                  *ngIf="
+                    locationForm.get('telephone')?.touched &&
+                    locationForm.get('telephone')?.invalid
+                  "
+                  class="invalid-feedback"
+                >
+                  <div
+                    *ngIf="locationForm.get('telephone')?.errors?.['required']"
+                  >
+                    {{ 'form.champ_oblig' | translate }}
+                  </div>
+                  <div
+                    *ngIf="locationForm.get('telephone')?.errors?.['pattern']"
+                  >
+                    {{ 'form.tel_valid' | translate }}
+                  </div>
+                  <div
+                    *ngIf="locationForm.get('telephone')?.errors?.['minlength']"
+                  >
+                    {{ 'form.champ_10' | translate }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Titre Input -->
+            <div>
+              <label for="titre">
+                Titre
+              </label>
+
+              <input
+                type="text"
+                name="titre"
+                class="form-control"
+                formControlName="titre"
+                [ngClass]="{
+                  'is-invalid':
+                    locationForm.get('titre')?.touched &&
+                    locationForm.get('titre')?.invalid
+                }"
+              />
+
+              <div
+                *ngIf="
+                  locationForm.get('titre')?.touched &&
+                  locationForm.get('titre')?.invalid
+                "
+                class="invalid-feedback mb-2"
+              >
+                <div *ngIf="locationForm.get('titre')?.errors?.['required']">
+                  {{ 'form.champ_oblig' | translate }}
+                </div>
+                <div *ngIf="locationForm.get('titre')?.errors?.['minlength']">
+                  {{ 'form.champ_3' | translate }}
+                </div>
+                <div *ngIf="locationForm.get('titre')?.errors?.['maxlength']">
+                  {{ 'form.champ_30' | translate }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Message  input -->
+            <div class="mb3">
+              <label for="content">
+                Message
+              </label>
+
+              <textarea
+                type="text"
+                name="content"
+                class="form-control"
+                formControlName="content"
+                [ngClass]="{
+                  'is-invalid':
+                    locationForm.get('content')?.touched &&
+                    locationForm.get('content')?.invalid
+                }"
+              ></textarea>
+              <div
+                *ngIf="
+                  locationForm.get('content')?.touched &&
+                  locationForm.get('content')?.invalid
+                "
+                class="invalid-feedback mb-2"
+              >
+                <div *ngIf="locationForm.get('content')?.errors?.['required']">
+                  {{ 'form.champ_oblig' | translate }}
+                </div>
+                <div *ngIf="locationForm.get('content')?.errors?.['minlength']">
+                  {{ 'form.champ_3' | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="my-2 col align-self-end">
+              <input
+                type="submit"
+                class="btn btn-outline-dark"
+                value="Enregistrer"
+                style="
+                  border-radius: 0.25rem;
+                  display: inline-block;
+                  height: auto;
+                  width: max-content;
+                "
+              />
+            </div>
+          </form>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+    <div class="" *ngIf="modeNavigation == 'vente'">
+      <h6>Produit en Vente</h6>
+
+      <div class="row">
+        <div class="col-md-6 border-end">
+          <div class="d-flex flex-column justify-content-center">
+            <div class="main_image position-relative">
+              <img
+                *ngIf="selectedImage == ''"
+                [src]="product.imageProduct"
+                id="main_product_image"
+                (mousemove)="onMousemove($event)"
+                (mouseout)="onMouseout()"
+                [style]="
+                  'transform: scale(' +
+                  scaleValue +
+                  ') translate(' +
+                  clientX +
+                  'px,' +
+                  clientY +
+                  'px)'
+                "
+              />
+
+              <img
+                *ngIf="selectedImage != ''"
+                [src]="selectedImage"
+                id="main_product_image"
+                (mousemove)="onMousemove($event)"
+                (mouseout)="onMouseout()"
+                [style]="
+                  'transform: scale(' +
+                  scaleValue +
+                  ') translate(' +
+                  clientX +
+                  'px,' +
+                  clientY +
+                  'px)'
+                "
+              />
+              <div class="promo-badge" *ngIf="selectedItem?.promo">
+                <p class="m-0">Promo</p>
+              </div>
+            </div>
+            <div class="thumbnail_images">
+              <ul id="thumbnail">
+                <li>
+                  <img
+                    (click)="changeParentImage(selectedItem.imageProduct)"
+                    [src]="selectedItem.imageProduct"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+                <li *ngFor="let item of selectedItem?.otherImages">
+                  <img
+                    [src]="item"
+                    (click)="changeParentImage(item)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 right-side">
+            <div class="d-flex justify-content-between align-items-center">
+              <h3>{{ produit.titre }}</h3>
+            </div>
+            <div class="ratings d-flex flex-row align-items-center my-2">
+              <p-rating
+                [ngModel]="selectedItem?.rating"
+                [readonly]="true"
+                [cancel]="false"
+              ></p-rating>
+              <h4>&nbsp; ({{ totalReviews }}Review)</h4>
+            </div>
+            <div class="">
+              <p>
+                <i class="fa-solid fa-tag"></i>
+                {{ produit?.categorie }}
+              </p>
+            </div>
+
+            <div
+              class="product-grid-item-bottom d-flex align-items-center section-space"
+              *ngIf="selectedItem?.promo"
+            >
+              <h3 class="title-secondary mb-1 text-danger font-weight-bold">
+                {{ selectedItem?.price }} Dh
+              </h3>
+              <del
+                class="title-secondary mb-1 small-text px-2 font-weight-bold"
+              >
+                {{ selectedItem?.promo?.promoPrice }}
+              </del>
+              <span class="text-danger font-weight-bold">
+                {{ selectedItem?.promo?.taux }}
+              </span>
+            </div>
+            <div
+              class="product-grid-item-bottom section-space"
+              *ngIf="!selectedItem?.promo"
+            >
+              <h3 class="title-secondary mb-1 text-danger font-weight-bold">
+                {{ selectedItem?.price }} Dh
+              </h3>
+            </div>
+
+            <div class="thumbnail_images section-space">
+              <ul id="thumbnail" class="justify-content-start">
+                <li>
+                  <img
+                    [src]="produit.imageProduct"
+                    (click)="changeSelectedItem(produit)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+                <li *ngFor="let item of produit?.others">
+                  <img
+                    [src]="item.imageProduct"
+                    (click)="changeSelectedItem(item)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+              </ul>
+            </div>
+            <div class="row section-space section-space">
+              <div
+                class="col-md-5 d-flex flex-column"
+                *ngIf="selectedItem?.variant"
+              >
+                <span class="fw-bold">Sizes</span>
+                <div class="my-2">
+                  <select class="form-control">
+                    <option
+                      *ngFor="let v of selectedItem?.variant"
+                      value="{{ v }}"
+                    >
+                      {{ v }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-5 d-flex flex-column">
+                <span class="fw-bold">Quantité</span>
+                <div class="my-2 d-flex">
+                  <button class="btn btn-light" (click)="decrement()">-</button>
+
+                  <span class="form-control">{{ quantiteDispo }}</span>
+                  <button (click)="increment()" class="btn btn-light">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-space">
+              <div
+                class="product-grid-item-bottom product-shipping d-flex align-items-center justify-content-between"
+                *ngIf="selectedItem?.livraison"
+              >
+                <p class="m-0 text-danger">
+                  <i class="icon-card fa-solid fa-truck-fast"></i>
+                  {{ 'globale.livraison-gratuite' | translate }}
+                </p>
+
+                <a
+                  [routerLink]="['/details/details/product']"
+                  [fragment]="'link'"
+                  (click)="openModal2(shippingInfo)"
+                >
+                  {{ 'globale.autres-options' | translate }}
+                </a>
+              </div>
+              <div
+                class="product-grid-item-bottom product-shipping d-flex align-items-center justify-content-between"
+                *ngIf="!selectedItem?.livraison"
+              >
+                <p class="m-0 text-danger">
+                  <i class="icon-card fa-solid fa-truck-fast"></i>
+                  {{ 'globale.livraison-payante' | translate }}
+                </p>
+                <a
+                  [routerLink]="['/details/details/product']"
+                  [fragment]="'link'"
+                  (click)="openModal2(shippingInfo)"
+                >
+                  {{ 'globale.autres-options' | translate }}
+                </a>
+              </div>
+            </div>
+            <div class="section-space" *ngIf="selectedItem?.timer">
+              <app-countdown></app-countdown>
+            </div>
+
+            <div class="buttons d-flex flex-row section-space gap-3">
+              <button class="btn btn-outline-dark">
+                <i class="fa-solid fa-cart-shopping"></i>
+                {{ 'globale.acheter-m' | translate }}
+              </button>
+              <button class="btn btn-outline-dark" (click)="addToCart()">
+                <i class="fa-solid fa-basket-shopping"></i>
+                {{ 'globale.ajouter-p' | translate }}
+              </button>
+              <button class="btn btn-outline-dark" (click)="addToWishList()">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="section-space">
+              <div class="border-product">
+                <h6 class="product-title">
+                  {{ 'globale.partager' | translate }}
+                </h6>
+                <div class="product-icon">
+                  <ul class="product-social p-0 m-0">
+                    <li>
+                      <a href="#"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-google-plus"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-rss"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="section-space">
+            <app-mode-payment></app-mode-payment>
+          </div> -->
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="product-shipping">
+            <h4 class="my-2 py-1">
+              {{ 'enquette.object' | translate }}
+            </h4>
+
+            <h6 class="my-2 py-1">
+              {{ 'enquette.question' | translate }}
+            </h6>
+            <div class="my-1">
+              <p-rating [cancel]="false"></p-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class=" " id="link"> -->
+      <div class=" " id="link">
+        <p-tabView [scrollable]="true">
+          <p-tabPanel header="Description">
+            {{ selectedItem.description }}
+          </p-tabPanel>
+          <p-tabPanel header="Produit et Conseils">
+            <p-accordion>
+              <p-accordionTab
+                *ngFor="let qR of produit?.aboutProduct"
+                header="{{ qR.question }}"
+              >
+                {{ qR.reponse }}
+              </p-accordionTab>
+            </p-accordion>
+          </p-tabPanel>
+          <p-tabPanel header="Reviews">
+            <!-- Form Devis-->
+            <p-tabView>
+              <p-tabPanel header="Add Review">
+                <div class=" ">
+                  <!-- Bootstrap 5 starter form -->
+                  <form
+                    id="contactForm"
+                    (ngSubmit)="sendDevis()"
+                    [formGroup]="reviewForm"
+                    #form2
+                  >
+                    <!-- Rating input -->
+
+                    <div class="mb-3 col">
+                      <p-rating [readonly]="true" [cancel]="false"></p-rating>
+                    </div>
+                    <div class="row">
+                      <!-- Name input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="name">
+                            {{ 'form.nom' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="name"
+                            type="text"
+                            placeholder="{{ 'form.exp_nom' | translate }}"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('name')?.touched &&
+                                reviewForm.get('name')?.invalid
+                            }"
+                            formControlName="name"
+                            name="name"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('name')?.touched &&
+                              reviewForm.get('name')?.invalid
+                            "
+                            class="invalid-feedback mb-2"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_3' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                            >
+                              {{ 'form.champ_30' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                            >
+                              {{ 'form.champ_lettre' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Email address input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="emailAddress">
+                            {{ 'form.email' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="emailAddress"
+                            type="email"
+                            placeholder="{{ 'form.exp_email' | translate }}"
+                            formControlName="email"
+                            name="email"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('email')?.touched &&
+                                reviewForm.get('email')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('email')?.touched &&
+                              reviewForm.get('email')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['email']"
+                            >
+                              {{ 'form.mail_valid' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Telephone address input -->
+                    <div class="row">
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="telephone">
+                            {{ 'form.telephone' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="telephone"
+                            type="texte"
+                            placeholder="{{ 'form.exp_tel' | translate }}"
+                            formControlName="telephone"
+                            name="telephone"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('telephone')?.touched &&
+                                reviewForm.get('telephone')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('telephone')?.touched &&
+                              reviewForm.get('telephone')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                            >
+                              {{ 'form.tel_valid' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_10' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Devis  input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="object">
+                            {{ 'form.object' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="object"
+                            type="texte"
+                            [disabled]="true"
+                            placeholder="Object"
+                            formControlName="object"
+                            name="object"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Message input -->
+                    <div class="mb-3">
+                      <label class="form-label" for="message">
+                        {{ 'form.message' | translate }}
+                      </label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        type="text"
+                        placeholder="{{ 'form.c_msg' | translate }}"
+                        style="height: 10rem;"
+                      ></textarea>
+                      <div
+                        *ngIf="
+                          reviewForm.get('message')?.touched &&
+                          reviewForm.get('message')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form submit button -->
+                    <div class="">
+                      <button
+                        class="btn btn-outline-dark btn-lg col-md-3"
+                        type="submit"
+                      >
+                        {{ 'form.Envoyer' | translate }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </p-tabPanel>
+              <p-tabPanel header="All Reviews">
+                <div class="row position-relative">
+                  <div class="col-md-4 fixed-element">
+                    <app-review-bars></app-review-bars>
+                  </div>
+                  <div class="col-md-8 review-list">
+                    <div class="row review" *ngFor="let review of reviews">
+                      <div class="col-md-3">
+                        <h5>{{ review.name }}</h5>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="mb-3">
+                          <p-rating
+                            [readonly]="true"
+                            [cancel]="false"
+                          ></p-rating>
+                        </div>
+                        <div class="">
+                          <p class="text-description m-0">
+                            {{ review.commentaire }}
+                          </p>
+                          <p class="light-txt m-0">
+                            {{ review.date | date: 'dd/MM/yyyy' }}
+                          </p>
+                        </div>
+
+                        <div class="d-flex my-3">
+                          <img
+                            *ngFor="let item of review?.images"
+                            src="{{ item }}"
+                            alt="Image"
+                            height="80"
+                            width="80"
+                            class="mx-3 cursor-pointer"
+                            (click)="openModal(detail_content, item)"
+                          />
+                          <ng-template #detail_content let-modal>
+                            <div class="modal-header">
+                              <button
+                                type="button"
+                                class="close"
+                                aria-label="Close"
+                                (click)="modal.dismiss('Cross click')"
+                              >
+                                <span aria-hidden="true">
+                                  &times;
+                                </span>
+                              </button>
+                            </div>
+                            <div class="modal-body text-center">
+                              <div class="theme-card">
+                                <img src="{{ imgModal }}" />
+                              </div>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-tabPanel>
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="SAV">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Le service après-vente (SAV) est un des services d'une
+                  entreprise, assurant la mise en marche, l'entretien et la
+                  réparation d'un bien que cette entreprise a vendu ou pas. Le
+                  SAV est souvent réduit à la notion d'intervention technique
+                  mais il inclut l'ensemble des services associés aux biens
+                  concernés, réalisés après la vente. Ce terme est très employé
+                  dans le cadre de biens de consommation comme l'électroménager
+                  et l'automobile, où il est souvent associé à la maintenance.
+                  Dans le domaine de l'industrie, le service après-vente
+                  accompagne la vie d'un équipement de production, assurant la
+                  prise en charge de l'installation, de la mise en route, de
+                  l'entretien préventif, des dépannages et autres réparations,
+                  de l'assistance technique et de la gestion des pièces de
+                  rechange. Ainsi, le service après-vente reste une forte valeur
+                  ajoutée que le service commercial doit bien exploiter lors des
+                  négociations commerciales. Dans les activités de service pur,
+                  on emploie généralement l'expression service client, qui est
+                  plus générale, dans la mesure où elle inclut l'ensemble de la
+                  relation client. Le service après-vente est un domaine de
+                  l'entreprise où l'on peut avantageusement mettre en œuvre une
+                  démarche de développement durable. En effet, en développant
+                  une politique de réparabilité des produits, il est possible de
+                  lutter contre l'obsolescence programmée, dont les coûts
+                  économiques et environnementaux sont très élevés. Les projets
+                  de réparabilité permettent à l'entreprise de conserver ses
+                  clients et d'améliorer son image1. En France, selon la loi de
+                  modernisation de l'économie pour un consommateur, l'appel vers
+                  le SAV ne peut pas être surtaxé.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <div class=" ">
+                  <!-- Bootstrap 5 starter form -->
+                  <form
+                    id="contactForm"
+                    (ngSubmit)="sendDevis()"
+                    [formGroup]="reviewForm"
+                    #form2
+                  >
+                    <!-- Rating input -->
+
+                    <div class="row">
+                      <!-- Name input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="name">
+                            {{ 'form.nom' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="name"
+                            type="text"
+                            placeholder="{{ 'form.exp_nom' | translate }}"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('name')?.touched &&
+                                reviewForm.get('name')?.invalid
+                            }"
+                            formControlName="name"
+                            name="name"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('name')?.touched &&
+                              reviewForm.get('name')?.invalid
+                            "
+                            class="invalid-feedback mb-2"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_3' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                            >
+                              {{ 'form.champ_30' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                            >
+                              {{ 'form.champ_lettre' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Email address input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="emailAddress">
+                            {{ 'form.email' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="emailAddress"
+                            type="email"
+                            placeholder="{{ 'form.exp_email' | translate }}"
+                            formControlName="email"
+                            name="email"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('email')?.touched &&
+                                reviewForm.get('email')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('email')?.touched &&
+                              reviewForm.get('email')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['email']"
+                            >
+                              {{ 'form.mail_valid' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Telephone +Devis address input -->
+                    <!-- Telephone  address input -->
+
+                    <div class="row">
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="telephone">
+                            {{ 'form.telephone' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="telephone"
+                            type="texte"
+                            placeholder="{{ 'form.exp_tel' | translate }}"
+                            formControlName="telephone"
+                            name="telephone"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('telephone')?.touched &&
+                                reviewForm.get('telephone')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('telephone')?.touched &&
+                              reviewForm.get('telephone')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                            >
+                              {{ 'form.tel_valid' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_10' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Devis  input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="object">
+                            {{ 'form.object' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="object"
+                            type="texte"
+                            [disabled]="true"
+                            placeholder="Object"
+                            formControlName="object"
+                            name="object"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Reference  input -->
+
+                    <div class="col mb-3">
+                      <label class="form-label" for="reference">
+                        {{ 'form.reference' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="reference"
+                        type="texte"
+                        [disabled]="true"
+                        placeholder="reference"
+                        formControlName="reference"
+                        name="reference"
+                      />
+                    </div>
+                    <!-- Message input -->
+
+                    <div class="mb-3">
+                      <label class="form-label" for="message">
+                        {{ 'form.message' | translate }}
+                      </label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        type="text"
+                        placeholder="{{ 'form.c_msg' | translate }}"
+                        style="height: 10rem;"
+                      ></textarea>
+                      <div
+                        *ngIf="
+                          reviewForm.get('message')?.touched &&
+                          reviewForm.get('message')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form submit button -->
+                    <div class="d-grid">
+                      <button class="btn btn-outline-dark btn-lg" type="submit">
+                        {{ 'form.Envoyer' | translate }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Reclamation">
+            <div class=" ">
+              <!-- Bootstrap 5 starter form -->
+              <form
+                id="contactForm"
+                (ngSubmit)="sendDevis()"
+                [formGroup]="reviewForm"
+                #form2
+              >
+                <!-- Rating input -->
+
+                <div class="row">
+                  <!-- Name input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="name">
+                        {{ 'form.nom' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="name"
+                        type="text"
+                        placeholder="{{ 'form.exp_nom' | translate }}"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('name')?.touched &&
+                            reviewForm.get('name')?.invalid
+                        }"
+                        formControlName="name"
+                        name="name"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('name')?.touched &&
+                          reviewForm.get('name')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_3' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                        >
+                          {{ 'form.champ_30' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                        >
+                          {{ 'form.champ_lettre' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Email address input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="emailAddress">
+                        {{ 'form.email' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="emailAddress"
+                        type="email"
+                        placeholder="{{ 'form.exp_email' | translate }}"
+                        formControlName="email"
+                        name="email"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('email')?.touched &&
+                            reviewForm.get('email')?.invalid
+                        }"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('email')?.touched &&
+                          reviewForm.get('email')?.invalid
+                        "
+                        class="invalid-feedback"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('email')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div *ngIf="reviewForm.get('email')?.errors?.['email']">
+                          {{ 'form.mail_valid' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Telephone +Devis address input -->
+                <!-- Telephone  address input -->
+
+                <div class="row">
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="telephone">
+                        {{ 'form.telephone' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="telephone"
+                        type="texte"
+                        placeholder="{{ 'form.exp_tel' | translate }}"
+                        formControlName="telephone"
+                        name="telephone"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('telephone')?.touched &&
+                            reviewForm.get('telephone')?.invalid
+                        }"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('telephone')?.touched &&
+                          reviewForm.get('telephone')?.invalid
+                        "
+                        class="invalid-feedback"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                        >
+                          {{ 'form.tel_valid' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Devis  input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="object">
+                        {{ 'form.object' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="object"
+                        type="texte"
+                        [disabled]="true"
+                        placeholder="Object"
+                        formControlName="object"
+                        name="object"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message input -->
+
+                <div class="mb-3">
+                  <label class="form-label" for="message">
+                    {{ 'form.message' | translate }}
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    type="text"
+                    placeholder="{{ 'form.c_msg' | translate }}"
+                    style="height: 10rem;"
+                  ></textarea>
+                  <div
+                    *ngIf="
+                      reviewForm.get('message')?.touched &&
+                      reviewForm.get('message')?.invalid
+                    "
+                    class="invalid-feedback mb-2"
+                  >
+                    <div
+                      *ngIf="reviewForm.get('message')?.errors?.['required']"
+                    >
+                      {{ 'form.champ_oblig' | translate }}
+                    </div>
+                    <div
+                      *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                    >
+                      {{ 'form.champ_10' | translate }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form submit button -->
+                <div class="">
+                  <button
+                    class="btn btn-outline-dark btn-lg col-md-3"
+                    type="submit"
+                  >
+                    {{ 'form.Envoyer' | translate }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="CashBack">
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Actualités ENGIE - Electricité et Gaz 2022</h4>
+                <p>
+                  Envie de changer de fournisseur d'énergie ? ENGIE vous
+                  accompagne lors de votre déménagement en vous facilitant les
+                  formalités administratives. En effectuant une demande de
+                  contrat sur le site, vous pourrez être recontacté dans les 24h
+                  par un conseiller qui saura vous accompagner lors de vos
+                  différentes démarches. Maîtriser votre consommation simplement
+                  depuis votre espace client ou directement depuis
+                  l'application. ENGIE vous propose des écogestes afin de
+                  réduire votre consommation. Besoin de cartons pour votre
+                  déménagement ? Commandez-en sur le site ENGIE pour les
+                  recevoir sous 48h. Profitez également du cashback iGraal pour
+                  faire de belles réductions lors de votre souscription à ENGIE.
+                </p>
+              </div>
+              <div class="col-md-8">
+                <div class="cashback-card" *ngFor="let i of cashBack">
+                  <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                      <h2 class="text-warning bold">{{ i.value }}</h2>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="m-0 pb-1">{{ i.tag }}</p>
+                      <h4 class="text-dark bold">
+                        {{ i.title }}
+                      </h4>
+                      <p class="small-text">
+                        {{ 'globale.jusqu' | translate }}
+                        {{ i.date | date: 'dd-MM-yyyy' }}
+                      </p>
+                    </div>
+                    <div class="col-md-3">
+                      <button class="btn btn-solid btn-info col-md-12">
+                        {{ 'globale.profiter' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="A Propos Livraison ">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-dark">
+                  Pay on delivery is available
+                </p>
+                <p class="text-dark">
+                  Les colis envoyés par ce service logistique sont suivis avec
+                  succès grâce à notre service.
+                </p>
+                <p class="text-dark">Easy 30 days returns and exchanges</p>
+
+                <h5 class="text-dark">
+                  <i class="fa-solid fa-arrow-rotate-left"></i>
+                  Retour gratuit sous 100 jours
+                </h5>
+              </div>
+              <div class="col-md-6">
+                <div
+                  class="livraison-bloc"
+                  *ngFor="let item of produit?.shipping"
+                >
+                  <label class="w-100 text-dark bold">
+                    <h6 class="bold">
+                      {{ 'globale.livraison' | translate }} : {{ item.prix }} DH
+                    </h6>
+                    <p class="m-0 text-dark bold">
+                      {{ 'globale.date-l-e' | translate }} :
+                      {{ livraisonDate(item.duree) }}
+                    </p>
+                    <p class="m-0 text-dark bold">
+                      {{ 'globale.livre-p' | translate }} : {{ item.company }}
+                    </p>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+    <div class="" *ngIf="modeNavigation == 'reservation-vente'">
+      <h6>Produit en Vente (Reservation)</h6>
+      <div class="row">
+        <div class="col-md-6 border-end">
+          <div class="d-flex flex-column justify-content-center">
+            <div class="main_image position-relative">
+              <img
+                *ngIf="selectedImage == ''"
+                [src]="product.imageProduct"
+                id="main_product_image"
+                (mousemove)="onMousemove($event)"
+                (mouseout)="onMouseout()"
+                [style]="
+                  'transform: scale(' +
+                  scaleValue +
+                  ') translate(' +
+                  clientX +
+                  'px,' +
+                  clientY +
+                  'px)'
+                "
+              />
+
+              <img
+                *ngIf="selectedImage != ''"
+                [src]="selectedImage"
+                id="main_product_image"
+                (mousemove)="onMousemove($event)"
+                (mouseout)="onMouseout()"
+                [style]="
+                  'transform: scale(' +
+                  scaleValue +
+                  ') translate(' +
+                  clientX +
+                  'px,' +
+                  clientY +
+                  'px)'
+                "
+              />
+              <div class="promo-badge" *ngIf="selectedItem?.promo">
+                <p class="m-0">Promo</p>
+              </div>
+            </div>
+            <div class="thumbnail_images">
+              <ul id="thumbnail">
+                <li>
+                  <img
+                    (click)="changeParentImage(selectedItem.imageProduct)"
+                    [src]="selectedItem.imageProduct"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+                <li *ngFor="let item of selectedItem?.otherImages">
+                  <img
+                    [src]="item"
+                    (click)="changeParentImage(item)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 right-side">
+            <div class="d-flex justify-content-between align-items-center">
+              <h3>{{ produit.titre }}</h3>
+            </div>
+            <div class="ratings d-flex flex-row align-items-center my-2">
+              <p-rating
+                [ngModel]="selectedItem?.rating"
+                [readonly]="true"
+                [cancel]="false"
+              ></p-rating>
+              <p class="m-0">&nbsp; ({{ totalReviews }}Review)</p>
+            </div>
+            <div class="">
+              <p>
+                <i class="fa-solid fa-tag"></i>
+                {{ produit?.categorie }}
+              </p>
+            </div>
+
+            <div
+              class="product-grid-item-bottom d-flex align-items-center section-space"
+              *ngIf="selectedItem?.promo"
+            >
+              <h3 class="title-secondary mb-1 text-danger font-weight-bold">
+                {{ selectedItem?.price }} Dh
+              </h3>
+              <del
+                class="title-secondary mb-1 small-text px-2 font-weight-bold"
+              >
+                {{ selectedItem?.promo?.promoPrice }} Dh
+              </del>
+              <span class="text-danger font-weight-bold">
+                {{ selectedItem?.promo?.taux }}
+              </span>
+            </div>
+            <div
+              class="product-grid-item-bottom section-space"
+              *ngIf="!selectedItem?.promo"
+            >
+              <h3 class="title-secondary mb-1 text-danger font-weight-bold">
+                {{ selectedItem?.price }} Dh
+              </h3>
+            </div>
+            <div class="section-space">
+              <span class="fw-bold">Disponible A Partir De: 30/06/2022</span>
+            </div>
+            <div class="thumbnail_images section-space">
+              <ul id="thumbnail" class="justify-content-start">
+                <li>
+                  <img
+                    [src]="produit.imageProduct"
+                    (click)="changeSelectedItem(produit)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+                <li *ngFor="let item of produit?.others">
+                  <img
+                    [src]="item.imageProduct"
+                    (click)="changeSelectedItem(item)"
+                    alt="image"
+                    class="image-product-small"
+                    width="70"
+                  />
+                </li>
+              </ul>
+            </div>
+            <div class="row section-space">
+              <div
+                class="col-md-8 d-flex flex-column"
+                *ngIf="selectedItem?.variant"
+              >
+                <span class="fw-bold">Sizes</span>
+                <div class="my-2">
+                  <select class="form-control">
+                    <option
+                      *ngFor="let v of selectedItem?.variant"
+                      value="{{ v }}"
+                    >
+                      {{ v }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12 d-flex flex-column my-2">
+                <span class="fw-bold">
+                  Quantité (Minimium : 5, Maximium: 10)
+                </span>
+                <div class="my-2 col-md-6 d-flex">
+                  <button class="btn btn-light" (click)="decrement()">-</button>
+
+                  <span class="form-control">5</span>
+                  <button (click)="increment()" class="btn btn-light">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="section-space">
+              <p class="m-0">Nouveau Stock arrive le :15/10/2022</p>
+            </div>
+            <div class="section-space">
+              <div
+                class="product-grid-item-bottom product-shipping d-flex align-items-center justify-content-between"
+                *ngIf="selectedItem?.livraison"
+              >
+                <p class="m-0 text-danger">
+                  <i class="icon-card fa-solid fa-truck-fast"></i>
+                  {{ 'globale.livraison-gratuite' | translate }}
+                </p>
+
+                <a
+                  [routerLink]="['/details/details/product']"
+                  [fragment]="'link'"
+                  (click)="openModal2(shippingInfo)"
+                >
+                  {{ 'globale.autres-options' | translate }}
+                </a>
+              </div>
+              <div
+                class="product-grid-item-bottom product-shipping d-flex align-items-center justify-content-between"
+                *ngIf="!selectedItem?.livraison"
+              >
+                <p class="m-0 text-danger">
+                  <i class="icon-card fa-solid fa-truck-fast"></i>
+                  {{ 'globale.livraison-payante' | translate }}
+                </p>
+                <a
+                  [routerLink]="['/details/details/product']"
+                  [fragment]="'link'"
+                  (click)="openModal2(shippingInfo)"
+                >
+                  {{ 'globale.autres-options' | translate }}
+                </a>
+              </div>
+            </div>
+            <div class="section-space" *ngIf="selectedItem?.timer">
+              <app-countdown></app-countdown>
+            </div>
+
+            <div class="buttons d-flex flex-row section-space gap-3">
+              <button class="btn btn-outline-dark">
+                <i class="fa-solid fa-cart-shopping"></i>
+                {{ 'globale.reserver' | translate }}
+              </button>
+              <button class="btn btn-outline-dark" (click)="addToCart()">
+                <i class="fa-solid fa-basket-shopping"></i>
+                {{ 'globale.ajouter-p' | translate }}
+              </button>
+              <button class="btn btn-outline-dark" (click)="addToWishList()">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="section-space">
+              <div class="border-product">
+                <h6 class="product-title">
+                  {{ 'globale.partager' | translate }}
+                </h6>
+                <div class="product-icon">
+                  <ul class="product-social p-0 m-0">
+                    <li>
+                      <a href="#"><i class="fa fa-facebook-f"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-google-plus"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-rss"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="section-space">
+            <app-mode-payment></app-mode-payment>
+          </div> -->
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="product-shipping">
+            <h4 class="my-2 py-1">
+              {{ 'enquette.object' | translate }}
+            </h4>
+
+            <h6 class="my-2 py-1">
+              {{ 'enquette.question' | translate }}
+            </h6>
+            <div class="my-1">
+              <p-rating [cancel]="false"></p-rating>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class=" " id="link"> -->
+      <div class=" " id="link">
+        <p-tabView [scrollable]="true">
+          <p-tabPanel header="Description">
+            {{ selectedItem.description }}
+          </p-tabPanel>
+          <p-tabPanel header="Produit et Conseils">
+            <p-accordion>
+              <p-accordionTab
+                *ngFor="let qR of produit?.aboutProduct"
+                header="{{ qR.question }}"
+              >
+                {{ qR.reponse }}
+              </p-accordionTab>
+            </p-accordion>
+          </p-tabPanel>
+          <p-tabPanel header="Reviews">
+            <!-- Form Devis-->
+            <p-tabView>
+              <p-tabPanel header="Add Review">
+                <div class=" ">
+                  <!-- Bootstrap 5 starter form -->
+                  <form
+                    id="contactForm"
+                    (ngSubmit)="sendDevis()"
+                    [formGroup]="reviewForm"
+                    #form2
+                  >
+                    <!-- Rating input -->
+
+                    <div class="mb-3 col">
+                      <p-rating [readonly]="true" [cancel]="false"></p-rating>
+                    </div>
+                    <div class="row">
+                      <!-- Name input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="name">
+                            {{ 'form.nom' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="name"
+                            type="text"
+                            placeholder="{{ 'form.exp_nom' | translate }}"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('name')?.touched &&
+                                reviewForm.get('name')?.invalid
+                            }"
+                            formControlName="name"
+                            name="name"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('name')?.touched &&
+                              reviewForm.get('name')?.invalid
+                            "
+                            class="invalid-feedback mb-2"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_3' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                            >
+                              {{ 'form.champ_30' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                            >
+                              {{ 'form.champ_lettre' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Email address input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="emailAddress">
+                            {{ 'form.email' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="emailAddress"
+                            type="email"
+                            placeholder="{{ 'form.exp_email' | translate }}"
+                            formControlName="email"
+                            name="email"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('email')?.touched &&
+                                reviewForm.get('email')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('email')?.touched &&
+                              reviewForm.get('email')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['email']"
+                            >
+                              {{ 'form.mail_valid' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Telephone address input -->
+                    <div class="row">
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="telephone">
+                            {{ 'form.telephone' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="telephone"
+                            type="texte"
+                            placeholder="{{ 'form.exp_tel' | translate }}"
+                            formControlName="telephone"
+                            name="telephone"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('telephone')?.touched &&
+                                reviewForm.get('telephone')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('telephone')?.touched &&
+                              reviewForm.get('telephone')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                            >
+                              {{ 'form.tel_valid' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_10' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Devis  input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="object">
+                            {{ 'form.object' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="object"
+                            type="texte"
+                            [disabled]="true"
+                            placeholder="Object"
+                            formControlName="object"
+                            name="object"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Message input -->
+                    <div class="mb-3">
+                      <label class="form-label" for="message">
+                        {{ 'form.message' | translate }}
+                      </label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        type="text"
+                        placeholder="{{ 'form.c_msg' | translate }}"
+                        style="height: 10rem;"
+                      ></textarea>
+                      <div
+                        *ngIf="
+                          reviewForm.get('message')?.touched &&
+                          reviewForm.get('message')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form submit button -->
+                    <div class="">
+                      <button
+                        class="btn btn-outline-dark btn-lg col-md-3"
+                        type="submit"
+                      >
+                        {{ 'form.Envoyer' | translate }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </p-tabPanel>
+              <p-tabPanel header="All Reviews">
+                <div class="row position-relative">
+                  <div class="col-md-4 fixed-element">
+                    <app-review-bars></app-review-bars>
+                  </div>
+                  <div class="col-md-8 review-list">
+                    <div class="row review" *ngFor="let review of reviews">
+                      <div class="col-md-3">
+                        <h5>{{ review.name }}</h5>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="mb-3">
+                          <p-rating
+                            [readonly]="true"
+                            [cancel]="false"
+                          ></p-rating>
+                        </div>
+                        <div class="">
+                          <p class="text-description m-0">
+                            {{ review.commentaire }}
+                          </p>
+                          <p class="light-txt m-0">
+                            {{ review.date | date: 'dd/MM/yyyy' }}
+                          </p>
+                        </div>
+
+                        <div class="d-flex my-3">
+                          <img
+                            *ngFor="let item of review?.images"
+                            src="{{ item }}"
+                            alt="Image"
+                            height="80"
+                            width="80"
+                            class="mx-3 cursor-pointer"
+                            (click)="openModal(detail_content, item)"
+                          />
+                          <ng-template #detail_content let-modal>
+                            <div class="modal-header">
+                              <button
+                                type="button"
+                                class="close"
+                                aria-label="Close"
+                                (click)="modal.dismiss('Cross click')"
+                              >
+                                <span aria-hidden="true">
+                                  &times;
+                                </span>
+                              </button>
+                            </div>
+                            <div class="modal-body text-center">
+                              <div class="theme-card">
+                                <img src="{{ imgModal }}" />
+                              </div>
+                            </div>
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </p-tabPanel>
+            </p-tabView>
+          </p-tabPanel>
+          <p-tabPanel header="SAV">
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  Le service après-vente (SAV) est un des services d'une
+                  entreprise, assurant la mise en marche, l'entretien et la
+                  réparation d'un bien que cette entreprise a vendu ou pas. Le
+                  SAV est souvent réduit à la notion d'intervention technique
+                  mais il inclut l'ensemble des services associés aux biens
+                  concernés, réalisés après la vente. Ce terme est très employé
+                  dans le cadre de biens de consommation comme l'électroménager
+                  et l'automobile, où il est souvent associé à la maintenance.
+                  Dans le domaine de l'industrie, le service après-vente
+                  accompagne la vie d'un équipement de production, assurant la
+                  prise en charge de l'installation, de la mise en route, de
+                  l'entretien préventif, des dépannages et autres réparations,
+                  de l'assistance technique et de la gestion des pièces de
+                  rechange. Ainsi, le service après-vente reste une forte valeur
+                  ajoutée que le service commercial doit bien exploiter lors des
+                  négociations commerciales. Dans les activités de service pur,
+                  on emploie généralement l'expression service client, qui est
+                  plus générale, dans la mesure où elle inclut l'ensemble de la
+                  relation client. Le service après-vente est un domaine de
+                  l'entreprise où l'on peut avantageusement mettre en œuvre une
+                  démarche de développement durable. En effet, en développant
+                  une politique de réparabilité des produits, il est possible de
+                  lutter contre l'obsolescence programmée, dont les coûts
+                  économiques et environnementaux sont très élevés. Les projets
+                  de réparabilité permettent à l'entreprise de conserver ses
+                  clients et d'améliorer son image1. En France, selon la loi de
+                  modernisation de l'économie pour un consommateur, l'appel vers
+                  le SAV ne peut pas être surtaxé.
+                </p>
+              </div>
+              <div class="col-md-6">
+                <div class=" ">
+                  <!-- Bootstrap 5 starter form -->
+                  <form
+                    id="contactForm"
+                    (ngSubmit)="sendDevis()"
+                    [formGroup]="reviewForm"
+                    #form2
+                  >
+                    <!-- Rating input -->
+
+                    <div class="row">
+                      <!-- Name input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="name">
+                            {{ 'form.nom' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="name"
+                            type="text"
+                            placeholder="{{ 'form.exp_nom' | translate }}"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('name')?.touched &&
+                                reviewForm.get('name')?.invalid
+                            }"
+                            formControlName="name"
+                            name="name"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('name')?.touched &&
+                              reviewForm.get('name')?.invalid
+                            "
+                            class="invalid-feedback mb-2"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_3' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                            >
+                              {{ 'form.champ_30' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                            >
+                              {{ 'form.champ_lettre' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Email address input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="emailAddress">
+                            {{ 'form.email' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="emailAddress"
+                            type="email"
+                            placeholder="{{ 'form.exp_email' | translate }}"
+                            formControlName="email"
+                            name="email"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('email')?.touched &&
+                                reviewForm.get('email')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('email')?.touched &&
+                              reviewForm.get('email')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('email')?.errors?.['email']"
+                            >
+                              {{ 'form.mail_valid' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Telephone +Devis address input -->
+                    <!-- Telephone  address input -->
+
+                    <div class="row">
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="telephone">
+                            {{ 'form.telephone' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="telephone"
+                            type="texte"
+                            placeholder="{{ 'form.exp_tel' | translate }}"
+                            formControlName="telephone"
+                            name="telephone"
+                            [ngClass]="{
+                              'is-invalid':
+                                reviewForm.get('telephone')?.touched &&
+                                reviewForm.get('telephone')?.invalid
+                            }"
+                          />
+                          <div
+                            *ngIf="
+                              reviewForm.get('telephone')?.touched &&
+                              reviewForm.get('telephone')?.invalid
+                            "
+                            class="invalid-feedback"
+                          >
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                            >
+                              {{ 'form.champ_oblig' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                            >
+                              {{ 'form.tel_valid' | translate }}
+                            </div>
+                            <div
+                              *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                            >
+                              {{ 'form.champ_10' | translate }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Devis  input -->
+                      <div class="mb-3 col">
+                        <div class="col">
+                          <label class="form-label" for="object">
+                            {{ 'form.object' | translate }}
+                          </label>
+                          <input
+                            class="form-control"
+                            id="object"
+                            type="texte"
+                            [disabled]="true"
+                            placeholder="Object"
+                            formControlName="object"
+                            name="object"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Reference  input -->
+
+                    <div class="col mb-3">
+                      <label class="form-label" for="reference">
+                        {{ 'form.reference' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="reference"
+                        type="texte"
+                        [disabled]="true"
+                        placeholder="reference"
+                        formControlName="reference"
+                        name="reference"
+                      />
+                    </div>
+                    <!-- Message input -->
+
+                    <div class="mb-3">
+                      <label class="form-label" for="message">
+                        {{ 'form.message' | translate }}
+                      </label>
+                      <textarea
+                        class="form-control"
+                        id="message"
+                        type="text"
+                        placeholder="{{ 'form.c_msg' | translate }}"
+                        style="height: 10rem;"
+                      ></textarea>
+                      <div
+                        *ngIf="
+                          reviewForm.get('message')?.touched &&
+                          reviewForm.get('message')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Form submit button -->
+                    <div class="d-grid">
+                      <button class="btn btn-outline-dark btn-lg" type="submit">
+                        {{ 'form.Envoyer' | translate }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="Reclamation">
+            <div class=" ">
+              <!-- Bootstrap 5 starter form -->
+              <form
+                id="contactForm"
+                (ngSubmit)="sendDevis()"
+                [formGroup]="reviewForm"
+                #form2
+              >
+                <!-- Rating input -->
+
+                <div class="row">
+                  <!-- Name input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="name">
+                        {{ 'form.nom' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="name"
+                        type="text"
+                        placeholder="{{ 'form.exp_nom' | translate }}"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('name')?.touched &&
+                            reviewForm.get('name')?.invalid
+                        }"
+                        formControlName="name"
+                        name="name"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('name')?.touched &&
+                          reviewForm.get('name')?.invalid
+                        "
+                        class="invalid-feedback mb-2"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_3' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['maxlength']"
+                        >
+                          {{ 'form.champ_30' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('name')?.errors?.['pattern']"
+                        >
+                          {{ 'form.champ_lettre' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Email address input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="emailAddress">
+                        {{ 'form.email' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="emailAddress"
+                        type="email"
+                        placeholder="{{ 'form.exp_email' | translate }}"
+                        formControlName="email"
+                        name="email"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('email')?.touched &&
+                            reviewForm.get('email')?.invalid
+                        }"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('email')?.touched &&
+                          reviewForm.get('email')?.invalid
+                        "
+                        class="invalid-feedback"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('email')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div *ngIf="reviewForm.get('email')?.errors?.['email']">
+                          {{ 'form.mail_valid' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Telephone +Devis address input -->
+                <!-- Telephone  address input -->
+
+                <div class="row">
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="telephone">
+                        {{ 'form.telephone' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="telephone"
+                        type="texte"
+                        placeholder="{{ 'form.exp_tel' | translate }}"
+                        formControlName="telephone"
+                        name="telephone"
+                        [ngClass]="{
+                          'is-invalid':
+                            reviewForm.get('telephone')?.touched &&
+                            reviewForm.get('telephone')?.invalid
+                        }"
+                      />
+                      <div
+                        *ngIf="
+                          reviewForm.get('telephone')?.touched &&
+                          reviewForm.get('telephone')?.invalid
+                        "
+                        class="invalid-feedback"
+                      >
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['required']"
+                        >
+                          {{ 'form.champ_oblig' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['pattern']"
+                        >
+                          {{ 'form.tel_valid' | translate }}
+                        </div>
+                        <div
+                          *ngIf="reviewForm.get('telephone')?.errors?.['minlength']"
+                        >
+                          {{ 'form.champ_10' | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Devis  input -->
+                  <div class="mb-3 col">
+                    <div class="col">
+                      <label class="form-label" for="object">
+                        {{ 'form.object' | translate }}
+                      </label>
+                      <input
+                        class="form-control"
+                        id="object"
+                        type="texte"
+                        [disabled]="true"
+                        placeholder="Object"
+                        formControlName="object"
+                        name="object"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Message input -->
+
+                <div class="mb-3">
+                  <label class="form-label" for="message">
+                    {{ 'form.message' | translate }}
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="message"
+                    type="text"
+                    placeholder="{{ 'form.c_msg' | translate }}"
+                    style="height: 10rem;"
+                  ></textarea>
+                  <div
+                    *ngIf="
+                      reviewForm.get('message')?.touched &&
+                      reviewForm.get('message')?.invalid
+                    "
+                    class="invalid-feedback mb-2"
+                  >
+                    <div
+                      *ngIf="reviewForm.get('message')?.errors?.['required']"
+                    >
+                      {{ 'form.champ_oblig' | translate }}
+                    </div>
+                    <div
+                      *ngIf="reviewForm.get('message')?.errors?.['minlength']"
+                    >
+                      {{ 'form.champ_10' | translate }}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form submit button -->
+                <div class="">
+                  <button
+                    class="btn btn-outline-dark btn-lg col-md-3"
+                    type="submit"
+                  >
+                    {{ 'form.Envoyer' | translate }}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="CashBack">
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Actualités ENGIE - Electricité et Gaz 2022</h4>
+                <p>
+                  Envie de changer de fournisseur d'énergie ? ENGIE vous
+                  accompagne lors de votre déménagement en vous facilitant les
+                  formalités administratives. En effectuant une demande de
+                  contrat sur le site, vous pourrez être recontacté dans les 24h
+                  par un conseiller qui saura vous accompagner lors de vos
+                  différentes démarches. Maîtriser votre consommation simplement
+                  depuis votre espace client ou directement depuis
+                  l'application. ENGIE vous propose des écogestes afin de
+                  réduire votre consommation. Besoin de cartons pour votre
+                  déménagement ? Commandez-en sur le site ENGIE pour les
+                  recevoir sous 48h. Profitez également du cashback iGraal pour
+                  faire de belles réductions lors de votre souscription à ENGIE.
+                </p>
+              </div>
+              <div class="col-md-8">
+                <div class="cashback-card" *ngFor="let i of cashBack">
+                  <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                      <h2 class="text-warning bold">{{ i.value }}</h2>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="m-0 pb-1">{{ i.tag }}</p>
+                      <h4 class="title-secondary text-black">
+                        {{ i.title }}
+                      </h4>
+                      <p class="small-text">
+                        {{ 'globale.jusqu' | translate }}
+                        {{ i.date | date: 'dd-MM-yyyy' }}
+                      </p>
+                    </div>
+                    <div class="col-md-3">
+                      <button class="btn btn-solid btn-info col-md-12">
+                        {{ 'globale.profiter' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          <p-tabPanel header="A Propos Livraison ">
+            <div class="row">
+              <div class="col-md-6">
+                <p class="text-dark">
+                  Pay on delivery is available
+                </p>
+                <p class="text-dark">
+                  Les colis envoyés par ce service logistique sont suivis avec
+                  succès grâce à notre service.
+                </p>
+                <p class="text-dark">Easy 30 days returns and exchanges</p>
+
+                <h5 class="text-dark">
+                  <i class="fa-solid fa-arrow-rotate-left"></i>
+                  Retour gratuit sous 100 jours
+                </h5>
+              </div>
+              <div class="col-md-6">
+                <div
+                  class="livraison-bloc"
+                  *ngFor="let item of produit?.shipping"
+                >
+                  <label class="w-100 text-dark bold">
+                    <h6 class="bold">
+                      {{ 'globale.livraison' | translate }} : {{ item.prix }} DH
+                    </h6>
+                    <p class="m-0 text-dark bold">
+                      {{ 'globale.date-l-e' | translate }} :
+                      {{ livraisonDate(item.duree) }}
+                    </p>
+                    <p class="m-0 text-dark bold">
+                      {{ 'globale.livre-p' | translate }} : {{ item.company }}
+                    </p>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-other-elements my-5">
+    <h3 class="title-secondary">
+      {{ 'globale.produits-simillaire' | translate }}
+    </h3>
+
+    <p-carousel
+      [value]="produitSlider"
+      [numVisible]="3"
+      [numScroll]="3"
+      [circular]="false"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-slide pTemplate="item">
+        <app-card-product
+          [categorie]="slide?.categorie"
+          [image]="slide?.image"
+          [rating]="slide?.rating"
+          [titre]="slide?.titre"
+          [price]="slide?.price"
+          [description]="slide?.description"
+          [otherProducts]="slide?.others"
+          [promo]="slide?.promo"
+          [livraison]="slide?.livraison"
+        ></app-card-product>
+      </ng-template>
+    </p-carousel>
+    <!-- <owl-carousel-o [options]="customOptions">
+        <ng-container *ngFor="let slide of produitSlider">
+          <ng-template carouselSlide [id]="slide.id">
+            <app-card-product
+              [categorie]="slide?.categorie"
+              [image]="slide?.image"
+              [rating]="slide?.rating"
+              [titre]="slide?.titre"
+              [price]="slide?.price"
+              [description]="slide?.description"
+              [otherProducts]="slide?.others"
+              [promo]="slide?.promo"
+              [livraison]="slide?.livraison"
+            ></app-card-product>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o> -->
+  </div>
+  <div class="list-other-elements my-5">
+    <h3 class="title-secondary">{{ 'globale.recommandation' | translate }}</h3>
+    <p-carousel
+      [value]="produitSlider"
+      [numVisible]="3"
+      [numScroll]="3"
+      [circular]="false"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-slide pTemplate="item">
+        <app-card-product
+          [categorie]="slide?.categorie"
+          [image]="slide?.image"
+          [rating]="slide?.rating"
+          [titre]="slide?.titre"
+          [price]="slide?.price"
+          [description]="slide?.description"
+          [otherProducts]="slide?.others"
+          [promo]="slide?.promo"
+          [livraison]="slide?.livraison"
+        ></app-card-product>
+      </ng-template>
+    </p-carousel>
+  </div>
+</div>
+<ng-template #shippingInfo let-modal>
+  <div class="modal-header">
+    <h6>{{ 'globale.livrason-mode' | translate }}</h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">
+        &times;
+      </span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <div class="livraison-bloc" *ngFor="let item of produit?.shipping">
+      <input
+        class="radioBtn"
+        type="radio"
+        id="{{ item.id }}"
+        name="fav_language"
+        value="HTML"
+        name="item"
+      />
+      <label class="w-100" for="{{ item.id }}">
+        <h6>{{ 'globale.livraison' | translate }} : {{ item.prix }} DH</h6>
+        <p class="m-0">
+          {{ 'globale.date-l-e' | translate }} : {{ livraisonDate(item.duree) }}
+        </p>
+        <p class="m-0">
+          {{ 'globale.livre-p' | translate }} : {{ item.company }}
+        </p>
+      </label>
+    </div>
+  </div>
+</ng-template>
+<ng-template #modalLocation let-modal>
+  <form id="contactForm" (ngSubmit)="sendLocation()" [formGroup]="locationForm">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        Location
+      </h4>
+      <button
+        type="button"
+        class="btn"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Fermer
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Info P NomPrenom input -->
+      <div class="row">
+        <div class="col mb-3">
+          <label class="form-label" for="name">
+            {{ 'form.nom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="name"
+            type="text"
+            placeholder="{{ 'form.exp_nom' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('name')?.touched &&
+                locationForm.get('name')?.invalid
+            }"
+            formControlName="name"
+            name="name"
+          />
+          <div
+            *ngIf="
+              locationForm.get('name')?.touched &&
+              locationForm.get('name')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="locationForm.get('name')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('name')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('name')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('name')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-3">
+          <label class="form-label" for="prenom">
+            {{ 'form.prenom' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="prenom"
+            type="text"
+            placeholder="{{ 'form.exp_pre' | translate }}"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('prenom')?.touched &&
+                locationForm.get('prenom')?.invalid
+            }"
+            formControlName="prenom"
+            name="prenom"
+          />
+          <div
+            *ngIf="
+              locationForm.get('prenom')?.touched &&
+              locationForm.get('prenom')?.invalid
+            "
+            class="invalid-feedback mb-2"
+          >
+            <div *ngIf="locationForm.get('prenom')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('prenom')?.errors?.['minlength']">
+              {{ 'form.champ_3' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('prenom')?.errors?.['maxlength']">
+              {{ 'form.champ_30' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('prenom')?.errors?.['pattern']">
+              {{ 'form.champ_lettre' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Email address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="emailAddress">
+            {{ 'form.email' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="emailAddress"
+            type="email"
+            placeholder="{{ 'form.exp_email' | translate }}"
+            formControlName="email"
+            name="email"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('email')?.touched &&
+                locationForm.get('email')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              locationForm.get('email')?.touched &&
+              locationForm.get('email')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="locationForm.get('email')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('email')?.errors?.['email']">
+              {{ 'form.mail_valid' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Telephone address input -->
+        <div class="col mb-3">
+          <label class="form-label" for="telephone">
+            {{ 'form.telephone' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="telephone"
+            type="texte"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="telephone"
+            name="telephone"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('telephone')?.touched &&
+                locationForm.get('telephone')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              locationForm.get('telephone')?.touched &&
+              locationForm.get('telephone')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="locationForm.get('telephone')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('telephone')?.errors?.['pattern']">
+              {{ 'form.tel_valid' | translate }}
+            </div>
+            <div *ngIf="locationForm.get('telephone')?.errors?.['minlength']">
+              {{ 'form.champ_10' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Heure  input -->
+      <div class="row">
+        <div class="col mb-3">
+          <label class="form-label" for="dateDebut">
+            {{ 'form.dateDebut' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="dateDebut"
+            type="datetime-local"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="dateDebut"
+            name="dateDebut"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('dateDebut')?.touched &&
+                locationForm.get('dateDebut')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              locationForm.get('dateDebut')?.touched &&
+              locationForm.get('dateDebut')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="locationForm.get('dateDebut')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+          </div>
+        </div>
+
+        <div class="col mb-3">
+          <label class="form-label" for="dateFin">
+            {{ 'form.dateFin' | translate }}
+          </label>
+          <input
+            class="form-control"
+            id="dateFin"
+            type="datetime-local"
+            placeholder="{{ 'form.exp_tel' | translate }}"
+            formControlName="dateFin"
+            name="dateFin"
+            [ngClass]="{
+              'is-invalid':
+                locationForm.get('dateFin')?.touched &&
+                locationForm.get('dateFin')?.invalid
+            }"
+          />
+          <div
+            *ngIf="
+              locationForm.get('dateFin')?.touched &&
+              locationForm.get('dateFin')?.invalid
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="locationForm.get('dateFin')?.errors?.['required']">
+              {{ 'form.champ_oblig' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Message  input -->
+      <div class="mb3">
+        <label for="content">
+          Message
+        </label>
+
+        <textarea
+          type="text"
+          name="content"
+          class="form-control"
+          formControlName="content"
+          [ngClass]="{
+            'is-invalid':
+              locationForm.get('content')?.touched &&
+              locationForm.get('content')?.invalid
+          }"
+        ></textarea>
+        <div
+          *ngIf="
+            locationForm.get('content')?.touched &&
+            locationForm.get('content')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div *ngIf="locationForm.get('content')?.errors?.['required']">
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+          <div *ngIf="locationForm.get('content')?.errors?.['minlength']">
+            {{ 'form.champ_3' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <input
+        type="submit"
+        class="btn btn-outline-dark pull-right"
+        value="Enregistrer"
+        style="
+          border-radius: 0.25rem;
+          display: inline-block;
+          height: auto;
+          width: max-content;
+        "
+      />
+
+      <button
+        type="button"
+        class="btn btn-outline-dark pull-right"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Annuler
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- <ng-template #modalDisponibility let-modal>
+  <div class="modal-header">
+    <h6>{{ 'Calendrier Disponibilité' | translate }}</h6>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">
+        &times;
+      </span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <calendar-scheduler-view
+      [viewDays]="viewDays"
+      [viewDate]="viewDate"
+      [events]="events"
+      [locale]="locale"
+      [responsive]="true"
+      [weekStartsOn]="weekStartsOn"
+      [excludeDays]="excludeDays"
+      [startsWithToday]="startsWithToday"
+      [hourSegments]="hourSegments"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [dayStartMinute]="dayStartMinute"
+      [dayEndMinute]="dayEndMinute"
+      [dayModifier]="dayModifier"
+      [hourModifier]="hourModifier"
+      [segmentModifier]="segmentModifier"
+      [eventModifier]="eventModifier"
+      [showEventActions]="true"
+      [showSegmentHour]="false"
+      [zoomEventOnHover]="false"
+      (viewDaysChanged)="viewDaysChanged($event)"
+      (hourClicked)="hourClicked($event.hour)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      [refresh]="refresh"
+    ></calendar-scheduler-view>
+  </div>
+</ng-template> -->

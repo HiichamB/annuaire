@@ -1,0 +1,423 @@
+<div class="mb-3">
+  <h2 class="title-primary title-page">Reservation Cours Theorique</h2>
+</div>
+<form
+  class="row bg-white"
+  id="contactForm"
+  (ngSubmit)="sendReservation()"
+  [formGroup]="reservationTheoriqueForm"
+>
+  <!-- Heure  input -->
+  <div class="row">
+    <div class="col mb-3">
+      <div>
+        <label for="" class="mb-2">
+          Date de la reservation
+        </label>
+
+        <input
+          min="{{ todayDate | date: 'yyyy-MM-dd' }}"
+          type="date"
+          class="form-control"
+          formControlName="dateDebut"
+          (change)="dateDebutChange($event)"
+          [ngClass]="{
+            'is-invalid':
+              reservationTheoriqueForm.get('dateDebut')?.touched &&
+              reservationTheoriqueForm.get('dateDebut')?.invalid
+          }"
+        />
+        <div
+          *ngIf="
+            reservationTheoriqueForm.get('dateDebut')?.touched &&
+            reservationTheoriqueForm.get('dateDebut')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div
+            *ngIf="reservationTheoriqueForm.get('dateDebut')?.errors?.['required']"
+          >
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col mb-3">
+      <div>
+        <label for="" class="mb-2">
+          Heure du Cours :
+        </label>
+        <select
+          class="form-select"
+          formControlName="heureDuCours"
+          [ngClass]="{
+            'is-invalid':
+              reservationTheoriqueForm.get('heureDuCours')?.touched &&
+              reservationTheoriqueForm.get('heureDuCours')?.invalid
+          }"
+        >
+          <option value="" disabled selected hidden>Choisir Un cours</option>
+          <option
+            [disabled]="
+              cours.nbPlaces == cours.nbReservations ||
+              (cours.dateDebut == dateNow && cours.heureDebut < timeNow)
+            "
+            *ngFor="let cours of listCours"
+          >
+            Du: {{ cours.heureDebut }} à: {{ cours.heureFin }}
+          </option>
+        </select>
+        <div
+          *ngIf="
+            reservationTheoriqueForm.get('heureDuCours')?.touched &&
+            reservationTheoriqueForm.get('heureDuCours')?.invalid
+          "
+          class="invalid-feedback mb-2"
+        >
+          <div
+            *ngIf="reservationTheoriqueForm.get('heureDuCours')?.errors?.['required']"
+          >
+            {{ 'form.champ_oblig' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="w-100 row"
+    [ngClass]="{
+      'is-invalid':
+        reservationTheoriqueForm.get('cours')?.touched &&
+        reservationTheoriqueForm.get('cours')?.invalid
+    }"
+  >
+    <div class="p-2 col-md-6" *ngFor="let cours of listCours">
+      <label
+        class="card m-0 h-100 position-relative"
+        [class.isDisabled]="
+          cours.nbPlaces == cours.nbReservations ||
+          (cours.dateDebut == dateNow && cours.heureDebut < timeNow)
+        "
+      >
+        <fieldset
+          [disabled]="
+            cours.nbPlaces == cours.nbReservations ||
+            (cours.dateDebut == dateNow && cours.heureDebut < timeNow)
+          "
+        >
+          <input
+            [disabled]="
+              cours.nbPlaces == cours.nbReservations ||
+              (cours.dateDebut == dateNow && cours.heureDebut < timeNow)
+            "
+            name="cours"
+            formControlName="cours"
+            class="radio"
+            type="radio"
+            [value]="cours.id"
+          />
+        </fieldset>
+
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Titre:</span>
+          <span class="text-desc">
+            {{ cours.titre }}
+          </span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Nombre de Place:</span>
+          <span class="text-desc">{{ cours.nbPlaces }}</span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Date du Cours:</span>
+          <span class="text-desc">{{ cours.dateDebut }}</span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Heure Debut:</span>
+          <span class="text-desc">{{ cours.heureDebut }}</span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Heure Fin:</span>
+          <span class="text-desc">{{ cours.heureFin }}</span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+          <span class="fw-bold">Description:</span>
+          <span class="text-desc">
+            {{ cours.description }}
+          </span>
+        </div>
+      </label>
+    </div>
+  </div>
+  <div
+    *ngIf="
+      reservationTheoriqueForm.get('cours')?.touched &&
+      reservationTheoriqueForm.get('cours')?.invalid
+    "
+    class="invalid-feedback mb-2"
+  >
+    <div *ngIf="reservationTheoriqueForm.get('cours')?.errors?.['required']">
+      {{ 'form.champ_oblig' | translate }}
+    </div>
+  </div>
+  <!-- Info P NomPrenom input -->
+  <div class="row">
+    <div class="col mb-3">
+      <label class="form-label" for="name">
+        {{ 'form.nom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="name"
+        type="text"
+        placeholder="{{ 'form.exp_nom' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            reservationTheoriqueForm.get('name')?.touched &&
+            reservationTheoriqueForm.get('name')?.invalid
+        }"
+        formControlName="name"
+        name="name"
+      />
+      <div
+        *ngIf="
+          reservationTheoriqueForm.get('name')?.touched &&
+          reservationTheoriqueForm.get('name')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div *ngIf="reservationTheoriqueForm.get('name')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('name')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('name')?.errors?.['maxlength']"
+        >
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div *ngIf="reservationTheoriqueForm.get('name')?.errors?.['pattern']">
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col mb-3">
+      <label class="form-label" for="prenom">
+        {{ 'form.prenom' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="prenom"
+        type="text"
+        placeholder="{{ 'form.exp_pre' | translate }}"
+        [ngClass]="{
+          'is-invalid':
+            reservationTheoriqueForm.get('prenom')?.touched &&
+            reservationTheoriqueForm.get('prenom')?.invalid
+        }"
+        formControlName="prenom"
+        name="prenom"
+      />
+      <div
+        *ngIf="
+          reservationTheoriqueForm.get('prenom')?.touched &&
+          reservationTheoriqueForm.get('prenom')?.invalid
+        "
+        class="invalid-feedback mb-2"
+      >
+        <div
+          *ngIf="reservationTheoriqueForm.get('prenom')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('prenom')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_3' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('prenom')?.errors?.['maxlength']"
+        >
+          {{ 'form.champ_30' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('prenom')?.errors?.['pattern']"
+        >
+          {{ 'form.champ_lettre' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Email address input -->
+    <div class="col mb-3">
+      <label class="form-label" for="emailAddress">
+        {{ 'form.email' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="emailAddress"
+        type="email"
+        placeholder="{{ 'form.exp_email' | translate }}"
+        formControlName="email"
+        name="email"
+        [ngClass]="{
+          'is-invalid':
+            reservationTheoriqueForm.get('email')?.touched &&
+            reservationTheoriqueForm.get('email')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          reservationTheoriqueForm.get('email')?.touched &&
+          reservationTheoriqueForm.get('email')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div
+          *ngIf="reservationTheoriqueForm.get('email')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div *ngIf="reservationTheoriqueForm.get('email')?.errors?.['email']">
+          {{ 'form.mail_valid' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Telephone address input -->
+    <div class="col mb-3">
+      <label class="form-label" for="telephone">
+        {{ 'form.telephone' | translate }}
+      </label>
+      <input
+        class="form-control"
+        id="telephone"
+        type="texte"
+        placeholder="{{ 'form.exp_tel' | translate }}"
+        formControlName="telephone"
+        name="telephone"
+        [ngClass]="{
+          'is-invalid':
+            reservationTheoriqueForm.get('telephone')?.touched &&
+            reservationTheoriqueForm.get('telephone')?.invalid
+        }"
+      />
+      <div
+        *ngIf="
+          reservationTheoriqueForm.get('telephone')?.touched &&
+          reservationTheoriqueForm.get('telephone')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div
+          *ngIf="reservationTheoriqueForm.get('telephone')?.errors?.['required']"
+        >
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('telephone')?.errors?.['pattern']"
+        >
+          {{ 'form.tel_valid' | translate }}
+        </div>
+        <div
+          *ngIf="reservationTheoriqueForm.get('telephone')?.errors?.['minlength']"
+        >
+          {{ 'form.champ_10' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Titre Input -->
+  <div>
+    <label for="titre">
+      Titre
+    </label>
+
+    <input
+      type="text"
+      name="titre"
+      class="form-control"
+      formControlName="titre"
+      [ngClass]="{
+        'is-invalid':
+          reservationTheoriqueForm.get('titre')?.touched &&
+          reservationTheoriqueForm.get('titre')?.invalid
+      }"
+    />
+
+    <div
+      *ngIf="
+        reservationTheoriqueForm.get('titre')?.touched &&
+        reservationTheoriqueForm.get('titre')?.invalid
+      "
+      class="invalid-feedback mb-2"
+    >
+      <div *ngIf="reservationTheoriqueForm.get('titre')?.errors?.['required']">
+        {{ 'form.champ_oblig' | translate }}
+      </div>
+      <div *ngIf="reservationTheoriqueForm.get('titre')?.errors?.['minlength']">
+        {{ 'form.champ_3' | translate }}
+      </div>
+      <div *ngIf="reservationTheoriqueForm.get('titre')?.errors?.['maxlength']">
+        {{ 'form.champ_30' | translate }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Message  input -->
+  <div class="mb3">
+    <label for="content">
+      Message
+    </label>
+
+    <textarea
+      type="text"
+      name="content"
+      class="form-control"
+      formControlName="content"
+      [ngClass]="{
+        'is-invalid':
+          reservationTheoriqueForm.get('content')?.touched &&
+          reservationTheoriqueForm.get('content')?.invalid
+      }"
+    ></textarea>
+    <div
+      *ngIf="
+        reservationTheoriqueForm.get('content')?.touched &&
+        reservationTheoriqueForm.get('content')?.invalid
+      "
+      class="invalid-feedback mb-2"
+    >
+      <div
+        *ngIf="reservationTheoriqueForm.get('content')?.errors?.['required']"
+      >
+        {{ 'form.champ_oblig' | translate }}
+      </div>
+      <div
+        *ngIf="reservationTheoriqueForm.get('content')?.errors?.['minlength']"
+      >
+        {{ 'form.champ_3' | translate }}
+      </div>
+    </div>
+  </div>
+
+  <div class="my-2 col align-self-end">
+    <input
+      type="submit"
+      class="btn btn-outline-dark"
+      value="Enregistrer"
+      style="
+        border-radius: 0.25rem;
+        display: inline-block;
+        height: auto;
+        width: max-content;
+      "
+    />
+  </div>
+</form>

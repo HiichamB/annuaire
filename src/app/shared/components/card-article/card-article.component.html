@@ -1,0 +1,35 @@
+<div
+  [routerLink]="['/details/details/action-sociale/details']"
+  class="cursor-pointer card-custom"
+>
+  <div class="imgwrap card-custom-header">
+    <img
+      class="card-img"
+      alt=""
+      [defaultImage]="'/assets/images/doc_a_tele1.png'"
+      [lazyLoad]="image"
+    />
+  </div>
+  <div class="card-custom-body">
+    <h4 class="j-title-md blue-color mb-3">
+      {{ titre }}
+    </h4>
+
+    <p class="truncate truncate-5-line">
+      {{ resume }}
+    </p>
+
+    <div>
+      <p class="small-text">
+        <i class="fa fa-calendar"></i>
+        <span class="mx-1">
+          {{ date | date: 'dd - MMM - yyyy' }}
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="card-custom-footer">
+    <a class="btn">Lire Plus</a>
+  </div>
+</div>

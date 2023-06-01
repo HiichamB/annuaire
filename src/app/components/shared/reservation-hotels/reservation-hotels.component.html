@@ -1,0 +1,470 @@
+<div class="my-2">
+  <form
+    [formGroup]="searchHotelForm"
+    class="d-flex flex-wrap justify-content-between"
+  >
+    <div class="col-md-4 my-1">
+      <igx-date-range-picker
+        #igxCalendar
+        formControlName="dateIntervale"
+        mode="dialog"
+        [minValue]="minDate"
+        (valueChange)="setDateEndRange(igxCalendar)"
+        [ngClass]="{
+          'igx-input-group--invalid is-invalid':
+            searchHotelForm.get('dateIntervale')?.touched &&
+            searchHotelForm.get('dateIntervale')?.invalid
+        }"
+      ></igx-date-range-picker>
+
+      <div
+        *ngIf="
+          searchHotelForm.get('dateIntervale')?.touched &&
+          searchHotelForm.get('dateIntervale')?.invalid
+        "
+        class="invalid-feedback"
+      >
+        <div *ngIf="searchHotelForm.get('dateIntervale')?.errors?.['required']">
+          {{ 'form.champ_oblig' | translate }}
+        </div>
+      </div>
+    </div>
+    <div
+      class="recap-box cursor-pointer col-md-4 my-1"
+      (click)="openModal2(SearchCustom)"
+      style="height: max-content;"
+    >
+      <span>
+        {{ nbChambres }} Chambres, {{ nbPersonnes }} adultes,
+        {{ nbChildrens }} children
+      </span>
+    </div>
+
+    <button
+      class="col-md-3 btn btn-outline-dark my-1"
+      (click)="checkDiponibilityChambre()"
+      style="height: max-content;"
+    >
+      Verfier Disponiblité
+    </button>
+    <ng-template #SearchCustom let-modal formArrayName="chambres">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          Custom Search
+        </h4>
+        <button
+          type="button"
+          class="btn"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Fermer
+        </button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow: auto;">
+        <div
+          class="form-array-section"
+          *ngFor="let chambre of chambreArray.controls; let i = index"
+          [formGroupName]="i"
+        >
+          <div class="my-2 d-flex align-items-center justify-content-between">
+            <span class="">Personnes</span>
+            <div
+              class="d-flex align-items-center justify-content-between inpt-nb-container"
+            >
+              <span class="btn-span-inpt-left" href="#" (click)="decrement(i)">
+                -
+              </span>
+              <input
+                type="text"
+                formControlName="nbPersonnes"
+                class="form-control inpt-nb"
+                [ngClass]="{
+                  'is-invalid':
+                    chambreArray.controls[i].get('nbPersonnes')?.touched &&
+                    chambreArray.controls[i].get('nbPersonnes')?.invalid
+                }"
+              />
+              <span class="btn-span-inpt-right" href="#" (click)="increment(i)">
+                +
+              </span>
+            </div>
+          </div>
+
+          <div class="my-2 d-flex align-items-center justify-content-between">
+            <span>Enfants</span>
+            <div
+              class="d-flex align-items-center justify-content-between inpt-nb-container"
+            >
+              <span
+                class="btn-span-inpt-left cursor-pointer"
+                href="#"
+                (click)="decrementC(i)"
+              >
+                -
+              </span>
+              <input
+                type="text"
+                formControlName="nbChildrens"
+                class="form-control inpt-nb"
+                [ngClass]="{
+                  'is-invalid':
+                    chambreArray.controls[i].get('nbChildrens')?.touched &&
+                    chambreArray.controls[i].get('nbChildrens')?.invalid
+                }"
+              />
+              <span
+                class="btn-span-inpt-right cursor-pointer"
+                href="#"
+                (click)="incrementC(i)"
+              >
+                +
+              </span>
+            </div>
+          </div>
+          <div
+            class="my-2 text-end w-100"
+            *ngIf="chambreArray.controls.length > 1"
+          >
+            <span class="cursor-pointer text-danger" (click)="deleteChambre(i)">
+              Supprimer Chambre
+            </span>
+          </div>
+        </div>
+
+        <div class="my-2 float-right">
+          <span class="cursor-pointer fw-bold" (click)="newChambre()">
+            Add Chambres
+          </span>
+        </div>
+      </div>
+    </ng-template>
+  </form>
+</div>
+<div class="list-contaner-hotels">
+  <div
+    class="card-hotel"
+    *ngFor="let chambre of chambres; let indexCard = index"
+  >
+    <div class="header-card-hotel">
+      <ngb-carousel>
+        <ng-template ngbSlide *ngFor="let slide of chambre.images">
+          <img
+            class="d-block w-100 image-container"
+            [src]="slide"
+            alt="First slide"
+          />
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <div class="body-card-hotel">
+      <div class="space-card-hotel">
+        <div class="title-container mb-3">
+          <h4 class="title-secondary">{{ chambre.title }}</h4>
+        </div>
+        <ul class="list-no-decoration">
+          <li
+            *ngFor="let item of chambre.caracteres.slice(0, 7)"
+            class="list-caracteres"
+          >
+            <div class="d-flex align-items-center font-small">
+              <img class="img-caractere" src="{{ item.icon }}" />
+              <span class="mx-2">{{ item.title }}</span>
+            </div>
+          </li>
+        </ul>
+        <div class="">
+          <div class="" (click)="openModal(modalDetail, indexCard)">
+            <span class="text-info">Plus de détails</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-border space-card-hotel">
+        <mat-accordion class="example-headers-align" multi>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <h6 class="space-title">{{ chambre.politiques.title }}</h6>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div
+              class="radio d-flex justify-content-between my-2"
+              *ngFor="let item of chambre.politiques.items; index as i"
+            >
+              <label class="font-small">
+                <input
+                  [checked]="item.title == chambre.selectedPolitique.title"
+                  (change)="addPolitique(chambre, item)"
+                  type="radio"
+                  class="radio-input"
+                  [value]="item.price"
+                  [name]="'politique' + indexCard"
+                />
+                {{ item.title }}
+              </label>
+              <div class="font-small fw-bold">
+                <span>+{{ item.price * nbChambres }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- <div class="title-small-container pt-2 mb-2">
+          <h6 class="">{{ hotel.politiques.title }}</h6>
+        </div>
+
+        <div
+          class="radio d-flex justify-content-between my-2"
+          *ngFor="let item of hotel.politiques.items"
+        >
+          <label class="font-small">
+            <input type="radio" class="radio-input" [value]="item.price" />
+            {{ item.title }}
+          </label>
+          <div class="font-small fw-bold">
+            <span>+{{ item.price }}</span>
+          </div>
+        </div>
+      </div> -->
+
+        <div class="top-border">
+          <mat-accordion class="example-headers-align" multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h6 class="space-title">{{ chambre.extras.title }}</h6>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div
+                class="radio d-flex justify-content-between my-2"
+                *ngFor="let item of chambre.extras.items; let i = index"
+              >
+                <label class="font-small">
+                  <input
+                    [checked]="item.title == chambre.selectedExtra.title"
+                    (change)="addExtra(chambre, item)"
+                    type="radio"
+                    class="radio-input"
+                    [value]="item.price"
+                    [name]="'extra' + indexCard"
+                  />
+                  {{ item.title }}
+                </label>
+                <div class="font-small fw-bold">
+                  <span>+{{ item.price * nbChambres }}</span>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <!-- <div class="title-small-container pt-2 mb-2">
+          <h6 class="">{{ hotel.extras.title }}</h6>
+        </div>
+
+        <div
+          class="radio d-flex justify-content-between my-2"
+          *ngFor="let item of hotel.extras.items"
+        >
+          <label class="font-small">
+            <input type="radio" class="radio-input" [value]="item.price" />
+            {{ item.title }}
+          </label>
+          <div class="font-small fw-bold">
+            <span>+{{ item.price }}</span>
+          </div>
+        </div> -->
+        </div>
+
+        <div class="footer-card pt-1">
+          <div
+            class="price-container d-flex justify-content-between align-items-center mb-2"
+          >
+            <div class="">
+              <h5 class="m-0">
+                {{
+                  chambre.totalPrice
+                    ? chambre.totalPrice
+                    : +chambre.price * +nbChambres
+                }}Dh
+              </h5>
+
+              <p class="small-text m-0">taxes et frais compris</p>
+            </div>
+            <div class="mt-1" href="#">Details sur le prix</div>
+          </div>
+
+          <div
+            class="btn-container d-flex j align-items-center justify-content-center pt-3 top-border"
+          >
+            <button class="btn btn-outline-dark">Reserver</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #modalDetail let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Information sur la chambre</h4>
+      <button
+        type="button"
+        class="btn"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        Fermer
+      </button>
+    </div>
+    <div class="modal-body row">
+      <div class="col-md-7">
+        <div class="carousel-animation-wrapper">
+          <div class="carousel-wrapper">
+            <igx-carousel
+              [navigation]="true"
+              [pause]="false"
+              animationType="fade"
+              [interval]="2000"
+              #carousel
+            >
+              <igx-slide #slide *ngFor="let item of hotelModal.images">
+                <div
+                  style="height: 100%;"
+                  [ngStyle]="slideStyle(item)"
+                  style="
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    height: 100%;
+                    width: 100%;
+                  "
+                ></div>
+              </igx-slide>
+            </igx-carousel>
+          </div>
+          <div class="list-wrapper">
+            <igx-list displayDensity="compact">
+              <igx-list-item
+                *ngFor="let item of hotelModal.images; let i = index"
+                [ngClass]="{ disabled: i !== currentIndex }"
+              >
+                <img igxListThumbnail src="{{ item }}" />
+              </igx-list-item>
+            </igx-list>
+          </div>
+        </div>
+
+        <div class="my-2">
+          <h4 class="my-2 title-secondary">Options d’unité d’hébergement</h4>
+
+          <div class="py-1 px-2">
+            <div class="title-small-container pt-2 mb-2">
+              <h6 class="">{{ hotelModal.politiques.title }}</h6>
+            </div>
+
+            <div
+              class="radio d-flex justify-content-between my-2"
+              *ngFor="let item of hotelModal.politiques.items"
+            >
+              <label class="font-small">
+                <input
+                  (change)="addPolitique(hotelModal, item)"
+                  type="radio"
+                  name="politique"
+                  class="radio-input"
+                  [value]="item.price"
+                  [name]="'politique'"
+                  [checked]="item.title == hotelModal.selectedPolitique.title"
+                />
+                {{ item.title }}
+              </label>
+              <div class="font-small fw-bold">
+                <span>+{{ item.price * nbChambres }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="py-1 px-2 border-top-hotel-modal">
+            <div class="title-small-container pt-2 mb-2">
+              <h6 class="">{{ hotelModal.extras.title }}</h6>
+            </div>
+
+            <div
+              class="radio d-flex justify-content-between my-2"
+              *ngFor="let item of hotelModal.extras.items"
+            >
+              <label class="font-small">
+                <input
+                  (change)="addExtra(hotelModal, item)"
+                  type="radio"
+                  name="extra"
+                  class="radio-input"
+                  [value]="item.price"
+                  [name]="'extra'"
+                  [checked]="item.title == hotelModal.selectedExtra.title"
+                />
+                {{ item.title }}
+              </label>
+              <div class="font-small fw-bold">
+                <span>+{{ item.price * nbChambres }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-card pt-1">
+          <div
+            class="price-container d-flex justify-content-between align-items-center mb-2"
+          >
+            <div class="">
+              <h5 class="m-0">
+                {{
+                  hotelModal.totalPrice
+                    ? hotelModal.totalPrice
+                    : +hotelModal.price * +nbChambres
+                }}Dh
+              </h5>
+
+              <p class="small-text m-0">taxes et frais compris</p>
+            </div>
+            <div class="mt-1" href="#">Details sur le prix</div>
+          </div>
+
+          <div
+            class="btn-container d-flex j align-items-center justify-content-center pt-3 top-border"
+          >
+            <button class="btn btn-outline-dark">Reserver</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="title-container mb-3">
+          <h3 class="title-primary">{{ hotelModal.title }}</h3>
+        </div>
+        <ul class="list-no-decoration">
+          <li
+            *ngFor="let item of hotelModal.caracteres"
+            class="list-caracteres"
+          >
+            <div class="d-flex align-items-center font-small">
+              <img class="img-caractere" src="{{ item.icon }}" />
+              <span class="mx-2">{{ item.title }}</span>
+            </div>
+          </li>
+        </ul>
+        <div class="" *ngFor="let details of hotelModal.details">
+          <h3 class="title-secondary">{{ details.title }}</h3>
+
+          <ul class="mx-2">
+            <li *ngFor="let item of details.items" class="ml-2 list-caracteres">
+              <div class="d-flex align-items-center font-small">
+                <span>{{ item }}</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

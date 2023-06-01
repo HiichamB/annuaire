@@ -1,0 +1,41 @@
+.strip {
+  background-color: #f8f8f8;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  .wrapper {
+    padding: 7px 15px;
+  }
+  .read_more {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+
+    transform: translateY(10px);
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    width: 100%;
+
+    transition: all 0.6s;
+    z-index: 2;
+    background-color: rgba(256, 256, 256, 0.75);
+    color: black;
+    border-radius: 20px;
+    padding: 5px 20px;
+    width: max-content;
+  }
+  &:hover {
+    .read_more {
+      opacity: 1;
+      transform: translateY(0px);
+      visibility: visible;
+    }
+  }
+}
+.address {
+  margin-bottom: 1rem;
+  display: block;
+}
